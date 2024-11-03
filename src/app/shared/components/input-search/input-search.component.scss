@@ -1,0 +1,10 @@
+@import "src/styleguide/index";
+
+:host ::ng-deep {
+  .input-search-container {
+    .form-input-field {
+      @include form-input-field;
+      margin-bottom: 0;
+    }
+  }
+}

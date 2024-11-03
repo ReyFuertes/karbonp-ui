@@ -1,0 +1,11 @@
+<div *ngIf="field" class="form-input-field">
+  <div>
+    <span>{{ field?.name | translate }}</span>
+    <span *ngIf="field?.required">*</span>
+  </div>
+  <p-dropdown [options]="getTranslatedOptions" [formControl]="registerFormControl(field)" optionLabel="label"
+    optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+  <div class="error">
+    <span *ngIf="getRequiredValidation(field?.name, form)">{{ 'This field is required' | translate }}</span>
+  </div>
+</div>

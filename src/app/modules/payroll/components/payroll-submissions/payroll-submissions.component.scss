@@ -1,0 +1,76 @@
+@import "src/styleguide/index";
+
+.payroll-submissions-container {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    h3 {
+      margin-bottom: 0;
+    }
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-buttons {
+    @include form-buttons;
+    justify-content: flex-end;
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+}
+
+::ng-deep {
+  .payroll-submissions-container {
+    .p-accordion {
+      @include accordion;
+    }
+
+    .p-dialog {
+      @include dialog;
+      @include confirm-dialog;
+
+      .form-button-blue {
+        margin-right: 8px !important;
+      }
+
+      .p-dialog-header {
+        padding-bottom: 8px;
+      }
+
+      .p-dialog-content {
+        padding: 0 1.5rem 0;
+        overflow: hidden;
+      }
+
+      .content {
+        height: 535px;
+      }
+
+      .p-dialog-footer {
+        border-top: 1px solid var(--colour-element-gray-5);
+        padding: 15px;
+      }
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

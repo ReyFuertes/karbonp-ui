@@ -1,0 +1,112 @@
+<div class="payroll-settings-payslips-container">
+  <div class="content" [formGroup]="form">
+    <div class="form-input-field">
+      <div><span>{{ 'ShowHoursOnPayslip' | translate }}</span></div>
+      <p-inputSwitch formControlName="showHoursAndRate" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowPayTypeHoursAndRatesOnPayslip' | translate }}</span></div>
+      <p-inputSwitch formControlName="showPayTypeHoursAndRates" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowHourlyRate' | translate }}</span></div>
+      <p-inputSwitch formControlName="showHourlyRate" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowYTDTotals' | translate }}</span></div>
+      <p-inputSwitch formControlName="showYTDTotals" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowCumulativeYTDTotals' | translate }}</span></div>
+      <p-inputSwitch formControlName="showCumulativeYTDTotals" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'DoNotShowBenefits' | translate }}</span></div>
+      <p-inputSwitch formControlName="doNotShowBenefits" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'DoNotShowEmployerContributions' | translate }}</span></div>
+      <p-inputSwitch formControlName="doNotShowEmployerContributions" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'DoNotShowTaxableIncomeDeductions' | translate }}</span></div>
+      <p-inputSwitch formControlName="doNotShowTaxableIncomeDeductions" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'FormatForSelfSealingConfidentiaStationery' | translate }}</span></div>
+      <p-inputSwitch formControlName="formatForSelfSealingConfidentiaStationery" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'DoNotShowLeave' | translate }}</span></div>
+      <p-inputSwitch formControlName="doNotShowLeave" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'DoNotShowLeaveAdjustments' | translate }}</span></div>
+        <p-inputSwitch formControlName="doNotShowLeaveAdjustments" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'ShowEmployeeNumber' | translate }}</span></div>
+        <p-inputSwitch formControlName="showEmployeeNumber" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowEmployeeAddress' | translate }}</span></div>
+      <p-inputSwitch formControlName="showEmployeeAddress" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <ng-container *ngIf="currentCountryISOCode !== countryISOCodeType.MEX" class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'ShowIncomeTaxNumber' | translate }}</span></div>
+        <p-inputSwitch formControlName="showIncomeTaxNumber" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+      <div *ngIf="currentCountryISOCode === countryISOCodeType.ZA" class="form-input-field">
+        <div><span>{{ 'ShowTaxCodes' | translate }}</span></div>
+        <p-inputSwitch formControlName="showTaxCodes" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowSeveranceBreakdown' | translate }}</span></div>
+      <p-inputSwitch formControlName="showSeveranceBreakdown" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'ShowHourlyBreakdown' | translate }}</span></div>
+      <p-inputSwitch formControlName="showHourlyBreakdown" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="row" *ngIf="getPayslipDisplaySetupItems?.length > 0" formArrayName="payslipDisplaySetupItems">
+      <div class="col-sm-5 mb-3" *ngFor="let item of getPayslipDisplaySetupItems?.controls; let i = index">
+        <div class="form-input-field">
+          <div><span>{{ item?.value?.name | translate }}</span></div>
+          <p-inputSwitch formControlName="showItemOnPayslip" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showLeaveTypeToggle" class="form-input-field">
+      <div><span>{{ 'ShowLeaveDaysToExpire' | translate }}</span></div>
+      <p-inputSwitch formControlName="showLeaveDaysToExpire" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+  </div>
+  <div class="form-buttons">
+    <button pButton class="form-button-blue" (click)="onSave()">{{ 'Save' | translate }}</button>
+    <button pButton class="form-button-default" (click)="onCancel()">{{ 'Cancel' | translate
+      }}</button>
+  </div>
+</div>

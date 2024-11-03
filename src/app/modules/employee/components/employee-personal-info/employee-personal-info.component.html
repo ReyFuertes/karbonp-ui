@@ -1,0 +1,230 @@
+<div class="employee-personal-info-personal" [formGroup]="form">
+  <div class="left-details form-input-detail-fields">
+    <div>
+      <div class="personal-info">
+        <div class="header">
+          <h3>{{ 'Basics' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <ng-container *ngIf="actionState === 'edit' && currentSection === 'basic'; else basicsView">
+          <div class="form-edit-fields">
+            <kp-employee-basic-detail [fields]="employeeDynamicFields?.basics" [form]="form"></kp-employee-basic-detail>
+          </div>
+          <div class="form-buttons">
+            <button [disabled]="!getBasicsForm?.valid" pButton class="form-button-success normal"
+              (click)="onSaveChanges()">
+              <i *ngIf="(isLoadingAsync() | async)" class="pi pi-spin pi-spinner"></i>
+              <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Save & continue' | translate }}</span>
+            </button>
+            <button pButton class="form-button-default normal" (click)="onCancel('basic')">{{ 'Cancel' | translate
+              }}</button>
+          </div>
+        </ng-container>
+        <ng-template #basicsView>
+          <div class="view-fields">
+            <div class="view-fields-display">
+              <div>
+                <div>{{ 'Name' | translate }}</div>
+                <div>{{ getBasicsForm?.value?.fullName }}</div>
+              </div>
+              <div>
+                <div>{{ 'Employee Number' | translate }}</div>
+                <div>{{ getBasicsForm?.value?.number }}</div>
+              </div>
+              <div>
+                <div>{{ 'Date of birth' | translate }}</div>
+                <div>{{ getBasicsForm?.value?.dateOfBirth | date: 'dd MMM yyyy' }}</div>
+              </div>
+            </div>
+            <div>
+              <span class="material-symbols-rounded" (click)="onEdit('basic');">edit_square</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="bank-account-details">
+        <div>
+          <h3>{{ 'Bank Account Details' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <ng-container *ngIf="actionState === 'edit' && currentSection === 'bankAccountDetails'; else backAccountDetailsView">
+          <div class="form-edit-fields">
+            <kp-employee-bank-account-detail [fields]="employeeDynamicFields?.bankAccountDetails" [form]="form"></kp-employee-bank-account-detail>
+          </div>
+          <div class="form-buttons">
+            <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">Save &
+              continue</button>
+            <button pButton class="form-button-default normal" (click)="onCancel('basic')">Cancel</button>
+          </div>
+        </ng-container>
+        <ng-template #backAccountDetailsView>
+          <div class="view-fields">
+            <div class="view-fields-display">
+              <div>
+                <div>{{ 'Bank Account Number' | translate }}</div>
+                <div>{{ getBankDetailsForm?.value?.accountNumber }}</div>
+              </div>
+              <div>
+                <div>{{ 'Account Holder' | translate }}</div>
+                <div>{{ getBankDetailsForm?.value?.bankAccountHolder }}</div>
+              </div>
+            </div>
+            <div>
+              <span class="material-symbols-rounded" (click)="onEdit('bankAccountDetails')">edit_square</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="residential-address">
+        <div>
+          <h3>{{ 'Residential Address' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <ng-container *ngIf="actionState === 'edit' && currentSection === 'residentialAddress'; else residentalAddressView">
+          <div class="form-edit-fields">
+            <kp-employee-residential-address-detail [fields]="employeeDynamicFields?.residentialAddress" [form]="form"></kp-employee-residential-address-detail>
+          </div>
+          <div class="form-buttons">
+            <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{
+              'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel('residentialAddress')">{{ 'Cancel' |
+              translate }}</button>
+          </div>
+        </ng-container>
+        <ng-template #residentalAddressView>
+          <div class="view-fields">
+            <div class="address-info">
+              <div>{{ getResidentialAddressForm.value?.line1 }}</div>
+              <div>{{ getResidentialAddressForm.value?.city }}, {{ getResidentialAddressForm.value?.postalCode }}</div>
+              <div>{{ getCountryName(getResidentialAddressForm.value?.country) }}</div>
+            </div>
+            <div>
+              <span class="material-symbols-rounded" (click)="onEdit('residentialAddress')">edit_square</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="postal-address">
+        <div>
+          <h3>{{ 'Postal Address' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <ng-container *ngIf="actionState === 'edit' && currentSection === 'postalAddress'; else postalAddressView">
+          <kp-employee-postal-address-detail [fields]="employeeDynamicFields?.postalAddress" [form]="form"></kp-employee-postal-address-detail>
+          <div class="form-buttons">
+            <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{
+              'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel('postalAddress')">{{ 'Cancel' |
+              translate }}</button>
+          </div>
+        </ng-container>
+        <ng-template #postalAddressView>
+          <div class="view-fields">
+            <div class="address-info">
+              <div>{{ getPostalAddressForm.value?.line1 }}</div>
+              <div>{{ getPostalAddressForm.value.city }}, {{ getPostalAddressForm.value?.postalCode }}</div>
+              <div>{{ getCountryName(getPostalAddressForm.value?.country) }}</div>
+            </div>
+            <div>
+              <span class="material-symbols-rounded" (click)="onEdit('postalAddress')">edit_square</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="biography">
+        <div>
+          <h3>{{ 'Biography' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <ng-container *ngIf="actionState === 'edit' && currentSection === 'biography'; else biographyView">
+          <kp-employee-biography-detail [fields]="employeeDynamicFields?.biography" [form]="form"></kp-employee-biography-detail>
+          <div class="form-buttons">
+            <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{
+              'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel('biography')">{{ 'Cancel' | translate
+              }}</button>
+          </div>
+        </ng-container>
+        <ng-template #biographyView>
+          <div class="view-fields">
+            <div class="view-fields-display">
+              <div>
+                <div>{{ 'WhatDoesFirstNameDoAtCompanyName' | translate:bioTranslateParam }}</div>
+                <div class="inner-html" [innerHTML]="getBiographyForm.value?.biographyDo | safeHtml"></div>
+              </div>
+              <div>
+                <div>{{ ('AfewThingsAboutFirstName' | translate:bioTranslateParam) }}</div>
+                <div class="inner-html" [innerHTML]="getBiographyForm.value?.biographyAbout | safeHtml"></div>
+              </div>
+            </div>
+            <div>
+              <span class="material-symbols-rounded" (click)="onEdit('biography')">edit_square</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="emergency-contact">
+        <div>
+          <h3>{{ 'EmergencyContact' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <ng-container *ngIf="actionState === 'edit' && currentSection === 'emergencyContacts'; else emergencyContactView">
+          <kp-employee-emergency-contact-detail [fields]="employeeDynamicFields?.emergencyContacts" [form]="form"></kp-employee-emergency-contact-detail>
+          <div class="form-buttons">
+            <button [disabled]="!getEmergencyContacts.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{
+              'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel('emergencyContact')">{{ 'Cancel' |
+              translate
+              }}</button>
+          </div>
+        </ng-container>
+        <ng-template #emergencyContactView>
+          <div class="view-fields">
+            <div class="view-fields-display">
+              <div>
+                <div>{{ 'FullName' | translate }}</div>
+                <div>{{ getEmergencyContacts.at(0)?.value?.fullName ?? '--' }}</div>
+              </div>
+              <div>
+                <div>{{ ('Relation' | translate) }}</div>
+                <div>{{ getEmergencyContacts.at(0)?.value?.relationship ?? '--' }}</div>
+              </div>
+              <div>
+                <div>{{ 'Phone' | translate }}</div>
+                <div>{{ getEmergencyContacts.at(0)?.value?.phone ?? '--' }}</div>
+              </div>
+              <div>
+                <div>{{ ('PhoneAlternative' | translate) }}</div>
+                <div>{{ getEmergencyContacts.at(0)?.value?.phoneAlternative ?? '--' }}</div>
+              </div>
+            </div>
+            <div>
+              <span class="material-symbols-rounded" (click)="onEdit('emergencyContacts')">edit_square</span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <p-dialog [header]="'Are you sure you want to leave this page without saving?' | translate" [(visible)]="showDialog"
+    [dismissableMask]="true" [modal]="true" [style]="{width: '450px'}">
+    <div>
+      <div class="form-buttons">
+        <button pButton class="form-button-success" (click)="showDialog = false">{{ 'Save Changes' | translate
+          }}</button>
+        <button pButton class="form-button-default" (click)="showDialog = false">{{ 'Dont Save' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+</div>

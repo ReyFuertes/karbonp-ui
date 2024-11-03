@@ -1,0 +1,18 @@
+@import "src/styleguide/index";
+
+::ng-deep {
+  .expenses-settings-container {
+    .p-confirm-dialog {
+      @include confirm-dialog;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}

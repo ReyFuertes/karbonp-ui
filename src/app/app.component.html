@@ -1,0 +1,31 @@
+<ng-container *ngIf="(isUserLoggedIn$ | async) === true">
+  <kp-top-nav *ngIf="topNavVisibility"></kp-top-nav>
+  <p-sidebar [(visible)]="showSidebar" [closeOnEscape]="true" [showCloseIcon]="false" [modal]="true"
+    [transitionOptions]="'221ms'">
+    <div class="sidebar-menu">
+      <div class="logo">
+        <img [src]="imgPath + logoNameExt" />
+      </div>
+      <div>
+        <div (click)="redirectTo(dashboardApp)" class="menu-item"
+          [ngClass]="{'active': dashboardApp?.menuType === sidebarActiveMenu}">
+          <span class="material-symbols-rounded">{{ dashboardApp.options?.icon }}</span>
+          <span>{{ dashboardApp?.name | translate }}</span>
+        </div>
+        <ng-container *ngFor="let application of sidebarMenuApps">
+          <div *ngIf="application.options?.available" (click)="redirectTo(application)" class="menu-item"
+            [ngClass]="{'active': application?.menuType === sidebarActiveMenu}">
+            <span class="material-symbols-rounded">{{ application.options?.icon }}</span>
+            <span>{{ application?.name | translate }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </p-sidebar>
+</ng-container>
+
+<p-toast position="bottom-right"></p-toast>
+<kp-blockable #pnl>
+  <router-outlet></router-outlet>
+</kp-blockable>
+<p-blockUI [target]="pnl" [blocked]="blockedPanel"></p-blockUI>

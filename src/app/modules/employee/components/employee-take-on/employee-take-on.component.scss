@@ -1,0 +1,44 @@
+@import "src/styleguide/index";
+
+.employee-take-on-container {
+  .form-input-detail-fields {
+    @include form-input-detail-fields;
+
+    background-color: var(--colour-element-white-bg-2);
+    position: relative;
+    padding: 25px 0 20px 25px;
+    border: 1px solid var(--colour-element-gray-3);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+
+    .margin-bottom-20 {
+      margin-bottom: 20px;
+    }
+
+    .view-fields-display h4 {
+      margin-bottom: 0;
+    }
+  }
+}
+
+::ng-deep {
+  .employee-take-on-container {
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 15px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

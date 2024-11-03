@@ -1,0 +1,15 @@
+@import "src/styleguide/index";
+
+::ng-deep {
+  span.p-calendar {
+    @include input-calendar;
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+}

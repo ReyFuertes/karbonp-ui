@@ -1,0 +1,99 @@
+<div class="people-org-chart-container">
+  <div class="header">
+    <h2>{{ 'Org chart' | translate }}</h2>
+    <div>
+      <div (click)="onReset()">{{ 'Reset' | translate }}</div>
+      <div (click)="onExpandAll()">{{ (expandAll === true ? 'Collapse' : 'Expand all') | translate }}</div>
+      <div (click)="onMaximize()">
+        <span class="material-symbols-rounded">zoom_out_map</span>
+        <span>{{ 'Full screen' | translate }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="content noselect">
+    <drag-scroll #nav>
+      <div class="inside-header-menu">
+        <div (click)="onReset()">{{ 'Reset' | translate }}</div>
+        <div (click)="onExpandAll()">{{ (expandAll === true ? 'Collapse' : 'Expand all') | translate }}</div>
+        <div (click)="onMinimize()">
+          <span class="material-symbols-rounded">zoom_in_map</span>
+          <span>{{ 'Exit full screen' | translate }}</span>
+        </div>
+      </div>
+      <div drag-scroll-item class="organization-container">
+        <div class="avatar center">
+          <img [src]="imgPath + 'sample-profile-image.jpg'" />
+        </div>
+        <div class="name">{{ organizationalChart.label }}</div>
+        <div class="role">{{ organizationalChart.value }}</div>
+        <div class="line-count-container">
+          <div *ngIf="hasChild(organizationalChart)" class="vertical-children-count">
+            <span>{{ getChildCount(organizationalChart) }}</span>
+          </div>
+          <div class="vertical-bottom-line"></div>
+        </div>
+        <div class="organization-level">
+          <div class="organization-level-item" *ngFor="let organizationFirstLevel of organizationalChart?.children; let i = index">
+            <div class="line-count-container" (click)="selectedIndex = organizationFirstLevel.id" [ngClass]="{'collapsed': selectedIndex !== organizationFirstLevel.id,
+            'expand': selectedIndex === organizationFirstLevel.id}">
+              <div class="vertical-top-line"></div>
+            </div>
+            <div class="organization-level-item-master">
+              <div class="avatar" (click)="onCollapse(organizationalChart, i, $event)">{{
+                getInitials(organizationFirstLevel.label) }}</div>
+              <div class="name">{{ organizationFirstLevel.label }}</div>
+              <div class="role">{{ organizationFirstLevel.value }}</div>
+            </div>
+            <div *ngIf="hasChild(organizationFirstLevel)" class="line-count-container" [ngClass]="{'collapsed': isCollapsed(organizationFirstLevel),
+            'expand': organizationFirstLevel?.selected === true && selectedIndex === organizationFirstLevel.id }">
+              <div class="vertical-children-count">
+                <span (click)="onCollapse(organizationalChart, i, $event)">{{ getChildCount(organizationFirstLevel)
+                  }}</span>
+              </div>
+              <div class="vertical-bottom-line"></div>
+            </div>
+            <div class="organization-level-item-children"
+              [ngClass]="{'has-children': getChildCount(organizationFirstLevel) > 0, 'has-more-children': getChildCount(organizationFirstLevel) > 2, 'hidden': isHidden(organizationFirstLevel), 'expand-children': selectedIndex === organizationFirstLevel.id}"
+              [ngStyle]="{'width': expandAll === true ? '100%' : 150 * getChildCount(organizationFirstLevel) + 'px'}">
+              <div class="organization-level-item" *ngFor="let organizationSecondLevel of organizationFirstLevel.children; let i = index" [ngStyle]="{'width': 100/getChildCount(organizationFirstLevel) + '%'}">
+                <div class="line-count-container">
+                  <div class="vertical-top-line"></div>
+                </div>
+                <div class="organization-level-item-master">
+                  <div class="avatar" (click)="onCollapse(organizationFirstLevel, i, $event)">{{ getInitials(organizationSecondLevel.label) }}</div>
+                  <div class="name">{{ organizationSecondLevel.label }}</div>
+                  <div class="role">{{ organizationSecondLevel.value }}</div>
+                </div>
+                <div *ngIf="hasChild(organizationSecondLevel)" class="line-count-container" [ngClass]="{'collapsed': isCollapsed(organizationSecondLevel),
+                'expand': organizationSecondLevel?.selected === true && selectedIndex === organizationSecondLevel.id }">
+                  <div class="vertical-children-count">
+                    <span (click)="onCollapse(organizationFirstLevel, i, $event)">{{
+                      getChildCount(organizationSecondLevel) }}</span>
+                  </div>
+                  <div class="vertical-bottom-line"></div>
+                </div>
+                <div class="organization-level-item-children"
+                  [ngClass]="{'has-children': getChildCount(organizationSecondLevel) > 0, 'has-more-children': getChildCount(organizationSecondLevel) > 2, 'hidden': isHidden(organizationSecondLevel), 'expand-children': selectedIndex === organizationSecondLevel.id}"
+                  [ngStyle]="{'width': expandAll === true ? '100%' : 150 * getChildCount(organizationSecondLevel) + 'px'}">
+                  <div class="organization-level-item" *ngFor="let organizationThirdLevel of organizationSecondLevel.children" [ngStyle]="{'width': expandAll === true ? '150px' : 100/getChildCount(organizationSecondLevel) + '%'}">
+                    <div class="line-count-container">
+                      <div *ngIf="hasChild(organizationThirdLevel)" class="vertical-children-count">
+                        <span>{{ getChildCount(organizationThirdLevel) }}</span>
+                      </div>
+                      <div class="vertical-top-line"></div>
+                    </div>
+                    <div class="organization-level-item-master">
+                      <div class="avatar">{{ getInitials(organizationThirdLevel.label) }}</div>
+                      <div class="name">{{ organizationThirdLevel.label }}</div>
+                      <div class="role">{{ organizationThirdLevel.value }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </drag-scroll>
+  </div>
+</div>

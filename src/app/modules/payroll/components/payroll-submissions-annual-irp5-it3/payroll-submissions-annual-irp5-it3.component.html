@@ -1,0 +1,100 @@
+<div class="payroll-submissions-annual-irp5-it3-container">
+  <div class="header">
+    <div class="form-input-field">
+      <div><span></span></div>
+      <p-dropdown [options]="taxSeasons" [(ngModel)]="selectedTaxSeason" optionLabel="label" optionValue="value"
+        [placeholder]="'Select' | translate" styleClass="blue" (onChange)="onChangeTax($event)" [showClear]="true"
+        [filter]="true"></p-dropdown>
+      <div class="error"></div>
+    </div>
+    <div>
+      <div *ngIf="isFinalized">
+        <span>{{ 'Finalized' | translate }}</span>
+        <span class="material-symbols-rounded check">check_circle</span>
+      </div>
+      <span *ngIf="annualIrp5It3?.IIrp5Summission" class="material-symbols-rounded settings" tooltipPosition="top"
+        [pTooltip]="'Settings' | translate" (click)="op.toggle($event)">settings</span>
+      <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'" [hideTransitionOptions]="'100ms'"
+        styleClass="submission-filter-overlay">
+        <div class="overlay-menu">
+          <div (click)="reValidateIRP5IT3ASubmissions()">
+            <span class="material-symbols-rounded">download</span>
+            <span>{{ 'RevalidateIRP5' | translate }}</span>
+          </div>
+          <div *ngIf="!isFinalized" (click)="finalizeIRP5IT3ASubmissions()">
+            <span class="material-symbols-rounded">download</span>
+            <span>{{ 'FinaliseIRP5' | translate }}</span>
+          </div>
+          <div (click)="generateIRP5EasyfileExport()">
+            <span class="material-symbols-rounded">download</span>
+            <span>{{ 'DownloadE@syFile' | translate }}</span>
+          </div>
+          <div (click)="generatEMP501SubmissionPDF()">
+            <span class="material-symbols-rounded">download</span>
+            <span>{{ 'Download' | translate }} {{'EMP501' | translate}}</span>
+          </div>
+        </div>
+      </p-overlayPanel>
+    </div>
+  </div>
+  <div class="content">
+    <ng-container *ngIf="(isLoadingAsync() | async) === false; else loading">
+      <div class="employees-container" *ngIf="annualIrp5It3?.IIrp5Summission?.length > 0">
+        <p-table [value]="annualIrp5It3?.IIrp5Summission" [scrollable]="true">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{( currentCountryISOCode === countryISOCodeType.MEX ? 'FirstNames' : 'FirstName') | translate }}</th>
+              <th>{{( currentCountryISOCode === countryISOCodeType.MEX ? 'LastNames' : 'LastName') | translate }}</th>
+              <th>{{ 'EmployeeNumber' | translate }}</th>
+              <th>{{ 'Type' | translate }}</th>
+              <th>{{ 'Download' | translate }}</th>
+              <th>{{ 'Finalised' | translate}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td>{{ row?.firstName}}</td>
+              <td>{{ row?.lastName}}</td>
+              <td>{{ row?.employeeNumber}}</td>
+              <td>{{ row?.type}}</td>
+              <td>
+                <span (click)="generateIRP5IT3ASubmissionPDF(row)" class="material-symbols-rounded download"
+                  tooltipPosition="top" [pTooltip]="'Download' | translate">download</span>
+              </td>
+              <td>
+                <span class="material-symbols-rounded" [class]="row?.isFinalised === true ? 'check' : 'close'">
+                  {{ row?.isFinalised === true ? 'check' : 'close' }}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <ng-container *ngIf="annualIrp5It3?.IIrp5Summission?.length === 0 
+        && (isLoadingAsync() | async) === false">
+          <div class="no-results-found">
+            <h5>{{ 'Noresultsfound' | translate }}</h5>
+          </div>
+        </ng-container>
+
+      </div>
+      <div *ngIf="iRP5IT3s?.length > 0" class="validations">
+        <h4>{{ 'ValidationFailed' | translate }}</h4>
+        <div *ngFor="let iRP5IT3 of iRP5IT3s">
+          <h5>{{ iRP5IT3?.employee }}</h5>
+          <div *ngFor="let iRP5IT3A of iRP5IT3?.errors">
+            <span>{{ iRP5IT3A?.error | translate }}</span>
+            <span>
+              <span class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                (click)="onEdit(iRP5IT3A)">edit_square</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading-container blue">
+        <i class="pi pi-spin pi-spinner"></i>
+      </div>
+    </ng-template>
+  </div>
+</div>

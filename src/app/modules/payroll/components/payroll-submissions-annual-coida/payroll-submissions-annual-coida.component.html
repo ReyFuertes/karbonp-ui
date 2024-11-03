@@ -1,0 +1,64 @@
+<div class="payroll-submissions-annual-coida-container">
+  <div class="content" [formGroup]="form">
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'TaxSeason' | translate }}</span>
+          <span>*</span>
+        </div>
+        <p-dropdown [options]="taxSeasons" optionValue="value" optionLabel="label" styleClass="blue"
+          (onChange)="onChangeTax($event)" formControlName="taxSeason" [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error">
+          <!-- <span *ngIf="getRequiredValidation('country', form)">{{ 'This field is required' | translate }}</span> -->
+        </div>
+      </div>
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'GrowthPercentage' | translate }}</span>
+          <span>*</span>
+        </div>
+        <input type="number" formControlName="growthPercentage" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'Incomes' | translate }}</span></div>
+        <p-multiSelect [options]="incomesOptions" formControlName="benefitTypes" [filter]="true" optionLabel="label"
+          optionValue="value" [placeholder]="'Select' | translate" styleClass="blue" display="chip" [showClear]="true">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ form.get('benefitTypes')?.value ? form.get('benefitTypes')?.value?.length : 0 }} </b>
+              <span>{{ 'item' | translate }} {{ (form.get('benefitTypes')?.value ?
+                form.get('benefitTypes')?.value?.length
+                : 0)
+                > 1 ? 's' : '' }}
+                {{ 'selected' | translate }}</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Benefits' | translate }}</span></div>
+        <p-multiSelect [options]="benefitsOptions" formControlName="incomeTypes" [filter]="true" optionLabel="label"
+          optionValue="value" [placeholder]="'Select' | translate" styleClass="blue" display="chip" [showClear]="true">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ form.get('incomeTypes')?.value ? form.get('incomeTypes')?.value?.length : 0 }} </b>
+              <span>{{ 'item' | translate }} {{ (form.get('incomeTypes')?.value ?
+                form.get('incomeTypes')?.value?.length
+                : 0)
+                > 1 ? 's' : '' }}
+                {{ 'selected' | translate }}</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button [disabled]="!form.valid" pButton class="form-button-blue normal" (click)="onGenerate()">{{ 'Generate' |
+        translate }}</button>
+    </div>
+  </div>

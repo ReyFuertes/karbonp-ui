@@ -1,0 +1,47 @@
+<div class="emergency-contact-container" [formGroup]="form">
+  <ng-container formArrayName="emergencyContacts">
+    <div *ngFor="let row of getEmergencyContacts?.controls; let i = index">
+      <div class="form-edit-fields w-100">
+        <div class="header" *ngIf="i !== 0">
+          <h4>{{ 'SecondaryContact' | translate }}</h4>
+          <span (click)="onDeleteEmergencyContact(i)" class="material-symbols-rounded" tooltipPosition="top"
+            [pTooltip]="'Delete' | translate">delete</span>
+        </div>
+        <div class="form-input-field-group w-100">
+          <div class="form-input-field" [formGroupName]="i">
+            <div><span>{{ 'FullName' | translate }}</span><span>*</span></div>
+            <input type="text" formControlName="fullName" pInputText class="success" />
+            <div class="error"><span *ngIf="getRequiredValidation('fullName', row)">{{ 'This field is required' |
+                translate
+                }}</span></div>
+          </div>
+          <div class="form-input-field" [formGroupName]="i">
+            <div><span>{{ ('Relation' | translate) }}</span><span>*</span></div>
+            <input type="text" formControlName="relationship" pInputText class="success" />
+            <div class="error"><span *ngIf="getRequiredValidation('relationship', row)">{{ 'This field is required' |
+                translate
+                }}</span></div>
+          </div>
+          <div class="form-input-field" [formGroupName]="i">
+            <div><span>{{ ('Phone' | translate) }}</span><span>*</span></div>
+            <input type="text" formControlName="phone" pInputText class="success" />
+            <div class="error"><span *ngIf="getRequiredValidation('phone', row)">{{ 'This field is required' | translate
+                }}</span>
+            </div>
+          </div>
+          <div class="form-input-field" [formGroupName]="i">
+            <div><span>{{ ('PhoneAlternative' | translate) }}</span></div>
+            <input type="text" formControlName="phoneAlternative" pInputText class="success" />
+            <div class="error"><span *ngIf="getRequiredValidation('phoneAlternative', row)">{{ 'This field is required'
+                | translate
+                }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <span class="material-symbols-rounded">add</span>
+      <span (click)="addEmergencyContact()">{{ 'AddEmergencyContact' | translate }}</span>
+    </div>
+  </ng-container>
+</div>

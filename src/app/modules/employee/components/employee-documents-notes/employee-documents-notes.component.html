@@ -1,0 +1,97 @@
+<div class="employee-documents-notes-container" *ngIf="form" [formGroup]="form" >
+  <div class="form-input-detail-fields">
+    <h3>{{ 'Documents and Notes' | translate }}</h3>
+    <ng-container *ngIf="actionState === 'add' && currentSection === 'documents_notes'; else employeeDocumentsAndNotesView">
+      <div class="form-edit-fields">
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Name' | translate }}</span>
+            <span>*</span>
+          </div>
+          <input type="text" formControlName="name" pInputText class="success" />
+          <div class="error">
+            <span *ngIf="getRequiredValidation('lastDayOfService', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Category' | translate }}</span>
+          </div>
+          <p-dropdown [options]="categories" formControlName="categoryId" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Notes' | translate }}</span>
+          </div>
+          <textarea formControlName="note" [rows]="5" [cols]="30" pInputTextarea [autoResize]="true" class="success"></textarea>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field w-100">
+          <div>
+            <span>{{ 'Attachment' | translate }}</span>
+          </div>
+          <p-fileUpload styleClass="success" name="myfile[]" [customUpload]="true" (onSelect)="onDocumentChange($event)"></p-fileUpload>
+          <div class="error"></div>
+        </div>
+        <div class="form-buttons">
+          <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{
+            'Save' | translate
+            }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel('documents_notes')">{{ 'Cancel' |
+            translate }}</button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #employeeDocumentsAndNotesView>
+      <div class="view-fields">
+        <div *ngIf="isLoaded; else loader" class="view-fields-display">
+          <p-table [value]="employeeDocumentsNotes" class="p-datatable-employee-documents-notes success" styleClass="p-datatable-striped">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>{{ 'Date Created' | translate }}</th>
+                <th>{{ 'Name' | translate }}</th>
+                <th>{{ 'Date Uploaded' | translate }}</th>
+                <th>{{ 'Attachment' | translate }}</th>
+                <th>{{ 'Actions' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-documentsNotes>
+              <tr>
+                <td>{{ (documentsNotes?.addedDateTime | date: 'dd MMM yyyy') ?? '--' }}</td>
+                <td>{{ (documentsNotes?.name) ?? '--' }}</td>
+                <td>{{ (documentsNotes?.updatedDateTime | date: 'dd MMM yyyy') ?? '--' }}</td>
+                <td>
+                  <span (click)="downloadAttachment(documentsNotes?.documentId)" class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Download' | translate">download</span>
+                </td>
+                <td>
+                  <span class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Edit' | translate" (click)="onDocumentEdit(documentsNotes?.id)">edit_square</span>
+                  <span (click)="onDelete(documentsNotes)" class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div class="add-document-note">
+        <span class="material-symbols-rounded" (click)="onAdd('documents_notes')">add</span>
+      </div>
+    </ng-template>
+  </div>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,31 @@
+<div class="input-multiple-select-chip-container">
+  <div class="container {{styleClass}}">
+    <div class="form-input-field search-field">
+      <div *ngIf="selectedValues.length > 0" class="tags {{styleClass}}">
+        <div *ngFor="let value of selectedValues">
+          <div class="tag">
+            <span>{{ value?.label }}</span>
+            <span class="material-symbols-rounded" (click)="removeItem(value)" tooltipPosition="top" [pTooltip]="'Remove' | translate">cancel</span>
+          </div>
+        </div>
+      </div>
+      <input #searchInput type="text" pInputText autocomplete="off" [(ngModel)]="inputValue" (input)="onInput($event)" [placeholder]="placeholder | translate" class="red">
+    </div>
+  </div>
+  <p-overlayPanel #op [autoZIndex]="true" appendTo="body" styleClass="input-multiple-select-chip-search {{styleClass}}" [dismissable]="true">
+    <div class="search-options" *ngIf="!isLoading; else loader" [ngStyle]="{'width': overlayWidth}">
+      <span class="title">{{ 'People' | translate }}</span>
+      <div *ngFor="let option of options" class="search-option" (click)="selectOption(option)">
+        <div class="option-text">{{ option?.label }}</div>
+      </div>
+    </div>
+    <div *ngIf="!isLoading && options?.length === 0" class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </p-overlayPanel>
+  <ng-template #loader>
+    <div class="search-option">
+      <div class="option-text loader"><i class="pi pi-spin pi-spinner"></i></div>
+    </div>
+  </ng-template>
+</div>

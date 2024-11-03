@@ -1,0 +1,13 @@
+@import "src/styleguide/index";
+
+.residential-address-detail-container,
+div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .form-input-field {
+    width: 30%;
+    margin-right: 30px;
+  }
+}

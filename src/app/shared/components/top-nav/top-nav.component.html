@@ -1,0 +1,62 @@
+<div class="top-nav-container">
+  <div class="top-nav-item" (click)="sideBarService.setSidebarState(true)">
+    <span class="material-symbols-rounded">menu</span>
+  </div>
+  <div class="top-nav-item" (click)="gotoDashboard()">
+    <img [src]="imgPath + logoNameExt" />
+  </div>
+  <div class="top-nav-item">
+    <kp-input-topnav-search></kp-input-topnav-search>
+  </div>
+  <div class="right-menu align-right noselect">
+    <div class="company-location-container">
+      <kp-dropdown-group-select-option *ngIf="companyOptions?.length > 0" [companyOptions]="companyOptions"
+        [selectedItem]="selectedCompanyLocation" (dropdownChange)="handleOnchange($event)"
+        styleClass="top-nav"></kp-dropdown-group-select-option>
+    </div>
+    <div class="top-nav-item">
+      <div class="notification">
+        <span class="material-symbols-rounded">notifications</span>
+        <span class="notification-count">2</span>
+      </div>
+    </div>
+    <div class="top-nav-item">
+      <div class="profile" (click)="op.toggle($event); rotatedDirection = !rotatedDirection">
+        <div class="image">{{ userInitials }}</div>
+        <div>
+          <span>{{ firstName }}</span>
+        </div>
+        <div>
+          <span class="material-symbols-rounded" [ngClass]="{'rotated': rotatedDirection}">arrow_drop_down</span>
+        </div>
+      </div>
+    </div>
+    <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'" [hideTransitionOptions]="'100ms'"
+      styleClass="top-nav-overlay">
+      <div class="overlay-menu">
+        <div>
+          <span class="material-symbols-rounded">domain</span>
+          <span>{{ 'CompanyName' | translate:topNavTranslateParam }}</span>
+        </div>
+        <div>
+          <div (click)="onRoute('company-setting')">
+            <span class="material-symbols-rounded">person</span>
+            <span>{{ 'Account Settings' | translate }}</span>
+          </div>
+          <div (click)="onRoute('company-setting')">
+            <span class="material-symbols-rounded">settings</span>
+            <span>{{ 'Company Settings' | translate }}</span>
+          </div>
+          <div>
+            <span class="material-symbols-rounded">help</span>
+            <span>{{ 'Support' | translate }}</span>
+          </div>
+          <div (click)="onLogout()">
+            <span class="material-symbols-rounded">logout</span>
+            <span>{{ 'Logout' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </p-overlayPanel>
+  </div>
+</div>

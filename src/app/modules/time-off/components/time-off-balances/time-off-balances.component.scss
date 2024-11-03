@@ -1,0 +1,133 @@
+@import "src/styleguide/index";
+
+.time-off-balances-container {
+  display: flex;
+  justify-content: left;
+  padding: 0 0 30px 0;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    >div:not(.form-input-field) {
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+      align-items: flex-start;
+    }
+
+    >div {
+      .form-input-field {
+        width: 100%;
+      }
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    margin-top: 20px;
+
+    .form-button-orange {
+      @include form-button-orange;
+      width: 110px;
+      margin-right: 8px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .loading-container {
+    @include loader;
+    min-height: 250px;
+  }
+
+  .content {
+    min-width: 985px;
+  }
+}
+
+::ng-deep {
+  .time-off-balances-container {
+    p-paginator {
+      @include paginator;
+
+      .p-paginator {
+        justify-content: flex-end;
+        padding: 0.5rem;
+      }
+
+      .p-dropdown {
+        min-width: 40px;
+      }
+    }
+    
+    .p-dialog {
+      @include confirm-dialog;
+    }
+
+    .content {
+      .p-datatable-table {
+        @include datatable;
+        margin-right: 0;
+      }
+    }
+
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .form-input-field-group {
+      @include form-input-field-group;
+    }
+
+    p-multiselect {
+      width: 100%;
+      display: flex;
+      margin-right: 15px;
+      max-width: 779px;
+    }
+
+    .p-multiselect {
+      @include multiselect;
+      min-width: 350px;
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+
+      .p-multiselect-token-label,
+      .p-multiselect-label:not(.p-placeholder) {
+        color: var(--colour-element-white);
+
+        .p-icon-wrapper {
+          color: var(--colour-element-white)
+        }
+      }
+    }
+  }
+}

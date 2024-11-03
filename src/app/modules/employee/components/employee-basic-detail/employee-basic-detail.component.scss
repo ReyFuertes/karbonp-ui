@@ -1,0 +1,39 @@
+@import "src/styleguide/index";
+
+.employee-basic-detail-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .form-input-field {
+    width: 30%;
+    margin-right: 30px;
+  }
+
+  .name-change-account-settings {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+
+    > div {
+      &:first-child {
+        display: flex;
+        flex-direction: row;
+    
+        > div {
+          margin-right: 5px;
+        }
+      }
+
+      &:nth-child(2) {
+        color: var(--colour-element-green-1);
+        font-weight: 400;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}

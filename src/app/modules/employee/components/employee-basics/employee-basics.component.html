@@ -1,0 +1,30 @@
+<div class="employee-basics-container" *ngIf="form" [formGroup]="form">
+  <div formGroupName="basics">
+    <h3>{{ 'Lets start with the basics' | translate }}</h3>
+    <div class="input-container">
+      <div class="form-input-field">
+        <span>{{ 'First name' | translate }}</span>
+        <input type="text" formControlName="firstName" pInputText />
+        <div class="error">
+          <span *ngIf="getRequiredValidation('firstName', getBasicsForm)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+      <div class="form-input-field">
+        <span>{{ 'Last name' | translate }}</span>
+        <input type="text" formControlName="lastName" pInputText />
+        <div class="error">
+          <span *ngIf="getRequiredValidation('lastName', getBasicsForm)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-input-field">
+      <span>{{ 'Email address' | translate }}</span>
+      <input type="email" formControlName="email" pInputText tooltipPosition="right" [pTooltip]="'WillSendInvitationEmail' | translate:empBasicsTranslateParam" />
+      <div class="error">
+        <span *ngIf="getRequiredValidation('email', getBasicsForm)">{{ 'This field is required' | translate }}</span>
+        <span *ngIf="getEmailValidation('email', getBasicsForm)">{{ 'That doesn’t look like an email address' | translate }}</span>
+      </div>
+    </div>
+    <button pButton [disabled]="!form.get('basics')?.valid" class="form-button" (click)="onSaveContinue()">{{ 'Save & continue' | translate }}</button>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+@import "src/styleguide/index";
+
+.form-group-field {
+  display: flex;
+  flex-direction: row;
+
+  > div {
+    width: 173px;
+    
+    &:not(:last-child) {
+      margin-right: 30px;
+    }
+  }
+}
+
+.form-buttons {
+  @include form-button;
+  justify-content: space-between;
+  
+  .form-button-success {
+    @include form-button-success;
+    margin-right: 10px;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+}
+
+::ng-deep {
+  .employee-salary-container {
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<div class="dashboard-people-container">
+  <div class="mp-left-space"></div>
+  <div class="content" *ngIf="(isLoadingAsync() | async) === false; else loading">
+    <div class="title">people</div>
+    <div class="dashboard-people-items" *ngIf="peopleEmployees.length > 0; else noResults">
+      <div class="dashboard-circle-container">
+        <div class="circle-add" (click)="gotoEmployeeMenu()">
+          <span class="material-symbols-rounded">add</span>
+        </div>
+        <span>Add</span>
+      </div>
+      <div *ngFor="let employee of peopleEmployees">
+        <div class="dashboard-circle-container" (click)="getEmployeeDetail(employee)">
+          <div class="circle-people">
+            <span>{{ getInitials(employee?.fullName) }}</span>
+          </div>
+          <div>{{ employee?.firstName }}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="peopleEmployees.length > 0" class="employee-count" (click)="redirectTo('/people')">{{ 'View all' |
+      translate }} {{ employeeTotalItems }}
+      {{ 'people' | translate }}</div>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loading>
+    <div class="loading-container blue">
+      <i class="pi pi-spin pi-spinner"></i>
+      <span>Loading..</span>
+    </div>
+  </ng-template>
+</div>

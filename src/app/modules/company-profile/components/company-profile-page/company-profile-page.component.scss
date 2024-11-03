@@ -1,0 +1,92 @@
+@import "src/styleguide/index";
+
+.company-profile-page-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 30px 0;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+
+  .content {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    margin: 30px;
+    width: 1205px;
+
+    .left-container {
+      width: 180px;
+      max-width: 180px;
+      min-width: 180px;
+      margin-top: 78px;
+
+      .menus {
+        @include left-menu;
+      }
+    }
+
+    .center-container {
+      width: 100%;
+      padding: 0 15px 15px;
+    }
+  }
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  span {
+    font-size: 30px;
+    color: var(--colour-element-red-1);
+
+    &:hover {
+      opacity: 0.9;
+      cursor: pointer;
+      color: var(--colour-element-red-1);
+    }
+  }
+}
+
+.form-fields {
+  .form-input-field {
+    span {
+      color: var(--colour-element-gray-1);
+    }
+  }
+}
+
+:host ::ng-deep {
+  .company-profile-page-container {
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+      margin-bottom: 5px;
+    }
+  }
+}

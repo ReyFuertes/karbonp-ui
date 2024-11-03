@@ -1,0 +1,188 @@
+<div class="time-off-request-container">
+  <div class="header">
+    <div class="search-container">
+      <div class="form-input-field w-auto">
+        <p-multiSelect [options]="employeesOptions" [(ngModel)]="selectedEmployeeIds" [filter]="true"
+          [selectionLimit]="selectionLimit" [maxSelectedLabels]="maxSelectedLabels" optionLabel="fullName"
+          optionValue="id" [placeholder]="'Select' | translate"
+          styleClass="orange {{ selectedEmployeeIds?.length <= 2 ? 'h-40' : 'h-auto' }}" display="chip"
+          [showClear]="true">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ selectedEmployeeIds ? selectedEmployeeIds?.length : 0 }} </b>
+              <span>{{ 'item' | translate }} {{ (selectedEmployeeIds ?selectedEmployeeIds?.length
+                : 0)
+                > 1 ? 's' : '' }}
+                {{ 'selected' | translate }}</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button
+          [disabled]="!selectedEmployeeIds || selectedEmployeeIds?.length === 0 || (isLoadingAsync() | async) === true"
+          pButton class="form-button-orange" icon="pi pi-search" (click)="onSearch()">
+          {{ 'Search' | translate }}</button>
+        <button [disabled]="(isLoadingAsync() | async) === true" pButton class="form-button-orange outlined"
+          [ngClass]="{'toggle-filter': showMenu}" icon="pi pi-filter" (click)="showMenu = !showMenu">
+          {{ 'Filters' | translate }}</button>
+        <button
+          [disabled]="!selectedEmployeeIds || selectedEmployeeIds?.length === 0 || (isLoadingAsync() | async) === true"
+          pButton class="form-button-default" icon="pi pi-times" (click)="onReset()">
+          {{ 'Clear' | translate }}</button>
+      </div>
+    </div>
+    <div *ngIf="showMenu" class="filter-container">
+      <div class="filter-by-status-container"><!-- note: api doesnt support multiple status filter -->
+        <div>
+          <div>{{ 'Filter by status' | translate }}:</div>
+          <div class="all-filter" (click)="onCheckAll('status')" tooltipPosition="top"
+            [pTooltip]="(isStatusesAllChecked ? 'Uncheck' : 'Check') + ' all status' | translate">
+            <span *ngIf="isStatusesAllChecked">{{ 'UncheckAll' | translate }}</span>
+            <span *ngIf="!isStatusesAllChecked">{{ 'All' | translate }}</span>
+          </div>
+        </div>
+        <div class="filter-by-status-items">
+          <ng-container *ngFor="let status of statusesOptions">
+            <div>
+              <p-checkbox [(ngModel)]="checkedStatuses" [label]="status?.label" [value]="status.value" name="groupname"
+                class="orange simple"></p-checkbox>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="filter-by-type-container"> <!-- note: api doesnt support this filter -->
+        <div>
+          <div>{{ 'Filter by type' | translate }}:</div>
+          <div class="all-filter" (click)="onCheckAll('type')" tooltipPosition="top"
+            [pTooltip]="(isRequestTypesAllChecked ? 'Uncheck' : 'Check') + ' all request types' | translate">
+            <span *ngIf="isRequestTypesAllChecked">{{ 'UncheckAll' | translate }}</span>
+            <span *ngIf="!isRequestTypesAllChecked">{{ 'All' | translate }}</span>
+          </div>
+        </div>
+        <div class="filter-by-type-items">
+          <ng-container *ngFor="let requestType of requestTypeOptions">
+            <div>
+              <p-checkbox [(ngModel)]="checkedRequestTypes" [label]="requestType.label" [value]="requestType.value"
+                name="groupname" class="orange simple"></p-checkbox>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <ng-container *ngIf="(isLoadingAsync() | async) === false; else loading">
+      <h3>{{ 'TimeOffRequests' | translate }}</h3>
+      <ng-container *ngIf="requestBookings?.length > 0 && (isLoadingAsync() | async) === false; else noResults">
+        <p-table [value]="requestBookings" styleClass="p-datatable-striped">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ 'Employee' | translate }}</th>
+              <th>{{ 'Type' | translate }}</th>
+              <th>{{ 'Dates' | translate }}</th>
+              <th>{{ 'Duration' | translate }}</th>
+              <th>{{ 'Status' | translate }}</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td>
+                <div>{{ getInitials(row?.employee?.fullName) }}</div>
+                <span>{{ row?.employee?.fullName }}</span>
+              </td>
+              <td>{{ row?.timeOffBooking?.leaveSetup?.name }}</td>
+              <td>
+                <div>{{ row?.timeOffBooking?.fromDate | date:'dd MMM yyyy' }} -
+                  {{ row?.timeOffBooking?.toDate | date:'dd MMM yyyy' }}</div>
+              </td>
+              <td>{{ row?.totalDays }} {{ 'days' | translate }}</td>
+              <td><span class="status">{{ employeeRequestStatus[row?.timeOffBooking?.status] }}</span></td>
+              <td>
+                <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                  (click)="onEdit(row?.employee?.id)">edit_square</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+    </ng-container>
+  </div>
+  <p-dialog
+    [header]="selectedRequest?.timeOffBooking?.status !== employeeRequestStatus.Requested ? 'View Request' : 'Edit Request' | translate"
+    [(visible)]="showTimeOffRequestDialog" [dismissableMask]="false" [modal]="true" [style]="{width: '600px'}">
+    <div>
+      <div class="dialog-content">
+        <div class="view-fields">
+          <div class="view-display-fields">
+            <div>
+              <div>{{ 'Type' | translate }}</div>
+              <div>{{ (selectedRequest?.timeOffBooking?.leaveSetup?.name) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'FromDate' | translate }}</div>
+              <div>{{ (selectedRequest?.timeOffBooking?.fromDate | date: 'dd MMM yyyy') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'ToDate' | translate }}</div>
+              <div>{{ (selectedRequest?.timeOffBooking?.toDate | date: 'dd MMM yyyy') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'TotalDays' | translate }}</div>
+              <div>{{ (selectedRequest?.totalDays) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'DateRequested' | translate }}</div>
+              <div>{{ (selectedRequest?.timeOffBooking?.requestedDate | date: 'dd MMM yyyy') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Note' | translate }}</div>
+              <div>{{ (selectedRequest?.timeOffBooking?.note) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Status' | translate }}</div>
+              <div>{{ (employeeRequestStatus[selectedRequest?.timeOffBooking?.status]) ?? '--' }}</div>
+            </div>
+            <div *ngIf="selectedRequest?.timeOffBooking?.status === 2">
+              <div>{{ 'ApproveDeclineNote' | translate }}</div>
+              <div>
+                <textarea [(ngModel)]="requestDeclineNote" class="orange" [rows]="5" [cols]="30" pInputTextarea
+                  [autoResize]="false"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="form-buttons">
+        <button *ngIf="selectedRequest?.timeOffBooking?.status === 2" pButton class="form-button-orange"
+          (click)="onApproveDeclineRequest(true)">
+          {{ 'Approve' | translate }}</button>
+        <button *ngIf="selectedRequest?.timeOffBooking?.status === 2" pButton class="form-button-red"
+          (click)="onApproveDeclineRequest(false)">
+          {{ 'Decline' | translate }}</button>
+        <button pButton class="form-button-default" (click)="showTimeOffRequestDialog = false">
+          {{ 'Close' | translate }}</button>
+      </div>
+    </ng-template>
+  </p-dialog>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loading>
+    <div class="loading-container orange">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,63 @@
+@mixin dialog {
+  .p-dialog-header {
+    display: flex;
+    align-items: flex-start !important;
+
+    .p-dialog-title {
+      line-height: 25px;
+    }
+  }
+
+  .p-dialog-content {
+    .header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px 0;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      h4 {
+        margin: 0;
+      }
+
+      span {
+        color: var(--colour-element-gray-2);
+
+        &:hover {
+          cursor: pointer;
+          color: var(--colour-element-black-1);
+        }
+      }
+    }
+
+    .content {
+      padding: 0;
+    }
+  }
+
+  &.red .header {
+    span {
+      color: var(--colour-element-red-0);
+
+      &:hover {
+        cursor: pointer;
+        color: var(--colour-element-red-0);
+        opacity: 0.6;
+      }
+    }
+  }
+}
+
+.p-dialog-title {
+  color: var(--colour-element-black-1);
+}
+
+.p-dialog .p-dialog-content {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}

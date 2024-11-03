@@ -1,0 +1,65 @@
+<kp-header-content [headerTitle]="'Add Employee' | translate" logoRadius="circle" [isDefault]="true" [bgImage]="'employee'" [width]="'1205px'"></kp-header-content>
+<div class="employee-add-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menus" class="menu-item success" [ngClass]="{'selected': getCurrentMenu(menu)}" (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-container">
+      <div *ngIf="employeeDynamicFields" [ngSwitch]="activeMenuOption">
+        <div *ngSwitchCase="'basics'">
+          <h4>{{ 'Let’s start with the basics' | translate }}</h4>
+          <kp-dynamic-fields [fields]="employeeDynamicFields?.basics" [form]="getBasicsForm"></kp-dynamic-fields>
+          <div class="form-buttons">
+            <button [disabled]="!getBasicsForm?.valid" pButton class="form-button-success normal"
+              (click)="onSaveChanges()">
+              <i *ngIf="(isLoadingAsync() | async)" class="pi pi-spin pi-spinner"></i>
+              <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Save & continue' | translate }}</span>
+            </button>
+            <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+          </div>
+        </div>
+        <div *ngSwitchCase="'bank_account_details'">
+          <h4>{{ 'Add employment information' | translate }}</h4>
+          <kp-dynamic-fields [fields]="employeeDynamicFields?.bankAccountDetails" [form]="getBankDetailsForm"></kp-dynamic-fields>
+          <div class="form-buttons">
+            <button [disabled]="!getBankDetailsForm?.valid" pButton class="form-button-success normal"
+              (click)="onSaveChanges()">{{ 'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+          </div>
+        </div>
+        <div *ngSwitchCase="'residential_address'">
+          <h4>{{ 'Add Residential Address' | translate }}</h4>
+          <kp-dynamic-fields [fields]="employeeDynamicFields?.residentialAddress"
+            [form]="getResidentialAddressForm"></kp-dynamic-fields>
+          <div class="form-buttons">
+            <button [disabled]="!getResidentialAddressForm?.valid" pButton class="form-button-success normal"
+              (click)="onSaveChanges()">{{ 'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+          </div>
+        </div>
+        <div *ngSwitchCase="'postal_address'">
+          <h4>{{ 'Add Postal Address' | translate }}</h4>
+          <kp-dynamic-fields [fields]="employeeDynamicFields?.postalAddress" [form]="getPostalAddressForm"></kp-dynamic-fields>
+          <div class="form-buttons">
+            <button [disabled]="!getPostalAddressForm?.valid" pButton class="form-button-success normal"
+              (click)="onSaveChanges()">{{ 'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+          </div>
+        </div>
+        <div *ngSwitchCase="'biography'">
+          <h4>{{ 'AddBiography' | translate }}</h4>
+          <kp-dynamic-fields [fields]="employeeDynamicFields?.biography" [form]="getBiographyForm"></kp-dynamic-fields>
+          <div class="form-buttons">
+            <button [disabled]="!getBiographyForm?.valid" pButton class="form-button-success normal"
+              (click)="onSaveChanges()">{{ 'Save & continue' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

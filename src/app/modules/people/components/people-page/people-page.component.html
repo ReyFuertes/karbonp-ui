@@ -1,0 +1,20 @@
+<kp-header-content headerTitle="People" bgImage="employee" classLogo="people-avatar" appLogoName="people" [isAppLogo]="true" marginRight="70px"></kp-header-content>
+<div class="people-page-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menus" class="menu-item success" [ngClass]="{'selected': getCurrentMenu(menu)}" (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="center-container">
+      <container-element [ngSwitch]="activeMenuOption">
+        <kp-people-directory *ngSwitchCase="'directory'" [peopleEmployeePayload]="peopleEmployeePayload"></kp-people-directory>
+        <kp-people-org-chart *ngSwitchCase="'org_chart'"></kp-people-org-chart>
+        <kp-people-custom-fields *ngSwitchCase="'custom_fields'"></kp-people-custom-fields>
+        <kp-people-teams *ngSwitchCase="'teams'"></kp-people-teams>
+        <kp-people-settings *ngSwitchCase="'settings'"></kp-people-settings>
+      </container-element>
+    </div>
+  </div>

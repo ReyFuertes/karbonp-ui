@@ -1,0 +1,28 @@
+<div class="input-search-container">
+  <div class="search-field">
+    <input type="text" autocomplete="off" (input)="onInput($event)" (focus)="onFocus($event)" (blur)="onBlur($event)"
+      placeholder="Search for people and apps">
+    <span class="material-symbols-rounded input-icon">search</span>
+  </div>
+  <p-overlayPanel #op [autoZIndex]="true" styleClass="overlay-input-search-container" [dismissable]="false">
+    <div class="search-options">
+      <ng-container *ngIf="(getSearchedEmployeesAsync() | async) as searchedEmployees">
+        <ng-container *ngIf="searchedEmployees?.length > 0; else noResults">
+          <div *ngFor="let employee of searchedEmployees" class="search-option"
+            (click)="gotoEmployeeDetail(employee?.id)">
+            <ng-container>
+              <div class="option-avatar">{{ getInitials(employee?.fullName) }}</div>
+            </ng-container>
+            <div class="option-text">{{ employee?.fullName }}</div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </p-overlayPanel>
+</div>
+
+<ng-template #noResults>
+  <div class="search-option">
+    <div class="option-text">{{ 'Noresultsfound' | translate }}</div>
+  </div>
+</ng-template>

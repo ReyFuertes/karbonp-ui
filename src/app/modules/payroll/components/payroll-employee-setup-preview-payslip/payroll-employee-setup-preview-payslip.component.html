@@ -1,0 +1,303 @@
+<div class="payroll-employee-setup-preview-payslip-container">
+  <!-- note: refactor equal numeric values -->
+  <div class="content">
+    <div class="income">
+      <h4>{{ 'Income' | translate }}</h4>
+      <ng-container *ngFor="let income of incomes">
+        <ng-container [ngSwitch]="income?.incomeType">
+          <div *ngSwitchCase="income?.incomeType === incomeType.BaseHourlyPay
+            && (getBasicSalaryPaymentType === paymentType.Hourly || getBasicSalaryPaymentType === paymentType.Fixed)">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="income?.incomeType === incomeType.BaseHourlyPay
+            && (getBasicSalaryPaymentType === paymentType.Daily)">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="(income?.incomeType === incomeType.Overtime
+            || income?.incomeType === incomeType.SundayOvertime
+            || income?.incomeType === incomeType.PublicHolidayWorkedOvertime)
+            && currentCountryISOCode !== countryISOCodeType.PHL">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }} <span *ngIf="income?.rate"> (x
+                {{income.rate}})</span></span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="income?.incomeType === incomeType.Custom
+            || income?.incomeType === incomeType.LeaveSetup">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="(income?.incomeType === incomeType.LimitExceededOvertime
+            || income?.incomeType === incomeType.SundayOvertimeLimitExceeded
+            || income?.incomeType === incomeType.PublicHolidayOvertimeLimitExceeded
+            || income?.incomeType === incomeType.PublicHolidaySundayOvertime
+            || income?.incomeType === incomeType.PublicHolidaySundayOvertimeLimitExceeded)
+            && currentCountryISOCode !== countryISOCodeType.PHL">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="income?.incomeType === incomeType.ThirteenthMonthPay
+            && income?.isSeveranceIncome === false">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="income?.incomeType === incomeType.TerminationLumpSum
+            && (income?.customDescription === null || income?.customDescription !== null)">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchCase="income?.incomeType === incomeType.ShiftWorkedOvertime
+            || income?.incomeType === incomeType.ShiftSundayWorkedOvertime
+            || income?.incomeType === incomeType.ShiftSundayWorkedOvertimeLimitExceeded
+            || income?.incomeType === incomeType.ShiftPublicHolidayWorkedOvertime
+            || income?.incomeType === incomeType.ShiftPublicHolidayWorkedOvertimeLimitExceeded
+            || income?.incomeType === incomeType.ShiftPublicHolidaySundayWorkedOvertime
+            || income?.incomeType === incomeType.ShiftPublicHolidaySundayWorkedOvertimeLimitExceeded">
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }} - {{ income?.customDescription }}</span>
+            <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchDefault>
+            <div>
+              <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.label }}</span>
+              <span>{{ incomeTypesDictionary?.get(income?.incomeType)?.value?.toString() | currencySymbol }}</span>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="deductions">
+      <h4>{{ 'Deduction' | translate }}</h4>
+      <ng-container *ngFor="let deduction of deductions">
+        <ng-container [ngSwitch]="deduction?.deductionType">
+          <div *ngSwitchCase="deduction?.deductionType === deductionType.Garnishee" (click)="showBreakDownModal = true">
+            <span *ngIf="payslipPreview?.payslip?.yearToDatePeriods > 0 
+              && currentCountryISOCode === countryISOCodeType.ZA">
+              {{ deductionTypesDictionary?.get(deduction?.deductionType)?.label | translate }}</span>
+            <span *ngIf="payslipPreview?.payslip?.mexicoPayslipBreakdown !== null 
+              && currentCountryISOCode === countryISOCodeType.MEX">
+              {{ deductionTypesDictionary?.get(deduction?.deductionType)?.label | translate }}</span>
+            <span *ngIf="currentCountryISOCode === countryISOCodeType.PHL">
+              {{ deductionTypesDictionary?.get(deduction?.deductionType)?.label | translate }}</span>
+            <span>
+              {{ deductionTypesDictionary?.get(deduction?.deductionType)?.value?.toString() | currencySymbol }}</span>
+          </div>
+          <div *ngSwitchDefault>
+            <div *ngIf="deductionTypesDictionary?.get(deduction?.deductionType)?.label">
+              <span>{{ deductionTypesDictionary?.get(deduction?.deductionType)?.label }}</span>
+              <span>
+                {{ deductionTypesDictionary?.get(deduction?.deductionType)?.value?.toString() | currencySymbol }}</span>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div *ngIf="payslipPreview?.payslip?.employerContributions?.length > 0" class="employeer-contributions">
+      <h4>{{ 'EmployerContributions' | translate }}</h4>
+      <ng-container *ngIf="payslipPreview?.payslip?.employerContributions as employerContributions">
+        <ng-container *ngFor="let employerContribution of employerContributions">
+          <ng-container *ngIf="employerContribution?.employerContributionType === 0 
+          || employerContribution?.employerContributionType === 1 
+          || employerContribution?.employerContributionType === 2 
+          || employerContribution?.employerContributionType === 19 
+          || employerContribution?.employerContributionType === 20">
+            <div>
+              <span *ngIf="employerContribution?.employerContributionType === 0">
+                {{ 'UIFEmployer' | translate }}
+              </span>
+              <span *ngIf="employerContribution?.employerContributionType === 1">
+                {{ 'SDLEmployer' | translate }}
+              </span>
+              <span *ngIf="employerContribution?.employerContributionType === 2">
+                {{employerContribution?.customDescription}}
+              </span>
+              <span *ngIf="employerContribution?.employerContributionType === 19">
+                {{ 'HDMFContribution' | translate }}
+              </span>
+              <span *ngIf="employerContribution.employerContributionType === 20">
+                {{ 'PHICContribution' | translate }}
+              </span>
+              <span>
+                {{employerContribution?.amount?.toString() | currencySymbol }}
+              </span>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <div *ngIf="payslipPreview?.payslip?.mexicoPayslipBreakdown !== null 
+        && payslipPreview?.payslip?.mexicoPayslipBreakdown.imssEmployerAmount > 0">
+        <span>{{ 'IMSSEmployer' | translate }}</span>
+        <!-- (click)="!readOnly ? showModal(imssEmployerBreakdown) : false" -->
+        <span *ngIf="payslipPreview?.payslip?.mexicoPayslipBreakdown !== null 
+          && payslipPreview?.payslip?.mexicoPayslipBreakdown.imssEmployerAmount > 0">
+          {{ payslipPreview?.payslip?.mexicoPayslipBreakdown.imssEmployerAmount | currencySymbol }}
+        </span>
+      </div>
+      <div *ngIf="payslipPreview?.payslip?.philippinesPayslipBreakdown !== null 
+          && payslipPreview?.payslip?.philippinesPayslipBreakdown.sssEmployerAmount > 0">
+        <span> <!-- (click)="!readOnly ? showModal(sssEmployerBreakdown) : false" -->
+          {{ 'SSSEmployerContribution' | translate }}
+        </span>
+        <span *ngIf="payslipPreview?.payslip?.philippinesPayslipBreakdown !== null 
+          && payslipPreview?.payslip?.philippinesPayslipBreakdown.sssEmployerAmount > 0">
+          {{ payslipPreview?.payslip?.philippinesPayslipBreakdown.sssEmployerAmount | currencySymbol }}
+        </span>
+      </div>
+    </div>
+    <div *ngIf="payslipPreview?.payslip as payslip">
+      <ng-container *ngIf="payslip?.medicalAidTaxCredit > 0">
+        <h2>{{ 'TaxCredits' | translate }}</h2>
+        <div>
+          <span>{{ 'MedicalAidTaxCredits' | translate }}</span>
+          <span>{{ payslip?.medicalAidTaxCredit?.toString() | currencySymbol }}</span>
+        </div>
+        <div *ngIf="payslip?.additionalMedicalAidTaxCredit !== null 
+          && payslip?.additionalMedicalAidTaxCredit > 0">
+          <span>{{ 'AdditionalMedicalAidTaxCredits' | translate }}</span>
+          <span>{{ payslip?.additionalMedicalAidTaxCredit?.toString() | currencySymbol }}</span>
+        </div>
+      </ng-container>
+    </div>
+    <div>
+      <div *ngIf="currentCountryISOCode === countryISOCodeType.PHL 
+        && employeeSetupData?.hasPausedLoans">
+        <span>{{ 'ThereArePausedLoansForThisEmployee' | translate }}</span>
+        <span (click)="goToPausedLoans()">{{ 'ViewLoans' | translate }}</span>
+      </div>
+      <div *ngIf="closingBalance">
+        <span>{{ 'LoanClosingBalance'| translate }}</span>
+        <span> {{ closingBalance?.toString() | currencySymbol }} </span>
+      </div>
+      <div *ngIf="showOutstandingEmployerLoanClosingBalance">
+        <span>{{ 'EmployeeHasOutstandingLoan'| translate }}</span>
+        <span>{{ outstandingEmployerLoanClosingBalance?.toString() | currencySymbol }}</span>
+      </div>
+    </div>
+    <div class="total">
+      <div>
+        <span>{{ 'GrossPay' | translate }}</span>
+        <span>{{ payslipPreview?.payslip?.grossAmount?.toString() | currencySymbol }}</span>
+      </div>
+      <div>
+        <span>{{ 'NetPay' | translate }}</span>
+        <span>
+          {{ payslipPreview?.payslip?.nettAmount?.toString() | currencySymbol }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <p-dialog [(visible)]="showBreakDownModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+    [modal]="true" styleClass="blue" closeIcon="false" [style]="{width: '645px'}" (onHide)="showBreakDownModal = false">
+    <div class="header">
+      <div>
+        <h4>{{ 'TaxBreakdown' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showBreakDownModal = !showBreakDownModal">close</span>
+    </div>
+    <div class="content" *ngIf="payslipPreview?.payslip as payslip">
+      <div>
+        <div *ngIf="!payslip?.southAfricaPayslipBreakdown">
+          <div>
+            <span>{{ 'HourlyRate' | translate }}</span>
+            <span>
+              {{ payslip?.southAfricaPayslipBreakdown?.hourlyRate?.toString() | currencySymbol}}
+            </span>
+          </div>
+        </div>
+        <div *ngIf="!payslip?.southAfricaPayslipBreakdown">
+          <div>
+            <span>{{ 'DailyWage' | translate }}</span>
+            <span>
+              {{ payslip?.southAfricaPayslipBreakdown?.dailyWage?.toString() | currencySymbol}}
+            </span>
+          </div>
+        </div>
+        <!-- <div>
+          <span>{{ 'YTDTaxableIncome' | translate }}:</span>
+        </div> -->
+        <div>
+          <div>
+            <span>{{ 'Regular' | translate }}</span>
+            <span>
+              {{ payslip?.yearToDateRegularIncome?.toString() | currencySymbol }}
+              ({{ 'Annualized' | translate }} {{ payslip?.annualisedRegularIncome?.toString() | currencySymbol }})
+            </span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'Irregular' | translate }}</span>
+            <span>{{ payslip?.yearToDateIrregularIncome?.toString() | currencySymbol}} </span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'Total' | translate }}</span>
+            <span>
+              {{ payslip?.yearToDateTotalIncome?.toString() | currencySymbol}}
+              ( {{ 'Annualized' | translate }} {{ payslip?.annualisedTotalIncome?.toString() | currencySymbol }})
+            </span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'TotalIncomeTax' | translate }}</span>
+            <span>{{ payslip?.totalTaxOnIncome?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'RegularIncomeTax' | translate }}</span>
+            <span>{{ payslip?.taxOnRegularIncome?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'IrregularIncomeTax' | translate }}</span>
+            <span>{{ payslip?.taxOnIrregularIncome?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'YTDPeriods' | translate }}</span>
+            <span>{{payslip?.yearToDatePeriods | number : '1.0-4'}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'TotalPeriods' | translate }}</span>
+            <span>{{payslip?.totalPeriods}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'YTDTax' | translate }}</span>
+            <span>{{payslip?.yearToDateTax?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'YTDTaxAlreadyPaid' | translate }}</span>
+            <span>{{ payslip?.taxAlreadyPaid?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'YTDMedicalAidTaxCredits' | translate }}</span>
+            <span>{{ payslip?.yearToDateMedicalTaxCredits?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'CurrentPaySlipTax' | translate }}</span>
+            <span>{{ payslip?.taxForCurrentPayslip?.toString() | currencySymbol}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button pButton tabindex="-1" class="form-button-default normal" (click)="showBreakDownModal = false">
+          {{ 'Close' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+</div>

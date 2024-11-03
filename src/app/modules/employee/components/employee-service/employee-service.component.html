@@ -1,0 +1,158 @@
+<div class="employee-service-container" *ngIf="form" [formGroup]="form" >
+  <div class="form-input-detail-fields">
+    <h3>{{ 'Employee Service' | translate }}</h3>
+    <ng-container *ngIf="actionState === 'edit' && currentSection === 'employee_service'; else employeeServiceView">
+      <div class="form-edit-fields">
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Last Day of Service' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-calendar formControlName="lastDayOfService" [showIcon]="true" [placeholder]="'Last Day of Service' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('lastDayOfService', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Status/Reason' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-dropdown [options]="statusReasonCodeType" formControlName="statusReason" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('statusReason', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Expected Return Date' | translate }}</span>
+          </div>
+          <p-calendar formControlName="expectedReturnDate" [showIcon]="true" [placeholder]="'Expected Return Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field width-50">
+          <div>
+            <span>{{ 'Notes' | translate }}</span>
+          </div>
+          <textarea formControlName="notes" [rows]="5" [cols]="30" pInputTextarea [autoResize]="true" class="success"></textarea>
+          <div class="error"></div>
+        </div>
+        <div class="view-fields-display-column">
+          <div><span>{{ 'Deactivate Employee' | translate }}</span></div>
+          <p-inputSwitch formControlName="deactivateEmployee" styleClass="success"></p-inputSwitch>
+        </div>
+        <div class="form-buttons">
+          <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{
+            'Save' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' |
+            translate }}</button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #employeeServiceView>
+      <div *ngIf="isLoaded; else loader" class="view-fields">
+        <div class="view-fields-display">
+          <ng-container *ngIf="employeeService">
+            <div>
+              <div>{{ 'Last Day of Service' | translate }}</div>
+              <div>{{ (employeeService?.lastDayOfService | date: 'dd MMM yyyy') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Status/Reason' | translate }}</div>
+              <div>{{ (statusReasonCodeType[employeeService?.statusReason - 1]?.label) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Expected Return Date' | translate }}</div>
+              <div>{{ (employeeService?.expectedReturnDate | date: 'dd MMM yyyy') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Paid During Temporary Absence' | translate }}</div>
+              <div>
+                <span class="material-symbols-rounded" [ngClass]="{'check': employeeService?.paidDuringTemporaryAbsence}">
+                  {{ employeeService?.paidDuringTemporaryAbsence? 'check' : 'close' }}
+                </span>
+              </div>
+            </div>
+            <div class="view-fields-display-btn" *ngIf="reinstate === false; else reinstateView">
+              <button pButton class="form-button-success normal" (click)="reinstate = !reinstate">{{ 'Reinstate' |
+                translate
+                }}</button>
+              <button pButton class="form-button-default normal" (click)="onCancelTermination()">{{ 'Cancel Termination'
+                | translate }}</button>
+            </div>
+            <ng-template #reinstateView>
+              <div class="form-input-field column">
+                <div>
+                  <span>{{ 'Reinstatement Date' | translate }}</span>
+                </div>
+                <p-calendar formControlName="reinstatementDate" [showIcon]="true" placeholder="Reinstatement Date" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+                <div class="error"></div>
+              </div>
+              <div class="reinstate-action-btns">
+                <button pButton class="form-button-success normal" (click)="onReinstate()">{{ 'Save' | translate
+                  }}</button>
+                <button pButton class="form-button-default normal" (click)="reinstate = !reinstate">{{ 'Cancel' |
+                  translate }}</button>
+              </div>
+            </ng-template>
+          </ng-container>
+          <div class="view-fields-display-column">
+            <div>
+              <h4>{{ 'Service Period History' | translate }}</h4>
+            </div>
+            <div *ngIf="employeeServices?.length > 0; else noResults" class="employee-services-list">
+              <ng-container *ngFor="let servicePeriod of employeeServices; let i = index">
+                <div class="service-period-item">
+                  <div *ngIf="i === 0">
+                    <span>{{ (employee?.dateOfAppointment | date: 'dd MMM yyyy') ?? 'N/A' }} - {{
+                      (servicePeriod?.lastDayOfService |
+                      date: 'dd MMM yyyy') ?? 'N/A' }}</span>
+                  </div>
+                  <div *ngIf="i !== 0">
+                    <span>{{ (employeeServices[i - 1]?.reinstatementDate | date: 'dd MMM yyyy') ?? 'N/A' }} - {{
+                      (servicePeriod?.lastDayOfService | date: 'dd MMM yyyy') ?? 'N/A' }}</span>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="employeeServices[employeeServices.length - 1]?.reinstatementDate !== null">
+                <div class="service-period-item">
+                  <div><span>{{ employeeServices[employeeServices.length - 1].reinstatementDate | date: 'dd MMM yyyy' }}
+                      - {{ 'Present' | translate }}
+                    </span>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div *ngIf="employeeService?.notes" class="view-fields-display-column notes">
+            <div>
+              <h4>{{ 'Notes' | translate }}</h4>
+            </div>
+            <div>{{ employeeService?.notes }}</div>
+          </div>
+        </div>
+        <div>
+          <span class="material-symbols-rounded" (click)="onEdit('employee_service')">edit_square</span>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #noResults>
+      <div class="no-results-found">
+        <h5>{{ 'Noresultsfound' | translate }}</h5>
+      </div>
+    </ng-template>
+  </div>
+
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-success normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

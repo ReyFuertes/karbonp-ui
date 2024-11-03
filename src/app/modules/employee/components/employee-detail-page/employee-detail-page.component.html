@@ -1,0 +1,40 @@
+<kp-header-content *ngIf="peopleEmployee" [status]="getEmployeeStatus | async"
+  [headerTitle]="peopleEmployee?.employee?.fullName" [jobTitle]="peopleEmployee?.employee?.jobTitle"
+  [dateOfAppointment]="peopleEmployee?.employee?.dateOfAppointment" styleClass="success" bgImage="employee"
+  [avatarPath]="peopleEmployee?.employee?.avatarPath"
+  [employeeId]="peopleEmployee?.employee?.id"
+  marginRight="105px"></kp-header-content>
+<div class="employee-details-page-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menus" class="menu-item success" [ngClass]="{'selected': getCurrentMenu(menu)}"
+          (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="right-container">
+      <div [ngSwitch]="activeMenuOption">
+        <kp-employee-personal-info *ngSwitchCase="'personal_info'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-personal-info>
+        <kp-employee-job-details *ngSwitchCase="'job_details'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-job-details>
+        <kp-employee-time-off *ngSwitchCase="'time_off'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-time-off>
+        <kp-employee-designation *ngSwitchCase="'designation'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-designation>
+        <kp-employee-working-hours *ngSwitchCase="'working_hours'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-working-hours>
+        <kp-employee-service *ngSwitchCase="'employee_service'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-service>
+        <kp-employee-documents-notes *ngSwitchCase="'documents_notes'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-documents-notes>
+        <kp-employee-skills-equity *ngSwitchCase="'employee_skills_equity'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-skills-equity>
+        <kp-employee-take-on *ngSwitchCase="'employee_take_on'"
+          (savedFormChanges)="handleOnSavedFormChanges($event)"></kp-employee-take-on>
+      </div>
+    </div>
+  </div>
+</div>

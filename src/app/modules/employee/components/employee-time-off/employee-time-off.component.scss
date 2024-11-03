@@ -1,0 +1,470 @@
+@import "src/styleguide/index";
+
+.employee-time-off-container {
+  .time-off-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid var(--colour-element-gray-4);
+    border-radius: 4px;
+    margin-bottom: 20px;
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        &:nth-child(1) {
+          span {
+            &:nth-child(1) {
+              font-size: 32px;
+              color: var(--colour-element-green-1);
+            }
+
+            &:nth-child(3) {
+              font-size: 24px;
+              margin-left: 8px;
+              color: var(--colour-element-gray-3);
+            }
+          }
+        }
+
+        &:nth-child(2) {
+          span:first-child {
+            font-weight: 700;
+            cursor: pointer;
+          }
+        }
+      }
+
+      &:nth-child(2) {
+        display: block;
+
+        span {
+          font-weight: 700;
+        }
+      }
+
+      &:nth-child(3) {
+        justify-content: left;
+
+        div {
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
+          background-color: var(--colour-element-gray-3);
+        }
+      }
+
+      h4 {
+        margin-bottom: 0;
+        margin-left: 10px;
+      }
+    }
+
+    .table-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  .time-off-sickness-container .row div:nth-child(1) span:nth-child(1) {
+    color: var(--colour-element-red-1);
+  }
+
+  .time-off-balance-history,
+  .time-off-booked {
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      height: 40px;
+      padding: 10px;
+      background-color: var(--colour-element-gray-5);
+      text-align: left;
+      color: var(--colour-element-black-1);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    tr {
+      td {
+        padding: 10px;
+        text-align: left;
+        font-size: 14px;
+        border: 1px solid var(--colour-element-gray-3);
+        border-width: 0 0 1px 0;
+        vertical-align: top;
+
+        &:last-child {
+          > div {
+            display: flex;
+            justify-content: right;
+            padding-right: 10px;
+
+            span {
+              color: var(--colour-element-red-1);
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+
+      &:nth-child(even) {
+        background-color: var(--colour-element-white-bg-1);
+      }
+    }
+  }
+
+  .time-off-policies-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 15px 0 0;
+
+    > div:not(.form-buttons) {
+      width: 31%;
+    }
+
+    .form-buttons {
+      margin-top: 0;
+      display: flex;
+      justify-content: right;
+      width: 100%;
+    }
+  }
+
+  .time-off-take-on-container {
+    table tr td {
+      vertical-align: middle;
+
+      .p-inputtext {
+        @include input-field;
+      }
+
+      input {
+        width: 70px;
+      }
+
+      &:first-child {
+        font-weight: 700;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .time-off-activities {
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--colour-element-white-bg-1);
+      padding: 10px 0 10px 10px;
+      border-top: 1px solid var(--colour-element-gray-3);
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      .form-input-field {
+        width: 30%;
+        margin-bottom: 0;
+      }
+    }
+
+    .table-container {
+      margin: 0 0 10px 0;
+    }
+  }
+}
+
+::ng-deep {
+  .employee-time-off-container {
+    .p-dialog {
+      @include confirm-dialog;
+
+      .p-dialog-header {
+        padding: 2rem 1.5rem 0 1.5rem;
+      }
+
+      .p-dialog-content {
+        padding-top: 20px;
+        overflow: hidden;
+
+        .view-display-fields {
+          @include view-display-fields;
+
+          > div {
+            justify-content: space-between;
+            height: 100%;
+            min-height: 40px;
+            border-bottom: 1px solid var(--colour-element-gray-3);
+            padding: 5px 0;
+
+            > div:first-child {
+              height: 100%;
+              width: 50%;
+            }
+
+            > div:nth-child(2) {
+              height: 100%;
+              width: 50%;
+              justify-content: flex-end;
+            }
+          }
+        }
+
+        .form-input-field-group {
+          @include form-input-field-group;
+        }
+
+        .form-input-field-group > div.width-60 {
+          width: 60%;
+        }
+
+        .form-input-field-group > div.width-40 {
+          width: 40%;
+        }
+      }
+    }
+
+    .form-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .loading-container {
+      @include loader;
+      min-height: 330px;
+    }
+
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+    }
+
+    .p-progressbar.success {
+      .p-progressbar-value {
+        background-color: var(--colour-element-green-1);
+      }
+    }
+
+    .p-tabview {
+      .p-tabview-nav li .p-tabview-nav-link {
+        padding: 1rem;
+      }
+
+      .p-tabview-panels {
+        padding: 1.25rem 0;
+      }
+
+      &.success {
+        .p-tabview-nav {
+          li {
+            &.p-highlight .p-tabview-nav-link {
+              border-color: var(--colour-element-green-1);
+              color: var(--colour-element-green-1);
+            }
+          }
+
+          .p-tabview-nav-link:not(.p-disabled):focus {
+            outline: 0 none;
+            outline-offset: 0;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 10px;
+      min-width: 95px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      min-width: 250px;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    p-paginator {
+      @include paginator;
+
+      .p-paginator {
+        justify-content: flex-end;
+        padding: 0.5rem;
+      }
+
+      .p-dropdown {
+        min-width: 40px;
+      }
+    }
+  }
+
+  .employee-time-off-overlay {
+    ~ .input-multiple-select-chip-search.p-overlaypanel {
+      width: 370px !important;
+    }
+
+    &.p-overlaypanel {
+      width: 370px;
+
+      &.p-overlaypanel-flipped {
+        margin-top: -13px;
+        &:before {
+          border-top-color: var(--colour-element-gray-4);
+        }
+      }
+    }
+
+    .add-everyone {
+      color: var(--colour-element-green-1);
+    }
+
+    .p-overlaypanel-content {
+      padding: 2rem 1.25rem 1.25rem;
+    }
+
+    .p-overlaypanel-content div {
+      .row {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: space-between;
+
+        > div:first-child {
+          margin-right: 20px;
+        }
+      }
+
+      &:nth-child(3) {
+        color: var(--colour-element-gray-2);
+      }
+
+      &:nth-child(4) {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        color: var(--colour-element-green-1);
+        margin-top: 10px;
+        margin-bottom: 5px;
+
+        div:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
+
+      .form-input-field-group {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: row;
+        height: 60px;
+
+        > div {
+          padding-right: 5px;
+          width: 50%;
+        }
+      }
+
+      .form-input-label {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        color: var(--colour-element-gray-1) !important;
+        font-size: 14px;
+      }
+
+      .form-buttons {
+        @include form-buttons;
+        margin-top: 30px;
+
+        .form-button-success {
+          @include form-button-success;
+          margin-right: 15px;
+        }
+
+        .form-button-default {
+          @include form-button-default;
+        }
+
+        button {
+          width: fit-content !important;
+        }
+      }
+    }
+
+    .p-inputswitch {
+      @include input-switch;
+      margin-top: 8px;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .form-input-radiobutton {
+      @include form-input-radiobutton;
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

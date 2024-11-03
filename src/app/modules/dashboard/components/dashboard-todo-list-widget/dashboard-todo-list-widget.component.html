@@ -1,0 +1,83 @@
+<div class="dashboard-task-notification-container">
+  <div class="content">
+    <div class="title">{{ 'TaskNotifications' | translate }}</div>
+    <div class="list">
+      <ng-container *ngIf="(getTodoListWidgetData() | async)?.pendingPayments as pendingPayments">
+        <div *ngIf="pendingPayments?.length > 0" class="row payments">
+          <div>{{ 'Payments' | translate }}</div>
+          <div>
+            <ng-container *ngFor="let payment of pendingPayments">
+              <a href="javascript:void(0)" (click)="gotoPaymentPage(payment?.id)">
+                {{payment.paymentDate | date:'dd MMM yyyy'}} -
+                <span *ngIf="payment?.status === 0">{{ 'Pending' | translate }}</span>
+                <span *ngIf="payment?.status === 4">{{ 'AwaitingPayment' | translate }}</span>
+                <span *ngIf="payment?.status === 5">{{ 'AwaitingAuthorization' | translate }}</span>
+                <span *ngIf="payment?.status === 6">{{ 'Authorized' | translate }}</span>
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(getTodoListWidgetData() | async)?.toDoListDraftPayslipsViews as toDoListDraftPayslipsViews">
+        <div *ngIf="toDoListDraftPayslipsViews?.length > 0" class="row payruns">
+          <div>{{ 'PayRunsInProgress' | translate }}</div>
+          <div>
+            <ng-container *ngFor="let payRun of toDoListDraftPayslipsViews">
+              <a href="javascript:void(0)" (click)="gotoToPayRunPage(payRun?.payRunId)">
+                {{payRun.payFrequencyType | translate}} - {{payRun.payRunDate |
+                date:'dd MMM yyyy'}} - {{payRun.payslipCount}} {{'DraftPayslips' | translate}}</a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(getTodoListWidgetData() | async)?.inactiveEmployees as inactiveEmployees">
+        <div *ngIf="inactiveEmployees?.length > 0" class="row inactive-employees">
+          <div>{{ 'InactiveEmployees' | translate }}</div>
+          <div>
+            <ng-container *ngFor="let inactiveEmployee of inactiveEmployees">
+              <a href="javascript:void(0)"
+                (click)="noImplementation()">{{inactiveEmployee?.firstName}}
+                {{inactiveEmployee?.lastName}}</a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(getTodoListWidgetData() | async)?.timeOffRequests as timeOffRequests">
+        <div *ngIf="timeOffRequests?.length > 0" class="row time-off-requests">
+          <div>{{ 'TimeOffRequests' | translate }}</div>
+          <div>
+            <ng-container *ngFor="let timeOffRequest of timeOffRequests">
+              <a href="javascript:void(0)" (click)="gotoTimeOffRequests(timeOffRequest?.employeeId)">
+                <span>{{timeOffRequest?.firstName}}</span>
+                <span>{{timeOffRequest?.lastName}}</span>
+                <span>- {{timeOffRequest?.timeOffType}}</span></a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(getTodoListWidgetData() | async)?.officialBusinessRequests as officialBusinessRequests">
+        <div *ngIf="officialBusinessRequests?.length > 0" class="row official-business-requests">
+          <div>{{ 'OfficialBusinessRequests' | translate }}</div>
+          <div>
+            <ng-container *ngFor="let request of officialBusinessRequests">
+              <a href="javascript:void(0)" (click)="noImplementation()">{{request?.employeeName}} -
+                {{request?.fromDate
+                | date:'dd MMM yyyy'}} to {{request?.toDate | date:'dd MMM yyyy'}}</a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(getTodoListWidgetData() | async)?.overtimeRequests as overtimeRequests">
+        <div *ngIf="overtimeRequests?.length > 0" class="row overtime-requests">
+          <div>{{ 'OvertimeRequests' | translate }}</div>
+          <div>
+            <ng-container *ngFor="let request of overtimeRequests">
+              <a (click)="noImplementation()">{{request?.employeeName}} - {{request?.date | date:'dd MMM yyyy'}}
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

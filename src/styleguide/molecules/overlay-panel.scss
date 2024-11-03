@@ -1,0 +1,118 @@
+@mixin overlay-panel {
+  display: flex;
+
+  .p-overlaypanel-content {
+    padding: 0;
+    width: 100%;
+
+    .search-options {
+      top: calc(100% - 3px);
+      background-color: var(--colour-element-white);
+      border-radius: 4px;
+      width: 100%;
+      padding: 8px 0;
+
+      .title {
+        text-transform: capitalize;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--colour-element-gray-2);
+        margin-left: 10px;
+      }
+
+      .search-option {
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 7px 15px;
+
+        &:hover {
+          cursor: pointer;
+          background-color: var(--colour-element-yellow-5);
+        }
+      }
+
+      .option-avatar {
+        display: flex;
+        border-radius: 50%;
+        height: 31px;
+        width: 31px;
+        background-color: var(--colour-element-blue-3);
+        color: var(--colour-element-white);
+        margin-right: 10px;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+
+        img {
+          border-radius: 50%;
+          height: 31px;
+          width: 31px;
+        }
+      }
+
+      .option-text {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &.red {
+    .option-text {
+      &:hover {
+        color: var(--colour-element-red-1);
+      }
+    }
+
+    .search-option {
+      &:hover {
+        background-color: var(--colour-element-red-5) !important;
+      }
+    }
+
+    &.tags .tag span {
+      &:nth-child(2) {
+        font-weight: 700;
+        color: var(--colour-element-red-1) !important;
+      }
+    }
+  }
+}
+
+/* 
+  primeng modifications start here 
+*/
+.success.p-overlaypanel {
+  button.p-overlaypanel-close {
+    background-color: var(--colour-element-green-1) !important;
+  }
+}
+
+.red {
+  &.tags .tag span:first-child {
+    color: var(--colour-element-black-1);
+  }
+}
+
+.tags {
+  > div {
+    &.red div {
+      background-color: var(--colour-element-red-5);
+
+      span:nth-child(2) {
+        color: var(--colour-element-red-1);
+      }
+    }
+
+    &.success div {
+      background-color: var(--colour-element-green-6);
+
+      span:nth-child(2) {
+        color: var(--colour-element-green-1);
+      }
+    }
+  }
+}

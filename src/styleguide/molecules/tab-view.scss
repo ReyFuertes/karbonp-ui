@@ -1,0 +1,49 @@
+@mixin tab-view {
+
+  .p-tabview-nav li .p-tabview-nav-link {
+    padding: 1rem;
+  }
+
+  .p-tabview-panels {
+    padding: 1rem 0 0;
+  }
+
+  .p-tabview-nav-link:not(.p-disabled):focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: none;
+  }
+
+  &.blue {
+    .p-tabview-nav {
+      li {
+        &.p-highlight .p-tabview-nav-link {
+          border-color: var(--colour-element-blue-1);
+          color: var(--colour-element-blue-1);
+        }
+      }
+    }
+  }
+
+  &.success {
+    .p-tabview-nav {
+      li {
+        &.p-highlight .p-tabview-nav-link {
+          border-color: var(--colour-element-green-1);
+          color: var(--colour-element-green-1);
+        }
+      }
+    }
+  }
+
+  &.orange {
+    .p-tabview-nav {
+      li {
+        &.p-highlight .p-tabview-nav-link {
+          border-color: var(--colour-element-orange-1);
+          color: var(--colour-element-orange-1);
+        }
+      }
+    }
+  }
+}

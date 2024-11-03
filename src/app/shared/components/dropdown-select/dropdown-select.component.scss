@@ -1,0 +1,15 @@
+@import "src/styleguide/index";
+
+::ng-deep {
+  .p-dropdown {
+    @include input-dropdown;
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+}

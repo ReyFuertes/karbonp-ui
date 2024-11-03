@@ -1,0 +1,396 @@
+@mixin form-button-cyan {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-cyan-1);
+  background-color: var(--colour-element-cyan-1);
+  color: var(--colour-element-white);
+
+  span,
+  i {
+    color: var(--colour-element-white);
+    opacity: 1;
+  }
+
+  &.outlined {
+    border: 1px solid var(--colour-element-green-7);
+    background-color: var(--colour-element-white);
+    color: var(--colour-element-green-7);
+  }
+}
+
+@mixin form-button-orange {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-orange-1);
+  background-color: var(--colour-element-orange-1);
+  color: var(--colour-element-white);
+
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
+    background-color: var(--colour-element-orange-1);
+    border: 1px solid var(--colour-element-orange-1);
+  }
+
+  &:not(:disabled):focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-orange-5),
+      0 1px 2px 0 black;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+
+  &.outlined {
+    border: 1px solid var(--colour-element-orange-1);
+    background-color: var(--colour-element-white);
+    color: var(--colour-element-orange-1);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background-color: var(--colour-element-white);
+      border: 1px solid var(--colour-element-orange-2);
+      opacity: 0.8;
+    }
+
+    &:not(:disabled):focus {
+      box-shadow:
+        0 0 0 2px var(--colour-element-white),
+        0 0 0 4px var(--colour-element-orange-5),
+        0 1px 2px 0 black;
+    }
+  }
+}
+
+@mixin form-button-blue {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-blue-2);
+  background-color: var(--colour-element-blue-2);
+  border-color: var(--colour-element-blue-2);
+  color: var(--colour-element-white);
+
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
+    background-color: var(--colour-element-blue-2);
+    border: 1px solid var(--colour-element-blue-2);
+  }
+
+  &:not(:disabled):focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-blue-4),
+      0 1px 2px 0 black;
+  }
+
+  &.outlined {
+    border: 2px solid var(--colour-element-blue-2);
+    background-color: var(--colour-element-white);
+    color: var(--colour-element-blue-2);
+
+    span.p-button-icon {
+      color: var(--colour-element-blue-2);
+      font-weight: 700;
+    }
+  }
+
+  &.outlined.white {
+    border: 2px solid var(--colour-element-white);
+    background-color: var(--colour-element-blue-2);
+    color: var(--colour-element-white);
+  }
+
+  span {
+    color: var(--colour-element-white);
+  }
+}
+
+@mixin form-button-default {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  background-color: var(--colour-element-white);
+  border: 1px solid var(--colour-element-gray-3);
+  color: var(--colour-element-black-1);
+
+  &:not(:disabled):hover,
+  &:not(:disabled):active,
+  &:not(:disabled):focus {
+    color: var(--colour-element-gray-1);
+    border-color: var(--colour-element-gray-2);
+    background-color: var(--colour-element-white);
+  }
+
+  &:not(:disabled):focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-gray-4),
+      0 1px 2px 0 black;
+  }
+}
+
+@mixin form-button-red-outlined {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-red-0);
+  background-color: var(--colour-element-white);
+  color: var(--colour-element-red-0);
+}
+
+@mixin form-button-red {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-red-0);
+  background-color: var(--colour-element-red-0);
+  border-color: var(--colour-element-red-1);
+  color: var(--colour-element-white);
+
+  &:hover,
+  &:active {
+    background-color: var(--colour-element-red-0);
+    border: 1px solid var(--colour-element-red-0);
+  }
+
+  &:focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-red-5),
+      0 1px 2px 0 black;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+}
+
+@mixin form-button-success {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-green-1);
+  background-color: var(--colour-element-green-1);
+  border-color: var(--colour-element-green-1);
+  color: var(--colour-element-white);
+
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
+    background-color: var(--colour-element-green-2);
+    border: 1px solid var(--colour-element-green-2);
+  }
+
+  &:not(:disabled):focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-green-5),
+      0 1px 2px 0 black;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+    opacity: 0.8 !important;
+  }
+}
+
+@mixin form-button-outlined {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  &.default {
+    height: 40px;
+    border: 1px solid var(--colour-element-gray-2);
+    background-color: var(--colour-element-white);
+    border-color: var(--colour-input-border);
+    color: var(--colour-element-gray-1);
+    font-size: 16px;
+
+    span {
+      margin-right: 8px;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: var(--colour-element-white);
+      color: var(--colour-element-black-2);
+      border-color: var(--colour-element-gray-2);
+    }
+
+    &:focus {
+      box-shadow:
+        0 0 0 2px var(--colour-element-white),
+        0 0 0 4px var(--colour-element-gray-3),
+        0 1px 2px 0 var(--colour-element-black-1);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      pointer-events: auto;
+    }
+  }
+}
+
+@mixin form-button-success-outlined {
+  @include form-button;
+  @include normal;
+  @include small;
+
+  border: 1px solid var(--colour-element-green-1);
+  background-color: var(--colour-element-white);
+  border-color: var(--colour-element-green-1);
+  color: var(--colour-element-green-1);
+
+  &:hover,
+  &:active,
+  &:focus {
+    opacity: 0.9;
+    background-color: var(--colour-element-white);
+    color: var(--colour-element-green-1);
+    border-color: var(--colour-element-green-1);
+    opacity: 0.9;
+  }
+
+  &:focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-green-4),
+      0 1px 2px 0 var(--colour-element-black-1);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+}
+
+@mixin form-button {
+  position: relative;
+  margin: 0;
+  line-height: 24px;
+  border-radius: 4px;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  height: 40px;
+  font-size: 16px;
+  white-space: nowrap;
+
+  >div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  span {
+    white-space: nowrap;
+    margin-right: 5px;
+  }
+
+  .pi-spinner {
+    font-size: 1rem;
+    color: var(--colour-element-white);
+  }
+
+  &:not(:disabled):hover {
+    opacity: 0.9;
+  }
+
+  .delete-employee-icon {
+    color: var(--colour-element-gray-1);
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 16px;
+
+    &:hover,
+    &:active,
+    &:focus {
+      cursor: pointer;
+      color: var(--colour-element-gray-2);
+    }
+  }
+
+  &.loader {
+
+    span,
+    i {
+      top: 0;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: auto;
+  }
+
+  button:disabled,
+  button[disabled] {
+    cursor: not-allowed !important;
+
+    span:hover {
+      cursor: not-allowed !important;
+      opacity: 0.8;
+    }
+  }
+}
+
+@mixin normal {
+  &.normal {
+    padding: 6px 20px;
+    font-size: 16px;
+    line-height: 18px;
+    height: 40px;
+    min-width: 110px;
+  }
+}
+
+@mixin small {
+  &.small {
+    padding: 4px 15px;
+    font-size: 14px;
+    line-height: 17px;
+    height: 29px;
+    min-width: 90px;
+    font-weight: 400;
+  }
+}
+
+.p-button {
+  &:disabled {
+    cursor: not-allowed !important;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+::ng-deep {
+  .p-button span.p-button-icon {
+    font-size: 0.9rem;
+    margin-right: 5px;
+  }
+}

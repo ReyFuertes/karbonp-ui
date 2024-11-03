@@ -1,0 +1,330 @@
+@import "src/styleguide/index";
+
+.time-off-settings-container {
+  min-width: 985px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    min-height: 40px;
+    
+    h2,
+    .form-input-field {
+      margin-bottom: 0;
+    }
+  }
+
+  .details-container {
+    margin-bottom: 20px;
+  }
+
+  .entitlement-policies,
+  .entitlement-policy-ranges {
+    border-top: 1px solid var(--colour-element-gray-5);
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    h3 {
+      margin-bottom: 0;
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .form-input-field-group {
+      width: 100%;
+
+      button {
+        margin-top: 22px;
+      }
+    }
+  }
+
+  .bulk-import-content-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 10px;
+
+    > div {
+      margin-bottom: 20px;margin-bottom: 20px;
+
+      &:first-child {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+
+        p {
+          margin: 0 0 0 5px;
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          span,
+          p {
+            color: var(--colour-element-orange-1);
+          }
+        }
+      }
+    }
+
+    ~ .form-buttons {
+      margin-top: 15px !important;
+
+      button {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .bulk-import-view-completed,
+  .bulk-import-view-calculating {
+    h5 {
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+
+    p {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: var(--colour-element-black-1);
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      span {
+        &:first-child {
+          font-size: 14px;
+          margin-right: 20px;
+        }
+
+        &:last-child.check {
+          font-weight: 700;
+          color: var(--colour-element-green-1);
+        }
+      }
+    }
+  }
+
+  .form-button-orange {
+    @include form-button-orange;
+    min-width: 110px;
+    margin-right: 15px;
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+
+  .p-dropdown {
+    @include input-dropdown;
+  }
+}
+
+::ng-deep {
+  .time-off-settings-container {
+    .p-datatable-table {
+      @include datatable;
+      margin-right: 0;
+
+      .p-datatable-thead > tr > th:last-child {
+        &:last-child {
+          width: 85px;
+        }
+      }
+
+      .p-datatable-tbody>tr>td {
+        &:first-child {
+          font-weight: 700;
+        }
+
+        &:last-child {
+          width: 50px;
+          text-align: right;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .progress-bar-container {
+      width: 100%;
+
+      .p-progressbar {
+        white-space: nowrap;
+      }
+
+      .p-progressbar-determinate .p-progressbar-value-animate {
+        transition: width 0.1s ease-in-out;
+      }
+    }
+
+    .loading-container {
+      @include loader;
+    }
+
+    p-fileupload {
+      @include file-upload;
+    }
+
+    p-paginator {
+      @include paginator;
+
+      .p-paginator {
+        justify-content: flex-end;
+        padding: 0.5rem;
+      }
+
+      .p-dropdown {
+        width: 70px;
+      }
+    }
+
+    .p-tabview {
+      @include tab-view;
+
+      .p-tabview-panels {
+        padding: 1rem 0 0;
+      }
+
+      .entitlement-policies-container {
+        height: 325px;
+        overflow: auto;
+      }
+
+      .entitlement-policies-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        margin-top: 20px;
+      }
+    }
+
+    .p-dialog {
+      @include dialog;
+
+      max-height: 100%;
+
+      .header {
+        margin-bottom: 0;
+      }
+
+      .p-dialog-content {
+        .header {
+          margin-bottom: 0;
+        }
+      }
+
+      .cycle-entitlement-regulations-table-container {
+        min-height: 185px;
+        max-height: 185px;
+        overflow: auto;
+      }
+
+      .cycle-entitlement-regulations-container {
+        .form-button-orange.p-button {
+          margin-top: 22px;
+        }
+      }
+
+      .entitlement-policy-ranges-table-container {
+        height: 235px;
+        overflow: auto;
+
+        ~ div {
+          display: flex;
+          align-items: center;
+          justify-content: right;
+          margin-top: 20px;
+
+          button {
+            margin-right: 0 !important;
+          }
+        }
+      }
+
+      .entitlement-policy-ranges-container {
+        height: 430px;
+        overflow: hidden;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+
+      .p-dropdown {
+        @include input-dropdown;
+        width: 100%;
+      }
+
+      .p-tabview {
+        min-height: 392px;
+      }
+
+      .p-inputswitch {
+        margin-bottom: 20px;
+      }
+
+      &.p-confirm-dialog {
+        @include confirm-dialog;
+      }
+
+      .no-results-found {
+        margin-top: 0 !important;
+      }
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-datatable-time-off-settings,
+    .p-datatable-entitlement-policies,
+    .p-datatable-entitlement-regulations,
+    .p-datatable-entitlement-policy-ranges,
+    .p-datatable-time-off-leave-approvers,
+    .p-datatable-time-off-errors {
+      @include datatable;
+      margin-right: 0;
+    }
+
+    .p-inputswitch {
+      @include input-switch;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      width: 340px;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .form-buttons {
+      @include form-buttons;
+      justify-content: right;
+      margin-top: 20px;
+    }
+  }
+}

@@ -1,0 +1,204 @@
+<div class="detailed-payroll-report-container">
+  <div class="header" [formGroup]="form">
+    <h3>{{ 'DetailedPayrollReport' | translate }}</h3>
+    <p-accordion [activeIndex]="0">
+      <p-accordionTab [header]="'Filter' | translate">
+        <div class="filter-container">
+          <div class="form-input-field w-auto">
+            <div><span>{{ 'Employees' | translate }}</span></div>
+            <p-multiSelect formControlName="employees" [options]="employeeOptions" [filter]="true"
+              [selectionLimit]="employeesSelectionLimit" [maxSelectedLabels]="employeesMaxSelectedLabels"
+              optionLabel="label" [placeholder]="'Select' | translate"
+              styleClass="cyan filter {{ form.get('employees').value?.length <= 2 ? 'h-40' : 'h-auto' }}" display="chip"
+              [showClear]="true" [selectAll]="false" (onChange)="onChangeEmployees($event)">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('employees')?.value ? form.get('employees')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('employees')?.value ?
+                    form.get('employees')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Dates' | translate }}</span></div>
+            <p-dropdown [options]="customPeriods" formControlName="dates" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan" [showClear]="true" [filter]="true"
+              (onChange)="onChangeCustomPeriods($event)"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'FromDate' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="fromDate" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'ToDate' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="toDate" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPeriods' | translate }}</span></div>
+            <p-multiSelect formControlName="payPeriods" [options]="payPeriods" [filter]="true" optionLabel="label"
+              [placeholder]="'Select' | translate" styleClass="cyan" display="chip" [showClear]="true" [filter]="true">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('payPeriods')?.value ? form.get('payPeriods')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('payPeriods')?.value ?
+                    form.get('payPeriods')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPoints' | translate }}</span></div>
+            <p-multiSelect formControlName="payPoints" [options]="payPoints" [filter]="true" optionLabel="label"
+              [placeholder]="'Select' | translate" styleClass="cyan" display="chip" [showClear]="true" [filter]="true">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('payPoints')?.value ? form.get('payPoints')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('payPoints')?.value ?
+                    form.get('payPoints')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayRun' | translate }}</span></div>
+            <p-multiSelect formControlName="payRunStatus" [options]="payrunStatus" [filter]="true" optionLabel="label"
+              [placeholder]="'Select' | translate" styleClass="cyan" display="chip" [showClear]="true" [filter]="true">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('payRunStatus')?.value ? form.get('payRunStatus')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('payRunStatus')?.value ?
+                    form.get('payRunStatus')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Templates' | translate }}</span></div>
+            <p-dropdown [options]="reportTemplates" formControlName="templates" optionLabel="name" optionValue="id"
+              [placeholder]="'Select' | translate" class="cyan" [showClear]="true" [filter]="true"
+              (onChange)="onSelectTemplate($event)"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field w-auto w-32">
+            <div><span>{{ 'Columns' | translate }}</span></div>
+            <p-multiSelect formControlName="columns" [options]="detailedReportColumns" [filter]="true"
+              [selectionLimit]="columnsSelectionLimit" [maxSelectedLabels]="columnsMaxSelectedLabels"
+              optionLabel="label" [placeholder]="'Select' | translate"
+              styleClass="cyan columns {{ form.get('columns').value?.length <= 2 ? 'h-40' : 'h-auto' }}" display="chip"
+              [showClear]="true" [selectAll]="false">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('columns')?.value ? form.get('columns')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('columns')?.value ?
+                    form.get('columns')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button [disabled]="!form.valid" pButton class="form-button-cyan normal" (click)="onFilter()">
+            <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+            <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Filter' | translate }}</span>
+          </button>
+          <button pButton class="form-button-default normal" (click)="onReset()">{{ 'Reset' | translate }}</button>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="content" *ngIf="isAvailableForExport; else noResults">
+    <div class="export-template-container">
+      <div class="template-container">
+        <span>{{ 'SaveTemplate' | translate }}</span>
+        <span class="material-symbols-rounded template" tooltipPosition="top" [pTooltip]="'Save Template' | translate"
+          (click)="showModal = true">save</span>
+      </div>
+      <div class="table-header-actions-container">
+        <span>{{ 'Export' | translate }}</span>
+        <span class="material-symbols-rounded export" [ngClass]="{'disabled': !isAvailableForExport}"
+          tooltipPosition="top" [pTooltip]="isAvailableForExport ? 'Export balances report' : '' | translate"
+          (click)="isAvailableForExport ? onExport() : null">export_notes</span>
+      </div>
+    </div>
+    <p-table *ngIf="(form.get('columns').value) as columns" [value]="detailedPayrollReportViews" [scrollable]="true"
+      [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let column of columns">{{ capitalizeFirstLetter(column?.label) | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <ng-container *ngFor="let column of dynamicColumns; let i = index">
+            <ng-container *ngIf="checkIfColumnsVisible(column)">
+              <td>{{ (isNumber(+row[column]) && i !== 1 ? (row[column] | currencySymbol) : (row[column] ?? '--')) }}
+              </td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr>
+          <td colspan="6">{{ 'GrandTotal' | translate }}</td>
+          <ng-container *ngFor="let footer of dynamicColumns">
+            <ng-container *ngIf="payItemTotals[capitalizeFirstLetter(footer) + 'Totals'] as total">
+              <td *ngIf="checkIfColumnsVisible(footer)">{{ total?.toString() | currencySymbol }}</td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-dialog [(visible)]="showModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false" [modal]="true"
+    styleClass="blue" closeIcon="false" [style]="{width: '490px'}" (onHide)="showModal = false">
+    <div class="header">
+      <div>
+        <h4>{{ 'SaveTemplate' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showModal = !showModal">close</span>
+    </div>
+    <div class="content">
+      <div class="form-input-field">
+        <div><span>{{ 'Name' | translate }}</span></div>
+        <input type="text" [(ngModel)]="templateName" pInputText class="cyan" />
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-cyan normal" (click)="onSaveTemplate()">{{ 'Save' | translate }}</button>
+        <button pButton class="form-button-default normal" (click)="showModal = false">{{ 'Cancel' | translate
+          }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+</div>

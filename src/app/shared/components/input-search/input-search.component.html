@@ -1,0 +1,7 @@
+<div class="input-search-container">
+  <span class="p-input-icon-right form-input-field" [ngClass]="styleClass">
+    <i *ngIf="value?.length === 0" id="icon" class="pi pi-search"></i>
+    <input id="input" type="text" [value]="value" (input)="onInput($event)" pInputText [ngClass]="styleClass" [placeholder]="placeholder | translate" autocomplete="false">
+    <i *ngIf="value?.length > 0" class="pi pi-times" (click)="onClear()"></i>
+  </span>
+</div>

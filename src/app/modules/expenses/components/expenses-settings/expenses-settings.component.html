@@ -1,0 +1,14 @@
+<div class="expenses-settings-container">
+  <div class="header">
+    <h2>{{ 'Expenses Settings' | translate }}</h2>
+  </div>
+  <div class="content">
+    <kp-disable-app [disabled]="application?.options?.disabled" redirectToMenu="settings" (disableChange)="handleOnDisableChange()" [description]="disabledDescription | translate"></kp-disable-app>
+  </div>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+</div>

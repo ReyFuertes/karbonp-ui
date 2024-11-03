@@ -1,0 +1,47 @@
+<div class="people-teams-container">
+  <h2>{{ 'Teams' | translate }}</h2>
+  <div class="content-header">
+    <div>{{ 'Need to group your employees by something specific? Create your own employee teams within your organization.' | translate}}</div>
+    <button pButton class="form-button-success normal" #overlayAddTarget (click)="onAdd(op, $event)">{{ 'Add team' | translate }}</button>
+  </div>
+  <div class="content">
+    <div class="team-list">
+      <div *ngFor="let team of teams; let i = index" class="team-row" [ngClass]="{'selected-row': selectedRow === i}" (mouseover)="onMouseover(i)">
+        <div>
+          <div>{{ team.name }}</div>
+          <div>{{ team?.description }}</div>
+        </div>
+        <div>
+          <span>{{ 'Members' | translate }}:</span>
+          <span>{{ team.count }}</span>
+          <span>{{ 'employees' | translate }}</span>
+        </div>
+        <div>
+          <button *ngIf="selectedRow === i" (click)="onEdit(op, $event)" #overlayEditTarget pButton class="form-button-default small">{{ 'Edit' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-overlayPanel #op styleClass="people-teams-overlay" [dismissable]="true">
+    <div>
+      <div class="form-input-field">
+        <div><span>{{ 'Team name' | translate }}</span></div>
+        <input type="text" pInputText class="success" />
+      </div>
+      <div class="form-input-field"></div>
+      <div class="noselect">{{ 'Assign employees to this team' | translate }}:</div>
+      <div>
+        <span class="material-symbols-rounded noselect">add</span>
+        <div class="add-everyone noselect">{{ 'Add everyone' | translate }}</div>
+      </div>
+      <kp-input-multiple-select-chip styleClass="success"></kp-input-multiple-select-chip>
+      <div class="form-buttons">
+        <div>
+          <button pButton class="form-button-success normal">{{ 'Save' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="onClose()">{{ 'Cancel' | translate }}</button>
+        </div>
+        <span class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+      </div>
+    </div>
+  </p-overlayPanel>
+</div>

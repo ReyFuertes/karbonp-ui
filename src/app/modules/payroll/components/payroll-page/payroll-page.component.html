@@ -1,0 +1,17 @@
+<kp-header-content [headerTitle]="headerTitle" appLogoName="payroll" [isAppLogo]="true" bgImage="payroll"
+  classLogo="payroll-avatar" marginRight="73px"></kp-header-content>
+<div class="payroll-page-body">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menusOptions" class="menu-item blue" [ngClass]="{'selected': getCurrentMenu(menu)}"
+          (click)="gotoRoute(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="center-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+@import "src/styleguide/index";
+
+.toggle-slide-menu-container {
+  .outer-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid var(--colour-input-border);
+    border-radius: 4px;
+    height: 40px;
+    width: 230px;
+    position: relative;
+    
+    > div {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      justify-content: flex-start;
+      position: absolute;
+      transition: 0.3s;
+      color: var(--colour-element-gray-4);
+      padding-left: 8px;
+      height: 40px;
+
+      &:not(:first-child) {
+        border-left: 1px solid var(--colour-input-border);
+      }
+
+      &:first-child {
+        width: 150px;
+        left: 0;
+
+        &.first-is-selected {
+          transition: 0.3s;
+        }
+      }
+
+      &:nth-child(2) {
+        width: 150px;
+        left: 145px;
+
+        &.middle-not-selected {
+          transition: 0.3s;
+          left: 40px;
+        }
+      }
+
+      &:nth-child(3) {
+        width: 150px;
+        left: 185px;
+
+        &.last-not-selected  {
+          transition: 0.3s;
+        }
+      }
+    }
+
+    .slide {
+      transition: 0.3s;
+      color: var(--colour-element-green-1);
+      font-weight: 700;
+
+      &:first-child {
+        left: 0 !important;
+      }
+
+      &:nth-child(2) {
+        left: 40px !important;
+      }
+
+      &:nth-child(3) {
+        left: 80px !important;
+      }
+
+      > div {
+        position: relative;
+        top: -1px;
+      }
+
+      span {
+        margin-right: 5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,258 @@
+<div class="top-nav-container">
+  <div class="top-nav-item align-right noselect">
+    <div class="profile" (click)="op.toggle($event); rotatedDirection = !rotatedDirection">
+      <div class="image">{{ userInitials }}</div>
+      <div>
+        <span>{{ firstName }}</span>
+      </div>
+      <div>
+        <span class="material-symbols-rounded" [ngClass]="{'rotated': rotatedDirection}">arrow_drop_down</span>
+      </div>
+    </div>
+  </div>
+  <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'" [hideTransitionOptions]="'100ms'" styleClass="top-nav-overlay">
+    <div class="overlay-menu">
+      <div>
+        <span class="material-symbols-rounded">domain</span>
+        <span>{{ 'KarbonPay' | translate }}</span>
+      </div>
+      <div>
+        <div>
+          <span class="material-symbols-rounded">person</span>
+          <span>{{ 'Account Settings' | translate }}</span>
+        </div>
+        <div>
+          <span class="material-symbols-rounded">settings</span>
+          <span>{{ 'Company Settings' | translate }}</span>
+        </div>
+        <div>
+          <span class="material-symbols-rounded">help</span>
+          <span>{{ 'Support' | translate }}</span>
+        </div>
+        <div (click)="onLogout()">
+          <span class="material-symbols-rounded">logout</span>
+          <span>{{ 'Logout' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </p-overlayPanel>
+</div>
+<div class="company-setting-container">
+  <div class="header">
+    <img [src]="imgPath + 'karbonpay-text-logo.png'" />
+  </div>
+  <div [formGroup]="form" class="content">
+    <p-tabView styleClass="blue" (onChange)="handleTabChange($event)" [activeIndex]="selectedTabIndex">
+      <p-tabPanel [header]="'Home' | translate">
+        <div class="home-container">
+          <ng-container *ngIf="isCompanyDetail === false; else companyDetail">
+            <div class="company-list-container">
+              <div class="company-list">
+                <div class="company-item" (click)="isCompanyDetail = true">
+                  <div>test-company</div>
+                  <div>
+                    <div>{{ 'Users' | translate }}: 1</div>
+                    <div>
+                      <span>{{ 'Access' | translate }}:</span>
+                      <span>{{ 'Admin' | translate }}</span>
+                    </div>
+                    <div class="btn-setting">
+                      <button pButton class="form-button-default small">{{ 'Settings' | translate }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="company-setup-container">
+                <div>Run another business? You can manage multiple companies with KarbonPay.</div>
+                <div class="form-buttons">
+                  <button pButton class="form-button-blue" (click)="onSetupCompany()">{{ 'Set up a new company' | translate }}</button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #companyDetail>
+            <div class="home-left-container">
+              <h1>{{ 'Settings for' | translate }} test-company</h1>
+              <div class="form-input-field">
+                <div>
+                  <span>{{ 'Company name' | translate }}</span>
+                  <span>*</span>
+                </div>
+                <input formControlName="companyName" type="text" pInputText />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('companyName', form)">{{ 'This field is required' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div>
+                  <span>{{ 'Country' | translate }}</span>
+                  <span>*</span>
+                </div>
+                <p-dropdown [options]="[]" formControlName="country" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="blue"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('country', form)">{{ 'This field is required' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div>
+                  <span>{{ 'Time zone' | translate }}</span>
+                  <span>*</span>
+                </div>
+                <p-dropdown [options]="[]" formControlName="timeZone" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="blue"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('timeZone', form)">{{ 'This field is required' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-buttons">
+                <button pButton class="form-button-blue">{{ 'Save' | translate }}</button>
+                <button pButton class="form-button-default" (click)="onRoute('/dashboard')">{{ 'Cancel' | translate }}</button>
+              </div>
+            </div>
+            <div class="home-right-container">
+              <div class="choose-plans">
+                <div>
+                  <span>{{ 'Choose your place' | translate }}</span>
+                  <span>{{ 'Compare plans' | translate }}</span>
+                </div>
+                <div class="choose-plan-item">
+                  <div>
+                    <p-radioButton name="plan" formControlName="plan" value="free" />
+                    <div>
+                      <h3>Free</h3>
+                      <div>All the HR essentials to help you manage your business. No credit card needed.</div>
+                    </div>
+                  </div>
+                  <div>
+                    <p-radioButton name="plan" formControlName="plan" value="advanced" />
+                    <div>
+                      <h3>Advanced</h3>
+                      <div>All the essentials plus extra features and apps for $5 per person per month.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="billing-information">
+                <div>{{ 'Billing information' | translate }}</div>
+                <div>
+                  <div>{{ 'No payment method' | translate }}</div>
+                  <div (click)="showUpgradeDialogModal = true">{{ 'Update payment details' | translate }}</div>
+                </div>
+              </div>
+              <div class="coupon">
+                <div>{{ 'Coupon' | translate }}</div>
+                <div>
+                  <div>{{ 'None' | translate }}</div>
+                  <div (click)="showRedeemCouponDialogModal = true">{{ 'Add coupon' | translate }}</div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel [header]="'Account Setting' | translate">
+        <div class="account-container">
+          <div>
+            <div>{{ 'Name' | translate }}</div>
+            <div>test-company</div>
+          </div>
+          <div>
+            <div>{{ 'Email address' | translate }}</div>
+            <div>{{ 'testcompany@gmail.com' }}</div>
+          </div>
+          <div>
+            <div>{{ 'Password' | translate }}</div>
+            <div>&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;</div>
+          </div>
+          <div>
+            <div>{{ 'Photo' | translate }}</div>
+            <div>
+              <div class="photo">RM</div>
+            </div>
+          </div>
+          <div>
+            <div>{{ 'Time zone' | translate }}</div>
+            <div>(GMT+01:00) London</div>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <p-dialog [header]="'Upgrade your company' | translate" [(visible)]="showUpgradeDialogModal" [dismissableMask]="true" [modal]="true" [style]="{width: '500px'}">
+    <div class="dialog-content">
+      <div class="form-input-field card-number">
+        <div>
+          <span>{{ 'Card number' | translate }}</span>
+          <span>*</span>
+        </div>
+        <p-inputGroup>
+          <input type="text" pInputText />
+          <p-inputGroupAddon>
+            <img [src]="svgPath + 'visa.svg'" />
+            <img [src]="svgPath + 'mastercard.svg'" />
+            <img [src]="svgPath + 'amex.svg'" />
+          </p-inputGroupAddon>
+        </p-inputGroup>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Expiry date' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-inputMask mask="99/99" placeholder="MM/YY" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Security code' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-password [feedback]="false" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <p-checkbox [binary]="true" [label]="'Add coupon code' | translate" />
+      <div class="form-input-field">
+        <div><span></span></div>
+        <input type="text" pInputText />
+        <div class="error"></div>
+      </div>
+      <div class="plan-advance-total">
+        <div>
+          <div>Advance Plan</div>
+          <div>1 user x $5 per month</div>
+        </div>
+        <div>
+          <div>{{ 'Total' | translate }}</div>
+          <div>$5.00 per month</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button pButton class="form-button-blue" (click)="showUpgradeDialogModal = false">{{ 'Upgrade now' | translate }}</button>
+    </div>
+    <div class="payment-info">
+      <span class="material-symbols-rounded">lock</span>
+      <span>{{ 'Secure payments powered by Stripe' | translate }}</span>
+    </div>
+  </p-dialog>
+  <p-dialog [header]="'Redeem coupon' | translate" [(visible)]="showRedeemCouponDialogModal" [dismissableMask]="true" [modal]="true" [style]="{width: '500px'}">
+    <div class="dialog-content">
+      <div class="enter-coupon-text">{{ 'Enter coupon below and it will be applied to your company.' | translate }}</div>
+      <div class="form-input-field">
+        <div><span>{{ 'Coupon code' | translate }}</span></div>
+        <input type="text" pInputText />
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-blue">{{ 'Submit' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+</div>
+<ng-template #loading>
+  <div class="loading-container blue">
+    <i class="pi pi-spin pi-spinner"></i>
+  </div>
+</ng-template>

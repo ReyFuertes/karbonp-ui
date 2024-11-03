@@ -1,0 +1,275 @@
+@import "src/styleguide/index";
+
+.time-off-request-container {
+  display: flex;
+  justify-content: left;
+  padding: 0 0 30px 0;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-start;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+
+    .search-container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+
+      kp-input-search {
+        width: 350px;
+        margin-right: 15px;
+      }
+    }
+
+    .filter-container {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 20px;
+      background-color: var(--colour-element-white-bg-1);
+      width: 100%;
+      border: 1px solid var(--colour-element-gray-5);
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+
+      >div {
+        margin-right: 40px;
+      }
+    }
+
+    .all-filter {
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+
+    .filter-by-type-container,
+    .filter-by-status-container {
+      width: 200px;
+
+      >div:first-child {
+        display: flex;
+        flex-direction: row;
+        color: var(--colour-element-black-1);
+
+        >div {
+          &:first-child {
+            margin-right: 5px;
+            margin-bottom: 10px;
+            color: var(--colour-element-gray-1);
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 8px;
+          }
+
+          &:nth-child(2) {
+            color: var(--colour-element-orange-1);
+          }
+        }
+      }
+
+      .filter-by-type-items>div,
+      .filter-by-status-items>div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        div {
+          margin-right: 15px;
+
+          &:nth-child(2) {
+            min-width: 30px;
+          }
+        }
+
+        span {
+          display: none;
+          margin-left: 5px;
+          color: var(--colour-element-orange-1);
+        }
+
+        &:hover span {
+          display: block;
+          cursor: pointer;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+
+  .content {
+    min-width: 985px;
+    margin-top: 20px;
+  }
+
+  .loading-container {
+    @include loader;
+    min-height: 350px;
+  }
+}
+
+::ng-deep {
+  .time-off-request-container {
+    .p-multiselect {
+      @include multiselect;
+      min-width: 350px;
+      max-width: 640px;
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+
+      .p-multiselect-token-label,
+      .p-multiselect-label:not(.p-placeholder) {
+        color: var(--colour-element-white);
+
+        .p-icon-wrapper {
+          color: var(--colour-element-white)
+        }
+      }
+    }
+
+    .p-dialog {
+      @include confirm-dialog;
+
+      .p-dialog-header {
+        padding: 2rem 1.5rem 0 1.5rem;
+      }
+
+      .p-dialog-content {
+        padding-top: 20px;
+        overflow: hidden;
+
+        .view-display-fields {
+          @include view-display-fields;
+
+          >div {
+            justify-content: space-between;
+            height: 100%;
+            min-height: 40px;
+            border-bottom: 1px solid var(--colour-element-gray-3);
+            padding: 5px 0;
+
+            >div:first-child {
+              height: 100%;
+              width: 50%;
+            }
+
+            >div:nth-child(2) {
+              height: 100%;
+              width: 50%;
+              justify-content: flex-end;
+            }
+
+            &:last-child {
+              display: flex;
+              align-items: flex-start;
+            }
+          }
+        }
+
+        .form-input-field-group {
+          @include form-input-field-group;
+        }
+
+        .form-buttons {
+          justify-content: right;
+        }
+      }
+    }
+
+    .p-datatable-table {
+      @include datatable;
+      margin-right: 0;
+
+      .p-datatable-thead > tr > th:last-child {
+        &:last-child {
+          width: 50px;
+        }
+      }
+
+      .p-datatable-tbody>tr>td {
+        &:first-child {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-weight: 700;
+          
+          >div {
+            display: flex;
+            color: var(--colour-element-white);
+            background-color: var(--colour-element-orange-1);
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            margin-right: 10px;
+          }
+        }
+
+        &:last-child {
+          width: 50px;
+          text-align: right;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+      margin-left: 8px;
+    }
+
+    .form-button-orange {
+      @include form-button-orange;
+      width: 110px;
+
+      &:not(.outlined) {
+        margin-right: 8px;
+        margin-left: 8px;
+      }
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .p-multiselect {
+      @include multiselect;
+    }
+  }
+}

@@ -1,0 +1,315 @@
+@import "src/styleguide/index";
+
+.payroll-employee-setup-payroll-container {
+  .content {
+    .deductions,
+    .allowances,
+    .incomes,
+    .benefits,
+    .others,
+    .notes {
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+    }
+
+    .payroll-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      >div {
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+
+        span:nth-child(1) {
+          margin-right: 5px;
+        }
+
+        &:nth-child(2) {
+          justify-content: space-between;
+          padding-left: 20px;
+
+          >div {
+            &:first-child {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--colour-element-gray-1);
+      margin-bottom: 15px;
+    }
+
+    .payroll-content-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      >div {
+        padding: 20px 25px 25px;
+        width: 49%;
+        border: 1px solid var(--colour-element-gray-5);
+        border-radius: 4px;
+        margin-bottom: 20px;
+        height: fit-content;
+
+        h4 {
+          margin-bottom: 10px;
+        }
+
+        .edit {
+          cursor: pointer;
+        }
+
+        .delete {
+          color: var(--colour-element-red-1);
+          cursor: pointer;
+        }
+      }
+
+      .income {
+        animation-name: fadeIn;
+        animation-duration: 550ms;
+        
+        .base-earnings,
+        .employee-additional-hours,
+        .override-calculated-hourly-rate,
+        .daily,
+        .hourly {
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+          width: 100%;
+          padding: 5px 0;
+
+          >div {
+            &:nth-child(1) {
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              font-weight: 700;
+            }
+
+            &:nth-child(2) {
+              display: flex;
+              align-items: flex-start;
+              flex-direction: column;
+              width: 100%;
+              padding: 5px 0;
+              padding-left: 10px;
+
+              >div {
+                display: flex;
+                align-items: flex-start;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                height: 25px;
+                font-size: 14px;
+              }
+            }
+          }
+        }
+
+        .form-input-field {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .form-button-blue {
+          margin-bottom: 5px;
+        }
+
+      }
+
+      .notes {
+        >div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+
+          > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          }
+
+          span.delete {
+            color: var(--colour-element-red-0);
+          }
+        }
+      }
+    }
+
+    .form-input-field {
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+    }
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+
+  .p-inputswitch {
+    @include input-switch;
+  }
+
+  .input-row-items {
+    margin-top: 20px;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 25px;
+      margin-top: 10px;
+      font-size: 14px;
+
+      span {
+        color: var(--colour-element-black-1);
+
+        &:nth-child(2),
+        &:nth-child(3) {
+          &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+          }
+        }
+
+        &:nth-child(3) {
+          color: var(--colour-element-red-0);
+        }
+
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .deduction-type-detail {
+    margin-bottom: 20px;
+
+    >div {
+      >div {
+        display: flex;
+        flex-direction: row;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 25px;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-employee-setup-payroll-container {
+    span.element-link {
+      display: flex;
+      margin-top: 20px;
+    }
+
+    .p-dialog {
+      @include dialog;
+
+      .p-dialog-content .content {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-input-field {
+        @include form-input-field;
+      }
+
+      .form-button-blue {
+        margin-right: 10px !important;
+      }
+
+      &.deductions-modal .content,
+      &.benefits-modal .content,
+      &.income-modal .content,
+      &.public-notes-modal .content,
+      &.private-notes-modal .content,
+      &.allowances-modal .content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        min-height: 137px;
+        animation-name: fadeIn;
+        animation-duration: 550ms;
+
+        >div {
+          width: 48%;
+        }
+
+        .form-buttons {
+          width: 100%;
+          margin-top: 10px;
+        }
+
+        .p-inputtextarea {
+          @include textarea-field;
+          margin-bottom: 0;
+        }
+
+        span.p-calendar {
+          @include input-calendar;
+        }
+      }
+
+      @include confirm-dialog;
+
+      .form-button-red {
+        @include form-button-red;
+      }
+
+      &.public-notes-modal .content,
+      &.private-notes-modal .content {
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+
+        .form-input-field {
+          width: 100%;
+        }
+      }
+
+      .loading-container {
+        @include loader;
+        width: 100%;
+      }
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-buttons {
+      @include form-buttons;
+      justify-content: flex-start;
+
+      .form-button-blue {
+        @include form-button-blue;
+        margin-right: 10px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+    }
+  }
+}

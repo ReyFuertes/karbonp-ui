@@ -1,0 +1,43 @@
+@import "src/styleguide/index";
+
+.emergency-contact-container {
+  margin-right: 30px;
+  
+  .form-input-field-group {
+    @include form-input-field-group;
+
+    >div {
+      width: 25%;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    color: var(--colour-element-green-1);
+    font-weight: 700;
+    margin-bottom: 20px;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  .form-edit-fields .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+
+    h4 {
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
+
+    span {
+      color: var(--colour-element-red-0);
+      cursor: pointer;
+    }
+  }
+}

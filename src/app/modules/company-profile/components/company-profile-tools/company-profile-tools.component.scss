@@ -1,0 +1,38 @@
+@import "src/styleguide/index";
+
+.company-profile-tools-container{
+  width: 100%;
+  
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    h2 {
+      margin: 0;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .content {
+    p {
+      width: 75%;
+    }
+  }
+
+  .form-button-red {
+    @include form-button-red;
+  }
+
+  .form-button-red-outlined {
+    @include form-button-red-outlined;
+    margin-right: 15px;
+  }
+}

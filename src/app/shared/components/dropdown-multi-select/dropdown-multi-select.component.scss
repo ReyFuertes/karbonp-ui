@@ -1,0 +1,17 @@
+@import "src/styleguide/index";
+
+::ng-deep {
+  .dropdown-multi-select-container {
+    .p-multiselect {
+      @include multiselect;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

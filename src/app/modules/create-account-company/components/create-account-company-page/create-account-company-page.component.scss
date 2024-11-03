@@ -1,0 +1,20 @@
+@import "src/styleguide/index";
+
+.create-account-company-container {
+  .logo-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 70px;
+
+    img {
+      height: 60px;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .loading-container {
+    @include loader;
+    min-height: 727px;
+  }
+}

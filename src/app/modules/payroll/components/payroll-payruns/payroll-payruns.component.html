@@ -1,0 +1,372 @@
+<div class="payroll-payruns-container">
+  <div class="header">
+    <div>
+      <h3>{{ 'PayRuns' | translate }}</h3>
+    </div>
+    <div class="filter-container">
+      <div class="form-input-field">
+        <div>{{ 'FilterBy' | translate }}</div>
+        <p-dropdown #filterDropdown [options]="payPeriods" optionLabel="label" (onChange)="payFrequency = $event?.value"
+          [showClear]="true" [filter]="true" [placeholder]="'Select' | translate" styleClass="blue">
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div>{{ ((selectedOption) | payPeriodDescription : selectedOption?.name) ?? '' }}</div>
+          </ng-template>
+          <ng-template let-period pTemplate="item">
+            <div>{{ ((period) | payPeriodDescription : period?.name) ?? '' }}</div>
+          </ng-template>
+        </p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span></span></div>
+        <div class="form-buttons">
+          <button [disabled]="!payFrequency" pButton class="form-button-blue normal loading"
+            (click)="onFilterPayRuns()">
+            <span>{{ 'Filter' | translate }}</span>
+          </button>
+          <button pButton class="form-button-default normal" (click)="onResetPayruns()">{{ 'Reset' | translate
+            }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <p-tabView styleClass="blue" (onChange)="handleTabChange($event)" [activeIndex]="selectedTabIndex">
+      <p-tabPanel [header]="'InProgress' | translate">
+        <ng-container *ngIf="payrunInProgress?.length > 0; else loading">
+          <p-table [value]="payrunInProgress" [scrollable]="true" styleClass="blue"
+            (onPage)="onPaginateInProgress($event)">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="w-250"><b>{{ 'PayPeriods' | translate }}</b></th>
+                <th class="w-250" pSortableColumn="toDate">{{ 'Dates' | translate }}<p-sortIcon field="toDate" /></th>
+                <th class="w-120">{{ 'People' | translate }}</th>
+                <th class="w-150">{{ 'Status' | translate }}</th>
+                <th class="w-50"><button pButton class="form-button-blue small outlined" tooltipPosition="top"
+                    [pTooltip]="'CreateCustomPayRun' | translate" (click)="customPayRunModal = true">
+                    {{ 'Add' | translate }}</button></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+              <tr>
+                <td>
+                  <div class="bold">
+                    {{ ((row?.payFrequency) | payPeriodDescription : row?.name) ?? 'Custom' }}</div>
+                </td>
+                <td>{{ row?.fromDate | date: 'dd MMM yyyy' }} - {{ row?.toDate | date: 'dd MMM yyyy' }}</td>
+                <td>
+                  <div *ngIf="row?.totalPendingPayslips > 0 && row?.isProcessing === false">
+                    {{ row?.totalPendingPayslips }}</div>
+                  <div *ngIf="row?.totalPendingPayslips === payRunStatusType.InProgress && !row?.isProcessing">{{
+                    row?.totalPendingPayslips }}</div>
+                  <div *ngIf="row?.isProcessing"><i class="pi pi-spin pi-spinner"></i></div>
+                </td>
+                <td>
+                  <div class="status">
+                    <div *ngIf="isPayrunInProgress(row)" class="in-progress">
+                      <span>{{ payRunStatusType[0] | translate }}</span>
+                    </div>
+                    <div *ngIf="canCompletePayRun(row)" class="approved">
+                      <span>{{ payRunStatusType[2] | translate }}</span>
+                    </div>
+                    <div *ngIf="isPayrunCompleted(row)" class="completed">
+                      <span>{{ payRunStatusType[1] | translate }}</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span (click)="op.toggle($event)" class="material-symbols-rounded settings">settings</span>
+                  <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'"
+                    [hideTransitionOptions]="'100ms'" styleClass="payrun-in-progress-filter-overlay">
+                    <div *ngIf="canCompletePayRun(row)" (click)="onValidateCompletePayRun(row)">{{ 'CompletePayslip' |
+                      translate }}</div>
+                    <div (click)="onEdit(row?.id)">{{ 'EditPayslips' | translate }}</div>
+                    <div (click)="onBulkUpdate(row?.id)">{{ 'BulkUpdate' | translate }}</div>
+                    <div *ngIf="row?.hasPayslipsNeedingRecalculation" (click)="onRecalculatePayslips(row?.id)">
+                      {{ 'ReCalculatePayslips' | translate }}</div>
+                    <div *ngIf="row?.isCustomPayRun" (click)="onDeletePayRun(row?.id)">{{ 'DeletePayRun' | translate }}
+                    </div>
+                  </p-overlayPanel>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <p-paginator (onPageChange)="onPaginatePayrunInProgress($event)" [first]="payRunInProgressPageNumber"
+            [rows]="payRunInProgressRows" [totalRecords]="payrollInProgressPayrunsTotalItems"
+            [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" styleClass="blue" />
+        </ng-container>
+      </p-tabPanel>
+      <p-tabPanel [header]="'Completed' | translate">
+        <ng-container *ngIf="payrunCompleted?.length > 0; else noResults">
+          <p-table [value]="payrunCompleted" [scrollable]="true" styleClass="blue">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="w-250">{{ 'PayPeriods' | translate }}</th>
+                <th class="w-120" pSortableColumn="endDate">{{ 'ToDate' | translate }}<p-sortIcon field="endDate" />
+                </th>
+                <th class="w-120">{{ 'All' | translate }}</th>
+                <th *ngFor="let paymentMethod of paymentMethodsForCompany" class="w-120">{{ paymentMethod }}</th>
+                <th class="w-90">{{ 'Total' | translate }}</th>
+                <th class="w-50"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+              <tr>
+                <td>
+                  <div class="bold">
+                    {{ ((row?.payFrequency) | payPeriodDescription : row?.name) ?? 'Custom' }}</div>
+                </td>
+                <td>{{ row?.endDate | date:'dd MMM yyyy' }}</td>
+                <td>
+                  <div class="column">
+                    <div>{{ row?.all }}</div>
+                    <div>
+                      <i class="pi pi-file-excel" tooltipPosition="top" [pTooltip]="'Download Excel Format' | translate"
+                        (click)="generatePayRunExcelExport(row?.id, 'all')"></i>
+                      <i class="pi pi-file-pdf" tooltipPosition="top" [pTooltip]="'Download PDF Format' | translate"
+                        (click)="generatePayRunPdfExport(row?.id, 'all')"></i>
+                    </div>
+                  </div>
+                </td>
+                <ng-container *ngFor="let paymentMethod of paymentMethodsForCompany">
+                  <td *ngIf="paymentMethod === 'EFT'">
+                    <div class="column">
+                      <div *ngIf="getCountOfPaymentMethods(paymentMethod, row?.id) as count">
+                        {{ count !== 0 ? count : '' }}</div>
+                      <div *ngIf="getCountOfPaymentMethods(paymentMethod, row?.id) > 0">
+                        <i class="pi pi-file-excel" tooltipPosition="top"
+                          [pTooltip]="'Download ' + paymentMethod + ' Excel Format' | translate"
+                          (click)="generatePayRunExcelExport(row?.id, paymentMethod)"></i>
+                        <i class="pi pi-file-pdf" tooltipPosition="top"
+                          [pTooltip]="'Download ' + paymentMethod + ' PDF Format' | translate"
+                          (click)="generatePayRunPdfExport(row?.id, paymentMethod)"></i>
+                        <div
+                          *ngIf="(etfSetup?.type !== null) && ( loggedInUser?.canExportEFT === true || loggedInUser?.role <= 3)"
+                          title="{{ 'EFTExport' | translate }}">
+                          <!-- (click)="openEFTModal(eftExport, row?.id)" -->
+                          <img *ngIf="etfSetup?.type === 1" [src]="imgPath + 'banks/fnb.png'" />
+                          <img *ngIf="etfSetup?.type === 2" [src]="imgPath + 'banks/standardbank.png'" />
+                        </div>
+                      </div>
+                      <span *ngIf="getCountOfPaymentMethods(paymentMethod, row?.id) === 0"></span>
+                    </div>
+                  </td>
+                  <td *ngIf="paymentMethod !== 'EFT'">
+                    <div class="column">
+                      <div *ngIf="getCountOfPaymentMethods(paymentMethod, row?.id) as count">
+                        {{ count !== 0 ? count : '' }}</div>
+                      <div *ngIf="getCountOfPaymentMethods(paymentMethod, row?.id) > 0">
+                        <i class="pi pi-file-excel" tooltipPosition="top"
+                          [pTooltip]="'Download ' + paymentMethod + ' Excel Format' | translate"
+                          (click)="generatePayRunExcelExport(row?.id, paymentMethod)"></i>
+                        <i class="pi pi-file-pdf" tooltipPosition="top"
+                          [pTooltip]="'Download ' + paymentMethod + ' PDF Format' | translate"
+                          (click)="generatePayRunPdfExport(row?.id, paymentMethod)"></i>
+                      </div>
+                      <span *ngIf="getCountOfPaymentMethods(paymentMethod, row?.id) === 0"></span>
+                    </div>
+                  </td>
+                </ng-container>
+                <td><b>{{ row?.total | currencySymbol }}</b></td>
+                <td class="w-50">
+                  <span (click)="op.toggle($event)" class="material-symbols-rounded settings">settings</span>
+                  <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'"
+                    [hideTransitionOptions]="'100ms'" styleClass="payrun-completed-filter-overlay">
+                    <div (click)="onEdit(row?.id)">{{ 'ViewPayslips' | translate }}</div>
+                    <div *ngIf="currentCountryISOCode === countryISOCodeType.PHL" (click)="noImplementation()">
+                      {{ 'DownloadJournalEntries' | translate }}
+                    </div>
+                    <!--  (click)="downloadJournalEntries(row?.id)" -->
+                    <!-- note: verify if we include this -->
+                    <div *ngIf="row?.directPaymentsEnabled && row?.payRunPaymentId === null"
+                      (click)="onSchedulePayment(row?.id)">
+                      {{ 'SchedulePayment' | translate }}</div>
+                    <div *ngIf="row?.directPaymentsEnabled && row?.payRunPaymentId"
+                      (click)="onViewPayment(row?.payRunPaymentId)">
+                      {{ 'ViewPayment' | translate }}</div>
+                    <div *ngIf="!row?.isReleasedToSelfService" (click)="noImplementation()">{{ 'ReleasePayslips' |
+                      translate }}</div>
+                    <!-- (click)="showReleasePayRun(row?.id)" -->
+                    <div (click)="onUndoPayRun(row?.id)">{{ 'UndoPayRun' | translate }}</div>
+                    <!-- (click)="showUndoPayRun(undoPayRun, row?.id)" -->
+                    <div *ngIf="currentCountryISOCode === countryISOCodeType.MEX">{{ 'SATSubmissions' | translate }}
+                    </div>
+                    <!-- (click)="satSumbissions(row?.id)" -->
+                    <!-- note: verify if we include this -->
+                    <!-- <div *ngIf="row?.xeroTenant !== null && row?.xeroInvoiceId === null" (click)="noImplementation()">
+                     (click)="syncWithZero(row?.id)"
+                      {{ 'SyncWithXero' | translate }}
+                    </div> -->
+                    <!-- note: verify if we include this -->
+                    <!-- <div *ngIf="row?.xeroTenant !== null && row?.xeroInvoiceId !== null" (click)="noImplementation()">
+                       href="{{row?.xeroUrl}}"  target="_blank" -->
+                    <!-- <img src="assets/images/xero.png" width="32" height="32" style="width:32px;height:32px;" />
+                      {{ 'ViewInXero' | translate }}
+                    </div> -->
+                    <!-- note: verify if we include this -->
+                    <!-- <div *ngIf="row?.xeroTenant !== null && row?.xeroInvoiceId !== null" (click)="noImplementation()">
+                      (click)="syncWithZero(row?.id)" -->
+                    <!-- <img src="assets/images/xero.png" style="width:32px;height:32px;" /> -->
+                    <!-- {{ 'ReSyncWithXero' | translate }}
+                    </div> -->
+                  </p-overlayPanel>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <p-paginator (onPageChange)="onPaginatePayrunComplete($event)" [first]="payRunCompletePageNumber"
+            [rows]="payRunCompleteRows" [totalRecords]="payrollCompletePayrunsTotalItems"
+            [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" styleClass="blue" />
+        </ng-container>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <p-dialog [(visible)]="customPayRunModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+    [modal]="true" styleClass="blue" closeIcon="false" [style]="{width: '450px'}" (onHide)="customPayRunModal = false">
+    <div class="header">
+      <div>
+        <h4>{{ 'CreateCustomPayRun' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="customPayRunModal = !customPayRunModal">close</span>
+    </div>
+    <div class="content" [formGroup]="createCustomPayrunForm">
+      <div class="form-input-field w-auto">
+        <div><span>{{ 'Employees' | translate }}</span></div>
+        <p-multiSelect appendTo="body" formControlName="employees" [options]="employeeOptions" [filter]="true"
+          [selectionLimit]="selectionLimit" [maxSelectedLabels]="maxSelectedLabels" optionLabel="label"
+          optionValue="value" [placeholder]="'Select' | translate"
+          styleClass="blue {{ createCustomPayrunForm.get('employees').value?.length <= 2 ? 'h-40' : 'h-auto' }}"
+          display="chip" [showClear]="true" (onChange)="onChangeEmployees($event)">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ createCustomPayrunForm.get('employees')?.value ?
+                createCustomPayrunForm.get('employees')?.value?.length : 0 }} </b>
+              <span>{{ 'item' | translate }} {{ (createCustomPayrunForm.get('employees')?.value ?
+                createCustomPayrunForm.get('employees')?.value?.length
+                : 0)
+                > 1 ? 's' : '' }}
+                {{ 'selected' | translate }}</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Name' | translate }}</span></div>
+        <input type="text" formControlName="name" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Date' | translate }}</span></div>
+        <p-calendar appendTo="body" [showIcon]="true" formControlName="date" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button [disabled]="!createCustomPayrunForm.valid" pButton class="form-button-blue normal"
+          (click)="onSaveCustomPayrun()">{{ 'Save' | translate }}</button>
+        <button pButton class="form-button-default normal" (click)="customPayRunModal = false">{{ 'Cancel' | translate
+          }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-dialog [(visible)]="validateCompletePayRunModal" [closeOnEscape]="true" [dismissableMask]="true"
+    [showHeader]="false" [modal]="true" styleClass="blue" closeIcon="false" [style]="{width: '450px'}">
+    <div class="header">
+      <div>
+        <h4>{{ 'CompletePayRun' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded"
+        (click)="validateCompletePayRunModal = !validateCompletePayRunModal">close</span>
+    </div>
+    <div class="content" [formGroup]="completePayrunForm">
+      <h5>{{ completePayRunConfirmationMessage | translate }}</h5>
+      <div *ngIf="currentCountryISOCode === countryISOCodeType.PHL" class="form-input-field">
+        <div><span>{{ 'Date' | translate }}</span><span>*</span></div>
+        <p-calendar appendTo="body" [showIcon]="true" formControlName="payDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" panelStyleClass="complete-custom-pay-run-calendar" styleClass="blue"
+          tabindex="-1"></p-calendar>
+        <div class="error">
+          <span *ngIf="getRequiredValidation('payDate', form)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'ReleasePayslips' | translate }}</span></div>
+          <p-inputSwitch formControlName="completePayRunReleasePayslips" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div *ngIf="hascompletePayRunShowSchedulePayment" class="form-input-field">
+          <div><span>{{ 'SchedulePayment' | translate }}</span></div>
+          <p-inputSwitch formControlName="completePayRunSchedulePayment" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+      </div>
+      <div *ngIf="hasPreviousPayments" class="form-input-field">
+        <div><span>{{ 'CancelPreviousPayment' | translate }}</span></div>
+        <p-inputSwitch formControlName="completePayRunCancelPreviousPayment" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+      <p *ngIf="completePayRunSatSubmissionMessage !== null 
+        && completePayRunSatSubmissionMessage !== ''">
+        {{ completePayRunSatSubmissionMessage | translate }}
+      </p>
+      <div class="form-buttons">
+        <button [disabled]="!completePayrunForm.valid" pButton class="form-button-blue normal"
+          (click)="onCompletePayRun()">{{ 'Save' | translate }}</button>
+        <button pButton class="form-button-default normal" (click)="validateCompletePayRunModal = false">
+          {{ 'Cancel' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <ng-template #loading>
+    <div class="loading-container blue">
+      <i class="pi pi-spin pi-spinner"></i>
+      <span>{{ 'Loading' | translate }}</span>
+    </div>
+  </ng-template>
+  <p-confirmDialog #cd [style]="{width: '420px', 'min-height': '175px'}">
+    <ng-template pTemplate="footer">
+      <button *ngIf="confirmationSeverityStatus === confirmationSeverity.Success" pButton
+        class="form-button-success normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button *ngIf="confirmationSeverityStatus === confirmationSeverity.Error" pButton class="form-button-red normal"
+        (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <p-dialog [header]="'Info' | translate" [modal]="true" styleClass="info-modal" [(visible)]="reCalculateInfoModal"
+    [style]="{ width: '440px'}">
+    <p>{{ 'PayslipsWillNowBeRegeneratedForThisPayRun' | translate }}</p>
+    <ng-template pTemplate="footer">
+      <div class="form-buttons">
+        <button tabindex="-1" pButton class="form-button-default normal" (click)="reCalculateInfoModal = false">{{
+          'Close' | translate
+          }}</button>
+      </div>
+    </ng-template>
+  </p-dialog>
+  <p-dialog [header]="'ReleasePayRunToSelfService' | translate" [modal]="true" styleClass="info-modal"
+    [(visible)]="releasePayslipModal" [style]="{ width: '440px'}">
+    <h5>{{ 'AreyousureyouwanttoreleasethePayRuntoSelfService' | translate }}</h5>
+    <p *ngIf="selfServiceEnabledCount > 0">
+      {{ 'ThereAreEmployeesInThePayRunThatHasSelfServiceDisabled' | translate }}
+    </p>
+    <ng-template pTemplate="footer">
+      <div class="form-buttons">
+        <button pButton class="form-button-blue normal" (click)="onReleasePayslip()">{{
+          'Release' | translate
+          }}</button>
+        <button pButton class="form-button-default normal" (click)="releasePayslipModal = false">{{
+          'Close' | translate
+          }}</button>
+      </div>
+    </ng-template>
+  </p-dialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+</div>

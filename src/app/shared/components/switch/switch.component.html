@@ -1,0 +1,7 @@
+<div *ngIf="field" class="form-input-field">
+  <div>
+    <span>{{ field.name | translate }}</span>
+    <span *ngIf="field.required">*</span>
+  </div>
+  <p-inputSwitch [formControl]="registerFormControl(field)" (onChange)="onChange($event)" styleClass="success"></p-inputSwitch>
+</div>

@@ -1,0 +1,34 @@
+@import "src/styleguide/index";
+
+.payroll-submissions-annual-coida-container {
+  .content {
+    max-width: 70%;
+
+    .form-button-blue {
+      @include form-button-blue;
+    }
+  
+    .form-input-field {
+      @include form-input-field;
+    }
+  
+    .form-input-field-group {
+      @include form-input-field-group;
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-submissions-annual-coida-container {
+    .p-multiselect {
+      @include multiselect;
+      width: 100%;
+      max-height: 40%;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

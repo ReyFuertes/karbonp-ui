@@ -1,0 +1,51 @@
+@import "src/styleguide/index";
+
+.reports-list-container {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > div {
+      margin-right: 20px;
+      margin-bottom: 30px;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .menu-item {
+      display: flex;
+      flex-direction: row;
+      padding: 10px;
+      justify-content: flex-start;
+      align-items: center;
+      width: 30%;
+      border: 1px solid var(--colour-element-gray-4);
+      border-radius: 4px;
+      margin-bottom: 30px;
+      cursor: pointer;
+      
+      &:nth-child(3n + 1),
+      &:nth-child(3n + 2) {
+        margin-right: 30px;
+      }
+
+      div {
+        margin-left: 15px;
+        font-weight: 700;
+      }
+
+      &:hover {
+        background-color: var(--colour-element-white-bg-1);
+      }
+    }
+  }
+
+  .form-button-cyan {
+    @include form-button-cyan;
+  }
+}

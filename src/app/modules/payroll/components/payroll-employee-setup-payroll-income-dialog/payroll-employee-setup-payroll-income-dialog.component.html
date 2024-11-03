@@ -1,0 +1,339 @@
+<p-dialog [(visible)]="showIncomeModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+  [modal]="true" styleClass="blue income-modal" closeIcon="false" [style]="{ width: '545px', 'min-height': '200px' }"
+  (onHide)="showIncomeModal = false" (onHide)="onHide()">
+  <div class="header">
+    <div>
+      <h4>{{ incomeModalTitle | translate }}</h4>
+    </div>
+    <span class="material-symbols-rounded" (click)="showIncomeModal = !showIncomeModal">close</span>
+  </div>
+  <div *ngIf="incomeInputSetupForm.get('incomeInputType').value" class="content" [formGroup]="incomeInputSetupForm">
+    <ng-container *ngIf="showAmountFields">
+      <div class="form-input-field">
+        <div><span>{{ 'Amount' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Absent">
+      <div class="form-input-field">
+        <div><span>{{ 'AmountOfDays' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Late">
+      <div class="form-input-field">
+        <div><span>{{ 'TotalMinutes' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.OfficialBusiness">
+      <div class="form-input-field">
+        <div><span>{{ 'AmountOfDays' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="philippinesHourIncomeInputs.includes(incomeInputSetupForm.get('incomeInputType').value)">
+      <div class="form-input-field">
+        <div><span>{{ 'Hours' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <div *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Custom 
+        && (customPaytype?.inputType === inputType.FixedAmount 
+        || customPaytype?.inputType === inputType.MonthlyForNonMonthlyEmployees)">
+      <div>
+        <span>{{'Amount' | translate }}: {{ customPaytype?.amount?.toString() | currencySymbol }}</span>
+      </div>
+    </div>
+    <div *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Custom 
+        &&  customPaytype?.inputType === inputType.PercentageOfGross">
+      <div>
+        <span>{{'PercentageOfGross' | translate }}: {{ customPaytype?.amount}}%</span>
+      </div>
+    </div>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.ChristmasBonus">
+      <div *ngIf="currentCountryISOCode === countryISOCodeType.MEX">
+        <span>{{ 'ChristmasBonusDaysPaid' | translate }}: {{ christmasBonusDaysToUse }} </span>
+      </div>
+      <ng-container *ngIf="currentCountryISOCode === countryISOCodeType.MEX">
+        <div class="form-input-field">
+          <div><span>{{ 'Amount' | translate }}</span></div>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div> <!-- implemente validation error -->
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.ArbitrationAward">
+      <div class="form-input-field">
+        <div><span>{{ 'NonTaxableAmount' | translate }}</span></div>
+        <input type="number" formControlName="nonTaxableAmount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'TaxableAmount' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'DirectiveNumber' | translate }}</span></div>
+        <input type="number" formControlName="directiveNumber" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.ArbitrationAward">
+      <div class="form-input-field">
+        <div><span>{{ 'NonTaxableAmount' | translate }}</span></div>
+        <input type="number" formControlName="nonTaxableAmount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'TaxableAmount' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'DirectiveNumber' | translate }}</span></div>
+        <input type="number" formControlName="directiveNumber" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.LeavePaidOut 
+        || (incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType?.LeaveSetup)">
+      <ng-container *ngIf="currentCountryISOCode !== countryISOCodeType.PHL 
+          || leaveSetup.timeOffSystemType !== timeOffSystemType.MaternityLeave">
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideCalculatedRate' | translate }}</span></div>
+          <p-inputSwitch formControlName="overrideCalculatedRate" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <ng-container *ngIf="incomeInputSetupForm.get('overrideCalculatedRate').value 
+            && currentCountryISOCode === countryISOCodeType.MEX">
+          <div class="form-input-field">
+            <div><span>{{ 'Rate' | translate }}</span></div>
+            <input type="number" formControlName="amount" pInputText class="blue" />
+            <div class="error"></div> <!-- implemente validation error -->
+          </div>
+        </ng-container>
+        <ng-container *ngIf="incomeInputSetupForm.get('overrideCalculatedRate').value 
+            && (currentCountryISOCode === countryISOCodeType.ZA 
+            || currentCountryISOCode === countryISOCodeType.PHL)">
+          <div class="form-input-field">
+            <div><span>{{ 'RatePerHour' | translate }}</span></div>
+            <input type="number" formControlName="amount" pInputText class="blue" />
+            <div class="error"></div> <!-- implemente validation error -->
+          </div>
+        </ng-container>
+        <div class="form-input-field">
+          <div><span>{{ 'LeaveDaysTaken' | translate }}</span></div>
+          <input type="number" formControlName="leaveDaysPaidOut" pInputText class="blue" />
+          <div class="error"></div> <!-- implemente validation error -->
+        </div>
+      </ng-container>
+      <ng-container *ngIf="currentCountryISOCode === countryISOCodeType.PHL 
+          && leaveSetup.timeOffSystemType === timeOffSystemType.MaternityLeave">
+        <div class="form-input-field">
+          <div><span>{{ 'GrossPayOverride' | translate }}</span></div>
+          <input type="number" formControlName="maternityGrossPayOverride" pInputText class="blue" />
+          <div class="error"></div> <!-- implemente validation error -->
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="showQuantityFields">
+      <div class="form-input-field">
+        <div><span>{{ 'Quantity' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div> <!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="customPaytype?.inputType === inputType.CustomRateQuantity 
+        && customPaytype?.differentRateForEachEmployee">
+      <div class="form-input-field">
+        <div><span>{{ 'CustomRate' | translate }}</span></div>
+        <input type="number" formControlName="customRate" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Commission">
+      <div class="form-input-field">
+        <div><span>{{ 'IsRecurring' | translate }}</span></div>
+        <p-inputSwitch formControlName="recurringIncome" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Commission 
+        && currentCountryISOCode === countryISOCodeType.MEX">
+      <div class="form-input-field">
+        <div><span>{{ 'IsExtraOrdinaryIncome' | translate }}</span></div>
+        <p-inputSwitch formControlName="isExtraOrdinaryIncome" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Retirement 
+        && currentCountryISOCode === countryISOCodeType.PHL">
+      <div class="form-input-field">
+        <div><span>{{ 'PercentageOfBaseEarnings' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div><!-- implemente validation error -->
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.NightDifferential 
+        && currentCountryISOCode === countryISOCodeType.PHL">
+      <div class="form-input-field">
+        <div><span>{{ 'NightDifferentialOption' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="nightDifferentialPaymentOptions"
+          formControlName="nightDifferentialOption" optionLabel="label" optionValue="value"
+          [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div><!-- note: implement error -->
+      </div>
+      <div
+        *ngIf="incomeInputSetupForm.get('nightDifferentialOption').value === nightDifferentialPaymentOption.PercentageOfBasic"
+        class="form-input-field">
+        <div>
+          <span>{{ 'PercentageOfBaseEarnings' | translate }}</span>
+          <span>({{ 'Minimum' | translate }}: {{ philippinesRegulatedSetting?.nightDifferentialContributionPercentage
+            }}%)</span>
+        </div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div><!-- implemente validation error -->
+      </div>
+      <div *ngIf="incomeInputSetupForm.get('nightDifferentialOption').value === nightDifferentialPaymentOption.Hours">
+        <div class="form-input-field">
+          <div><span>{{ 'Hours' | translate }}</span></div>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div><!-- implemente validation error -->
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="incomeInputSetupForm.get('incomeInputType').value === payrollIncomeType.Severance 
+        && currentCountryISOCode !== countryISOCodeType.ZA">
+      <ng-container *ngIf="currentCountryISOCode === countryISOCodeType.MEX">
+        <div class="form-input-field">
+          <div><span>{{ 'SeveranceType' | translate }}</span></div>
+          <p-dropdown appendTo="body" [options]="severanceTypeOptions" formControlName="severanceType"
+            optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" styleClass="blue"
+            [showClear]="true" [filter]="true"></p-dropdown>
+          <div class="error"></div><!-- note: implement error -->
+        </div>
+      </ng-container>
+      <ng-container *ngIf="currentCountryISOCode === countryISOCodeType.PHL">
+        <div class="form-input-field">
+          <div><span>{{ 'SeveranceType' | translate }}</span></div>
+          <p-dropdown appendTo="body" [options]="severanceTypeOptions" formControlName="severanceType"
+            optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" styleClass="blue"
+            [showClear]="true" [filter]="true"></p-dropdown>
+          <div class="error"></div><!-- note: implement error -->
+        </div>
+      </ng-container>
+      <ng-container *ngIf="currentCountryISOCode === countryISOCodeType.MEX">
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideDaysToPayOut' | translate }}</span></div>
+          <input type="number" formControlName="severanceLeaveDaysPaidOutOverride" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideAguinaldo' | translate }}</span></div>
+          <input type="number" formControlName="severanceChristmasBonusOverride" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'ApplyVacationPremiumToAllLeave' | translate }}</span></div>
+          <p-inputSwitch formControlName="severanceApplyVacationPremiumToFullLeaveAmount"
+            styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+      </ng-container>
+
+      <div *ngIf="incomeInputSetupForm.get('severanceType').value === severanceType.Liquidation">
+        <div class="form-input-field">
+          <div><span>{{ 'UsePartialYearsOfService' | translate }}</span></div>
+          <p-inputSwitch formControlName="severanceUsePartialYearsForServiceLength" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'CompensationTwentyDaysPerYear' | translate }}</span></div>
+          <p-inputSwitch formControlName="compensationTwentyDaysPerYear"
+            (onChange)="toggleCompensationTwentyDaysPerYear()" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideCompensationTwentyDaysPerYear' | translate }}</span></div>
+          <input type="number" formControlName="overrideSeveranceCompensationTwentyDaysPerYear" pInputText
+            class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'IndemnityNinetyDays' | translate }}</span></div>
+          <p-inputSwitch formControlName="indemnityNinetyDays" (onChange)="toggleSeveranceIndemnityNinetyDays()"
+            styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideIndemnityNinetyDays' | translate }}</span></div>
+          <input type="number" formControlName="overrideSeveranceIndemnityNinetyDays" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'SeniorityPremium' | translate }}</span></div>
+          <p-inputSwitch formControlName="seniorityPremium" (onChange)="toggleSeniorityPremium()"
+            styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideSeniorityPremium' | translate }}</span></div>
+          <input type="number" formControlName="overrideSeveranceSeniorityPremium" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div *ngIf="incomeInputSetupForm.get('severanceType').value === severanceType.InVoluntary"
+        class="form-input-field">
+        <div><span>{{ 'SeparationPay' | translate }}</span></div>
+        <input type="number" formControlName="separationPay" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+
+      <ng-container *ngIf="currentCountryISOCode === countryISOCodeType.PHL">
+        <div class="form-input-field">
+          <div><span>{{ 'PayThirteenthMonth' | translate }}</span></div>
+          <p-inputSwitch formControlName="payThirteenthMonthPay" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'SettleLoanBalance' | translate }}</span></div>
+          <p-inputSwitch formControlName="settleLoanBalance" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'CalculateTaxAndIncludeInRefund' | translate }}</span></div>
+          <p-inputSwitch formControlName="calculateTaxAndIncludeInRefund" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <!-- 
+      <div *ngIf="employeesWithInputType.length">
+        <div class="form-group col-sm-12">
+          <label>{{'Warning' | translate}}: {{ 'WarningPreExistingValues' | translate}}</label>
+          <label>{{'Employees' | translate}}: <span
+              *ngFor="let employee of employeesWithInputType; index as i">{{employee}}{{ (i + 1) ==
+              employeesWithInputType.length ? '.' : ','}} </span></label>
+        </div>
+      </div> -->
+    <ng-template #loading>
+      <div class="loading-container blue">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading..</span>
+      </div>
+    </ng-template>
+    <div class="form-buttons">
+      <button pButton class="form-button-blue normal" (click)="onSave()">
+        {{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="showIncomeModal = false;">
+        {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>

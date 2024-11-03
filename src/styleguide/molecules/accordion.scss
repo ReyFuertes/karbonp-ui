@@ -1,0 +1,9 @@
+@mixin accordion {
+  .p-accordion-content {
+    padding: 20px;
+  }
+
+  .p-accordion-header .p-accordion-header-link {
+    padding: 0.7rem;
+  }
+}

@@ -1,0 +1,41 @@
+@import "src/styleguide/index";
+
+.payroll-submissions-philippines-1601c-container {
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-buttons {
+    @include form-buttons;
+    justify-content: flex-end;
+  }
+  
+  .form-button-blue {
+    @include form-button-blue;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+}
+
+::ng-deep {
+  .payroll-submissions-philippines-1601c-container {
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+
+    .p-inputswitch {
+      @include input-switch;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+  }
+}

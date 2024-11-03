@@ -1,0 +1,112 @@
+@import "src/styleguide/index";
+
+.detailed-payroll-report-container {
+  .form-buttons {
+    @include form-buttons;
+    justify-content: flex-start;
+  }
+
+  .form-button-cyan {
+    @include form-button-cyan;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+}
+
+::ng-deep {
+  .detailed-payroll-report-container {
+    .p-dialog {
+      @include dialog;
+
+      .form-input-field {
+        @include form-input-field;
+      }
+    }
+
+    .p-multiselect {
+      @include multiselect;
+
+      .p-multiselect-token-label,
+      .p-multiselect-label:not(.p-placeholder) {
+        color: var(--colour-element-white);
+
+        .p-icon-wrapper {
+          color: var(--colour-element-white)
+        }
+      }
+    }
+
+    .export-template-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+
+      @include export;
+    }
+
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+      width: 995px;
+
+      .p-datatable-thead>tr>th,
+      .p-datatable-tbody>tr>td {
+        line-height: 15px;
+        white-space: nowrap;
+
+        &:last-child {
+          text-align: left;
+        }
+      }
+
+      p-paginator {
+        @include paginator;
+
+        .p-paginator {
+          justify-content: flex-end;
+          padding: 0.5rem;
+
+          .p-paginator-pages .p-paginator-page.p-highlight {
+            background-color: var(--colour-element-cyan-1);
+            color: var(--colour-element-white);
+          }
+        }
+
+        .p-dropdown {
+          min-width: 40px;
+        }
+      }
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .filter-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .header .form-input-field {
+      @include form-input-field;
+      width: 32%;
+
+      &.w-auto {
+        width: 66%;
+      }
+
+      &.w-32 {
+        width: 32%;
+      }
+    }
+  }
+}

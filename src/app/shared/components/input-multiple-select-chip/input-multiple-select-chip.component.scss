@@ -1,0 +1,69 @@
+@import "src/styleguide/index";
+
+.input-multiple-select-chip-container {
+  @include input-multiple-chip;
+  margin-bottom: 15px;
+
+  .container {
+    &.orange {
+      &:hover {
+        border: 1px solid var(--colour-element-orange-1);
+      }
+    }
+
+    &.green {
+      &:hover {
+        border: 1px solid var(--colour-element-green-1);
+      }
+    }
+
+    &.red {
+      &:hover {
+        border: 1px solid var(--colour-element-red-1);
+      }
+    }
+
+    .form-input-field {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.no-results {
+  font-size: 14px;
+  color: var(--colour-element-gray-1);
+}
+
+.loader {
+  padding: 10px;
+}
+
+::ng-deep {
+  .input-multiple-select-chip-search.p-overlaypanel {
+    @include overlay-panel;
+
+    .p-overlaypanel-content {
+      max-height: 250px;
+      overflow: hidden;
+
+      .search-options {
+        min-height: 40px;
+      }
+    }
+  }
+
+  .input-multiple-select-chip-container {
+    .no-results-found {
+      margin-top: 0;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .p-inputtext {
+      padding: 10px;
+      border: none !important;
+    }
+  }
+}

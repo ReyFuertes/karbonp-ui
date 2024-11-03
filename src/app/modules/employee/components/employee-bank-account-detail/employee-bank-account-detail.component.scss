@@ -1,0 +1,18 @@
+@import "src/styleguide/index";
+
+.employee-bank-account-detail-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .form-input-field {
+    width: 30%;
+    margin-right: 30px;
+  }
+
+  .form-input-field-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}

@@ -1,0 +1,244 @@
+<div class="employee-jobs-details-container">
+  <div class="column-left">
+    <div class="summary form-input-detail-fields" >
+      <div class="header">
+        <div>
+          <h3>{{ 'Basics' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+      </div>
+      <ng-container *ngIf="actionState === 'edit' && currentSection === 'summary'; else summaryView">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Start date' | translate }}</span>
+          </div>
+          <p-calendar [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'"
+            class="success" tooltipPosition="right" pTooltip="When did or will this employee start working at KarbonPay?.
+    
+            It is used to calculate time off allowance. It can be changed later."></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-group-field">
+          <div class="left-field"
+            [ngStyle]="{'width': hasEmploymentStartDate === false ? '100%' : '70%', 'margin-right': hasEmploymentStartDate === false ? '0' : '30px'}">
+            <div class="form-input-field">
+              <div>
+                <span>{{ 'Employment type' | translate }}</span>
+              </div>
+              <p-dropdown [options]="employmentType" optionLabel="label" [placeholder]="'Select' | translate"
+                class="success"></p-dropdown>
+              <div class="error">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="hasEmploymentStartDate === true" class="right-field">
+            <div class="form-input-field">
+              <div>
+                <span>{{ 'End date (optional)' | translate }}</span>
+              </div>
+              <p-calendar [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'"
+                class="success"></p-calendar>
+              <div class="error"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Job title' | translate }}</span>
+          </div>
+          <input type="text" pInputText />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>Office</span>
+          </div>
+          <kp-dropdown-multi-select-option [options]="officesOptions"
+            [label]="'Offices assigned' | translate"></kp-dropdown-multi-select-option>
+          <div class="error"></div>
+        </div>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveChanges()">{{ 'Save changes' | translate
+            }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel('summary')">{{ 'Cancel' | translate
+            }}</button>
+        </div>
+      </ng-container>
+      <ng-template #summaryView>
+        <div class="view-fields">
+          <div class="view-fields-display">
+            <div>
+              <div>{{ 'Start Date' | translate }}</div>
+              <div>--</div>
+            </div>
+            <div>
+              <div>{{ 'Employment Type' | translate }}</div>
+              <div>--</div>
+            </div>
+            <div>
+              <div>{{ 'Job Title' | translate }}</div>
+              <div>--</div>
+            </div>
+            <div>
+              <div>{{ 'Office' | translate }}</div>
+              <div>--</div>
+            </div>
+          </div>
+          <div>
+            <span class="material-symbols-rounded" (click)="onEdit('summary');">edit_square</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="account form-input-detail-fields" >
+      <div class="header">
+        <div>
+          <h3>{{ 'Account' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+        <div *ngIf="actionState === 'edit' && currentSection === 'account'">
+          <button pButton class="form-button-default small" (click)="showOffboardDialog = true">{{ ('Offboard' |
+            translate) }} {{ employee?.firstName }}</button>
+          <button pButton class="form-button-red-outlined small" (click)="onDeleteOffboardDialog(employee)">{{ ('Delete'
+            | translate) }} {{ employee?.firstName
+            }}</button>
+        </div>
+      </div>
+      <ng-container *ngIf="actionState === 'edit' && currentSection === 'account'; else accountView">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Status' | translate }}</span>
+          </div>
+          <p-dropdown [options]="statusOptions" [(ngModel)]="accountStatusValue" [placeholder]="'Select' | translate"
+            class="success"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Permissions' | translate }}</span>
+          </div>
+          <p-dropdown [options]="manager" optionLabel="label" placeholder="None" class="success"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveChanges()">{{ 'Save changes' | translate
+            }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel('account')">{{ 'Cancel' | translate
+            }}</button>
+        </div>
+      </ng-container>
+      <ng-template #accountView>
+        <div class="view-fields">
+          <div class="view-fields-display">
+            <div>
+              <div>{{ 'Status' | translate }}</div>
+              <div>{{ (accountStatusLabel ?? '--' | translate) }}</div>
+            </div>
+            <div>
+              <div>{{ 'Permissions' | translate }}</div>
+              <div>--</div>
+            </div>
+          </div>
+          <div>
+            <span class="material-symbols-rounded" (click)="onEdit('account');">edit_square</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="column-right">
+    <div class="team-manager form-input-detail-fields" >
+      <div class="header">
+        <div>
+          <h3>{{ 'Team & Manager' | translate }}</h3>
+          <span class="material-symbols-rounded">lock</span>
+        </div>
+      </div>
+      <ng-container *ngIf="actionState === 'edit' && currentSection === 'team_manager'; else teamManagerView">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Team' | translate }}</span>
+          </div>
+          <kp-dropdown-multi-select-option [options]="teamOptions"
+            label="teams assigned"></kp-dropdown-multi-select-option>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Manager' | translate }}</span>
+          </div>
+          <p-dropdown [options]="manager" optionLabel="label" placeholder="None" class="success"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveChanges()">{{ 'Save changes' | translate
+            }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel('team_manager')">{{ 'Cancel' | translate
+            }}</button>
+        </div>
+      </ng-container>
+      <ng-template #teamManagerView>
+        <div class="view-fields">
+          <div class="view-fields-display">
+            <div>
+              <div>{{ 'Team' | translate }}</div>
+              <div>--</div>
+            </div>
+            <div>
+              <div>{{ 'Manager' | translate }}</div>
+              <div>--</div>
+            </div>
+          </div>
+          <div>
+            <span class="material-symbols-rounded" (click)="onEdit('team_manager');">edit_square</span>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <p-dialog header="{{ 'Offboard' | translate }} {{ employee?.firstName }}" [(visible)]="showOffboardDialog"
+    [dismissableMask]="true" [modal]="true" [style]="{width: '450px'}">
+    <div>
+      <div class="note-text">{{ 'Offboard Modal Note' | translate }}</div>
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'Date of birth' | translate }}</span>
+        </div>
+        <p-calendar tabindex="0" appendTo="body" [showIcon]="true" [placeholder]="'Select Date' | translate"
+          [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'Reason' | translate }}</span>
+        </div>
+        <p-dropdown appendTo="body" [options]="employeeOffboardReasons" [placeholder]="'Select' | translate"
+          class="success" panelStyleClass="success"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field column">
+        <div><span>{{ 'Note' | translate }}</span></div>
+        <textarea class="success" rows="3" [cols]="30" pInputTextarea [autoResize]="true"></textarea>
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-success" (click)="showOffboardDialog = false">{{ 'Submit' | translate
+          }}</button>
+        <button pButton class="form-button-default" (click)="showOffboardDialog = false">{{ 'Cancel' | translate
+          }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-confirmDialog #cd [style]="{width: '450px'}">
+    <ng-template pTemplate="header">
+      <h4>{{ 'Are you sure you want to delete this employee? There is no undo.' | translate }}</h4>
+    </ng-template>
+    <ng-template pTemplate="message">
+      <div>{{ 'Once you delete an employee they re gone forever. You should only use delete if you want to remove all their files and data permanently.' | translate }}</div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+</div>

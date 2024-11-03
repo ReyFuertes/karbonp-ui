@@ -1,0 +1,148 @@
+@import "src/styleguide/index";
+
+.payroll-payruns-detail-container {
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .top {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+
+      >div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        >div {
+          &:first-child {
+            font-size: 20px;
+            font-weight: 700;
+          }
+
+          &:nth-child(2) {
+            color: var(--colour-element-orange-1);
+            font-size: 14px;
+            margin: 0 20px;
+            background-color: var(--colour-element-yellow-1);
+            padding: 0 5px;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+
+    .center {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      padding-top: 20px;
+      border-bottom: 1px solid var(--colour-element-gray-5);
+
+      >div {
+        >div {
+          font-weight: 700;
+
+          &:first-child {
+            font-size: 16px;
+            margin-bottom: 5px;
+          }
+
+          &:nth-child(2) {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+
+    .bottom {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      padding-bottom: 20px;
+      padding-top: 20px;
+
+      >div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+        &:nth-child(2) {
+          justify-content: flex-end;
+        }
+      }
+
+      .form-buttons {
+        @include form-buttons;
+        justify-content: flex-end;
+      }
+
+      .form-input-field {
+        @include form-input-field;
+        display: flex;
+        flex-direction: row;
+
+        > div:first-child {
+          display: flex;
+          align-items: center;
+          height: 40px;
+          margin-right: 10px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .form-button-success {
+    @include form-button-success;
+  }
+}
+
+::ng-deep {
+  .payroll-payruns-detail-container {
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+
+      p-paginator {
+        @include paginator;
+  
+        .p-paginator {
+          justify-content: flex-end;
+          padding: 0.5rem;
+
+          .p-paginator-pages .p-paginator-page.p-highlight {
+            background-color: var(--colour-element-blue-3) !important;
+          }
+        }
+  
+        .p-dropdown {
+          min-width: 40px;
+        }
+      }
+    }
+    
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

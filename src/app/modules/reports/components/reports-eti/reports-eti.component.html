@@ -1,0 +1,84 @@
+<div class="eti-report-container">
+  <div class="header" [formGroup]="form">
+    <h3>{{ 'ETI Report' | translate }}</h3>
+    <p-accordion [activeIndex]="0">
+      <p-accordionTab [header]="'Filter' | translate">
+        <div class="filter-container">
+          <div class="form-input-field w-auto">
+            <div><span>{{ 'Employees' | translate }}</span></div>
+            <p-multiSelect formControlName="employees" [options]="employeeOptions" [filter]="true"
+              [selectionLimit]="selectionLimit" [maxSelectedLabels]="maxSelectedLabels" optionLabel="label"
+              [placeholder]="'Select' | translate"
+              styleClass="cyan filter {{ form.get('employees').value?.length <= 2 ? 'h-40' : 'h-auto' }}" display="chip"
+              [showClear]="true" [selectAll]="false" (onChange)="onChangeEmployees($event)">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('employees')?.value ? form.get('employees')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('employees')?.value ?
+                    form.get('employees')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'FromDate' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="fromDate" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'ToDate' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="toDate" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPeriods' | translate }}</span></div>
+            <p-dropdown [options]="payPeriods" formControlName="payPeriods" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan" [showClear]="true" [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPoints' | translate }}</span></div>
+            <p-dropdown [options]="payPoints" formControlName="payPoints" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan" [showClear]="true" [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div class="form-buttons">
+            <button pButton class="form-button-cyan normal loader" (click)="onFilter()">
+              <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+              <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Filter' | translate }}</span>
+            </button>
+            <button pButton class="form-button-default normal">{{ 'Reset' | translate }}</button>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="content">
+    <div class="table-header-actions-container">
+      <span>{{ 'Export' | translate }}</span>
+      <span class="material-symbols-rounded export" [ngClass]="{'disabled': !isAvailableForExport}"
+        tooltipPosition="top" [pTooltip]="isAvailableForExport ? 'Export information report' : '' | translate"
+        (click)="isAvailableForExport ? onExport() : null">export_notes</span>
+    </div>
+    <p-table [value]="etiReport" [scrollable]="true" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let column of columns">{{ column | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

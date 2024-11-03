@@ -1,0 +1,15 @@
+@import "src/styleguide/index";
+
+.payroll-settings-container {
+  .p-tabview {
+    @include tab-view;
+  }
+}
+
+::ng-deep {
+  .payroll-settings-container {
+    .p-tabview {
+      @include tab-view;
+    }
+  }
+}

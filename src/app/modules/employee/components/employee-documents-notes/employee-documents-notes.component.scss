@@ -1,0 +1,83 @@
+@import "src/styleguide/index";
+
+.employee-documents-notes-container {
+  .form-input-detail-fields {
+    @include form-input-detail-fields;
+
+    background-color: var(--colour-element-white-bg-2);
+    position: relative;
+    padding: 25px 0 20px 25px;
+    border: 1px solid var(--colour-element-gray-3);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+
+    .view-fields-display {
+      width: 100%;
+    }
+
+    .form-edit-fields {
+      flex-direction: column;
+      margin-right: 30px !important;
+
+      .form-input-field {
+        &:not(:last-child) {
+          margin-right: 30px !important;
+        }
+      }
+    }
+
+    .add-document-note {
+      display: flex;
+      align-items: center;
+      justify-content: right;
+      padding: 0 40px;
+
+      span:hover {
+        cursor: pointer;
+        background-color: var(--colour-element-green-1);
+        border-radius: 4px;
+        color: var(--colour-element-white);
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .employee-documents-notes-container {
+    .p-dialog {
+      @include confirm-dialog;
+    }
+
+    .p-datatable-employee-documents-notes {
+      @include datatable;
+      margin-right: 0;
+    }
+
+    p-fileupload {
+      @include file-upload;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 15px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

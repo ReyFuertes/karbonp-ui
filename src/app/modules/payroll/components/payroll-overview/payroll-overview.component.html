@@ -1,0 +1,103 @@
+<div class="payroll-overview-container" >
+  <div class="top-header">
+    <div>
+      <h3>{{ 'Overview' | translate }}</h3>
+    </div>
+    <button pButton class="form-button-blue normal" (click)="gotoMetrics()">{{ 'Metrics' | translate }}</button>
+  </div>
+  <div class="header" [formGroup]="form">
+    <div class="filter-container">
+      <div class="form-input-field">
+        <div><span>{{ 'FromDate' | translate }}</span></div>
+        <p-calendar [showIcon]="true" formControlName="fromDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" class="blue"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'ToDate' | translate }}</span></div>
+        <p-calendar [showIcon]="true" formControlName="toDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" class="blue"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span></span></div>
+        <div class="form-buttons">
+          <button pButton class="form-button-blue normal loading" (click)="onFilter()">
+            <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+            <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Filter' | translate }}</span>
+          </button>
+          <button pButton class="form-button-default normal" (click)="onReset()">{{ 'Reset' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="thumbnail-3cols-graphs">
+      <div class="gross-pay">
+        <div>
+          <span class="material-symbols-rounded">universal_currency_alt</span>
+          <span>{{ (grossSalaryForFinancialYear?.grossPercentage ?? 0) | percentSymbol }}</span>
+        </div>
+        <div>
+          <span>{{ 'GrossPay' | translate }}</span>
+          <span>{{ payRunsPerMonthOverview?.grossPay.toString() | currencySymbol }}</span>
+        </div>
+      </div>
+      <div class="tax">
+        <div>
+          <span class="material-symbols-rounded">approval_delegation</span>
+          <span>{{ (grossSalaryForFinancialYear?.taxPercentage ?? 0) | percentSymbol }}</span>
+        </div>
+        <div>
+          <span>{{ 'Tax' | translate }}</span>
+          <span>{{ payRunsPerMonthOverview?.tax.toString() | currencySymbol }}</span>
+        </div>
+      </div>
+      <div class="net-pay">
+        <div>
+          <span class="material-symbols-rounded">universal_currency</span>
+          <span>{{ (grossSalaryForFinancialYear?.netPercentage ?? 0) | percentSymbol }}</span>
+        </div>
+        <div>
+          <span>{{ 'NetPay' | translate }}</span>
+          <span>{{ payRunsPerMonthOverview?.netPay.toString() | currencySymbol }}</span>
+        </div>
+      </div>
+      <div class="employees">
+        <div>
+          <span class="material-symbols-rounded">group</span>
+          <span>{{ (grossSalaryForFinancialYear?.employeePercentage ?? 0) | percentSymbol }}</span>
+        </div>
+        <div>
+          <span>{{ 'Employees' | translate }}</span>
+          <span>{{ payRunsPerMonthOverview?.numberOfEmployees }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="thumbnail-2col-graphs">
+      <div class="gross-pay-graph">
+        <h3>{{ 'GrossPayByMonth' | translate }}</h3>
+        <p-chart type="bar" *ngIf="(isLoadingAsync() | async) === false && chartGrossPayData" [data]="chartGrossPayData" [options]="chartGrossPayOptions"  />
+      </div>
+      <div>
+        <h3>{{ 'PayByPayPoints' | translate }}</h3>
+        <div class="graph-details">
+          <div class="total">
+            <div>
+              <span>{{ payRunsPerMonthOverview?.grossPay.toString() | currencySymbol }}</span>
+              <span>{{ 'TotalGross' | translate }}</span>
+            </div>
+            <div>
+              <span>{{ payRunsPerMonthOverview?.netPay.toString() | currencySymbol }}</span>
+              <span>{{ 'TotalNet' | translate }}</span>
+            </div>
+          </div>
+          <div>
+            <p-chart type="bar" *ngIf="(isLoadingAsync() | async) === false && chartPayByPayData" [data]="chartPayByPayData" height="140px" width="350px"
+              [options]="chartPaybyPayOptions"  />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

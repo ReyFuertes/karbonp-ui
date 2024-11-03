@@ -1,0 +1,20 @@
+<div class="payroll-bulk-update-page-container">
+  <div class="header">
+    <h3>{{ 'BulkUpdate' | translate }}</h3>
+    <button pButton class="form-button-default normal" (click)="onBack()">{{ 'Back' | translate }}</button>
+  </div>
+  <div class="content">
+    <p-tabView styleClass="blue" (onChange)="handleTabChange($event)" [activeIndex]="selectedTabIndex">
+      <p-tabPanel [header]="'BulkUpdate' | translate">
+        <kp-payroll-inprogress-bulk-update [payRunId]="payRunId"></kp-payroll-inprogress-bulk-update>
+      </p-tabPanel>
+      <p-tabPanel [header]="'BulkHoursUpdate' | translate">
+        <kp-payroll-inprogress-bulk-update-hours [payRunId]="payRunId"></kp-payroll-inprogress-bulk-update-hours>
+      </p-tabPanel>
+      <p-tabPanel [header]="'CreateTable' | translate">
+        <kp-payroll-inprogress-bulk-update-create-table
+          [payRunId]="payRunId"></kp-payroll-inprogress-bulk-update-create-table>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

@@ -1,0 +1,199 @@
+@import "src/styleguide/index";
+
+.time-off-overview-container {
+  display: flex;
+  flex-direction: row;
+
+  .left-container {
+    min-width: 665px;
+
+    h3 {
+      margin-bottom: 15px;
+    }
+
+    .time-off-requests-block,
+    .people-out-office-block,
+    .upcoming-time-office {
+      display: flex;
+      align-items: flex-start;
+      border-radius: 4px;
+      color: var(--colour-element-gray-1);
+      font-size: 16px;
+      line-height: 21px;
+      min-height: 80px;
+      margin-bottom: 30px;
+      justify-content: flex-start;
+      flex-direction: column;
+
+      .list-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--colour-element-gray-5);
+        width: 100%;
+        padding-bottom: 10px;
+
+        >div {
+          &:first-child {
+            color: var(--colour-element-white);
+            margin-right: 10px;
+
+            >div {
+              display: flex;
+              background-color: var(--colour-element-orange-1);
+              justify-content: center;
+              align-items: center;
+              border-radius: 50%;
+              width: 40px;
+              height: 40px;
+              font-size: 13px;
+            }
+          }
+
+          &:nth-child(2) {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-direction: column;
+            width: 100%;
+
+            .name {
+              font-weight: 700;
+              font-size: 15px;
+              color: var(--colour-element-black-1);
+            }
+
+            .request-dates {
+              font-size: 14px;
+
+              span {
+                margin-right: 5px;
+
+                &:nth-child(3) {
+                  font-weight: 700;
+                }
+              }
+            }
+          }
+
+          &:nth-child(3) {
+            display: flex;
+            justify-content: flex-end;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+
+  .right-container {
+    width: 300px;
+    margin-left: 25px;
+
+    h4 {
+      white-space: nowrap;
+    }
+
+    .important-dates {
+      display: flex;
+      flex-direction: column;
+
+      .row {
+        display: flex;
+        flex-direction: row;
+
+        .dot {
+          margin: 0 8px;
+
+          span {
+            margin-top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 7px;
+            background-color: var(--colour-element-orange-2);
+          }
+        }
+
+        .left {
+          margin-right: 10px;
+          width: 40%;
+        }
+
+        div {
+          display: flex;
+          flex-direction: row;
+          white-space: normal;
+          margin-bottom: 10px;
+
+          .event {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 20px;
+            margin-top: 1px;
+          }
+
+          >div {
+            &:nth-child(2) {
+              display: flex;
+              flex-direction: column;
+              white-space: normal;
+            }
+          }
+        }
+
+        h5 {
+          font-size: 13px;
+          font-weight: 500;
+          color: var(--colour-element-gray-2);
+        }
+      }
+    }
+
+    .help-faqs {
+      h3 {
+        margin-bottom: 12px;
+      }
+
+      .links>div {
+        display: block;
+        margin-bottom: 1em;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--colour-element-orange-2);
+
+        &:hover {
+          opacity: 0.9;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .loading-container {
+    @include loader;
+
+    i.pi-spinner {
+      font-size: 24px;
+    }
+  }
+}
+
+::ng-deep {
+  .time-off-overview-container {
+    .p-datatable-table {
+      @include datatable;
+      margin-right: 0;
+
+      .p-datatable-tbody>tr>td {
+        &:last-child {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

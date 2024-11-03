@@ -1,0 +1,79 @@
+@import "src/styleguide/index";
+
+.create-account-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  .header {
+    text-align:  center;
+    
+    h1 {
+      margin-top: 30px;
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-top: 8px;
+      margin-bottom: 50px;
+    }
+  }
+
+  .content {
+    span {
+      margin-right: 5px;
+      font-size: 13px;
+  
+      &.link {
+        color: var(--colour-element-blue-2);
+    
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    &:last-child div {
+      text-align: center;
+    }
+
+    button {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+  }
+
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+    width: 100%;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+}
+
+:host ::ng-deep {
+  .p-checkbox {
+    margin-right: 5px;
+
+    .p-checkbox-box {
+      border-radius: 4px;
+    }
+  }
+
+  p-password {
+    @include input-password;
+  }
+}

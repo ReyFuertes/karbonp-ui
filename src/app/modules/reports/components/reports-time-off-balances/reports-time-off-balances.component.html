@@ -1,0 +1,39 @@
+<div class="time-off-balances-report-container">
+  <div class="header" [formGroup]="form">
+    <h2>{{ 'ETIReports' | translate }}</h2>
+    <p-accordion [activeIndex]="0">
+      <p-accordionTab [header]="'Filter' | translate">
+        <div class="filter-container">
+          <div class="form-input-field">
+            <div><span>{{ 'Date' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="date" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Employees' | translate }}</span></div>
+            <p-dropdown [options]="employees" formControlName="employee" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPoints' | translate }}</span></div>
+            <p-dropdown [options]="[]" formControlName="payPoints" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span></span></div>
+            <div class="form-buttons">
+              <button pButton class="form-button-cyan normal">{{ 'Filter' | translate }}</button>
+              <button pButton class="form-button-default normal">{{ 'Reset' | translate }}</button>
+            </div>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="content">
+
+  </div>
+</div>

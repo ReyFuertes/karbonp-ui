@@ -1,0 +1,190 @@
+@import "src/styleguide/index";
+
+.employee-personal-info-personal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .left-details,
+  .right-details {
+    width: 100%;
+  }
+
+  .personal-info,
+  .residential-address,
+  .postal-address,
+  .bank-account-details,
+  .biography,
+  .emergency-contact {
+    background-color: var(--colour-element-white-bg-2);
+    position: relative;
+    padding: 20px 0 20px 25px;
+    border: 1px solid var(--colour-element-gray-3);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    margin-right: 0;
+    transition: height 0.5s;
+    animation-name: fadeIn;
+    animation-duration: 700ms;
+    
+    h3 {
+      color: var(--colour-element-black-1);
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 30px;
+      margin: 0 10px 0 0;
+    }
+
+    >div:first-child {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      &:first-child {
+        margin-bottom: 15px;
+      }
+    }
+
+    .form-edit-fields .header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 15px;
+
+      h4 {
+        margin-bottom: 0;
+        margin-right: 10px;
+      }
+
+      span {
+        color: var(--colour-element-red-0);
+        cursor: pointer;
+      }
+    }
+
+    .content {
+      display: flex;
+    }
+  }
+
+  .form-input-detail-fields {
+    @include form-input-detail-fields;
+  }
+
+  .biography {
+    .view-fields-display {
+      >div {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        height: auto !important;
+
+        &:first-child {
+          margin-bottom: 20px;
+        }
+
+        >div {
+          width: 100% !important;
+          line-height: 25px;
+          height: auto !important;
+          white-space: pre-wrap;
+
+          &:first-child {
+            margin-bottom: 10px;
+            text-transform: inherit !important;
+          }
+        }
+      }
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+
+    .form-button-success {
+      @include form-button-success;
+      width: 150px;
+      margin-right: 10px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+
+
+  &:nth-child(2) {
+    font-weight: 400 !important;
+    color: var(--colour-element-green-1);
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  div.inner-html {
+    display: block !important;
+  }
+
+  .form-button-red {
+    @include form-button-red;
+    margin-right: 15px;
+  }
+}
+
+::ng-deep {
+  .employee-personal-info-personal {
+    .p-confirm-dialog {
+      @include confirm-dialog;
+      
+      .form-button-red {
+        @include form-button-red;
+        margin-right: 15px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+    }
+
+    .view-fields-display p {
+      margin-top: 0;
+    }
+
+    .p-editor-container .p-editor-content .ql-editor {
+      min-height: 200px;
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+    }
+
+    .loading-container {
+      @include loader;
+      min-height: 350px;
+    }
+
+    .p-inputswitch {
+      @include input-switch;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .p-dialog {
+      @include dialog;
+    }
+  }
+}

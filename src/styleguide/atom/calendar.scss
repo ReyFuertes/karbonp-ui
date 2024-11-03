@@ -1,0 +1,330 @@
+@mixin input-calendar {
+  width: 100%;
+  max-width: 100%;
+
+  input.p-inputtext {
+    @include input-field;
+
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right: none !important;
+
+    &:enabled:hover,
+    &:enabled:active,
+    &:enabled:focus {
+      border-color: var(--colour-element-gray-1);
+      box-shadow: none;
+      border-right: none;
+    }
+
+    &:hover~.p-datepicker-trigger,
+    &:active~.p-datepicker-trigger,
+    &:focus~.p-datepicker-trigger {
+      border-color: var(--colour-element-gray-1);
+      box-shadow: none;
+    }
+  }
+
+  .p-datepicker table td {
+    padding: 0;
+  }
+
+  .p-datepicker td>span {
+    margin: 0;
+  }
+
+  .p-datepicker,
+  .p-datepicker table {
+    min-width: auto;
+  }
+
+  .p-datepicker-trigger.p-button {
+    color: var(--colour-element-gray-1);
+    padding: 0;
+    font-size: 1rem;
+    border-radius: 0 6px 6px 0;
+    background-color: transparent;
+    border-left: none;
+    position: relative;
+    border-color: var(--colour-element-gray-3);
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: transparent;
+    }
+  }
+
+  .pi-calendar {
+    color: var(--colour-element-gray-2);
+  }
+}
+
+.p-calendar:not(.p-calendar-disabled).p-focus>.p-inputtext {
+  box-shadow: none;
+  border-color: var(--colour-element-gray-3);
+}
+
+.ng-dirty.ng-invalid>.p-calendar>.p-inputtext~.p-datepicker-trigger.p-button {
+  border-color: var(--colour-element-red-1);
+}
+
+.orange span.p-calendar,
+.orange.p-calendar {
+  .p-datepicker table td>span.p-highlight {
+    color: var(--colour-element-white);
+    background: var(--colour-element-orange-1);
+  }
+
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background: var(--colour-element-white);
+    border-color: var(--colour-element-orange-1);
+    color: var(--colour-element-orange-1);
+  }
+
+  .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
+    background: var(--colour-element-orange-4);
+    color: var(--colour-element-orange-1);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):focus {
+    box-shadow: 0 0 0 0.2rem var(--colour-element-orange-1);
+  }
+
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover {
+    color: var(--colour-element-orange-1);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):not(.p-highlight):hover,
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):not(.p-highlight):hover {
+    background: var(--colour-element-orange-4);
+  }
+
+  input.p-inputtext {
+
+    &:enabled:hover,
+    &:enabled:active,
+    &:enabled:focus {
+      border-color: var(--colour-element-orange-1) !important;
+      border-right: none;
+    }
+
+    &:hover~.p-datepicker-trigger,
+    &:active~.p-datepicker-trigger,
+    &:focus~.p-datepicker-trigger {
+      border-color: var(--colour-element-orange-1) !important;
+
+      .pi-calendar {
+        color: var(--colour-element-orange-1);
+      }
+    }
+  }
+}
+
+.success span.p-calendar,
+.success.p-calendar {
+  .p-datepicker table td>span.p-highlight {
+    color: var(--colour-element-white);
+    background: var(--colour-element-green-1);
+  }
+
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background: var(--colour-element-white);
+    border-color: var(--colour-element-green-1);
+    color: var(--colour-element-green-1);
+  }
+
+  .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
+    background: var(--colour-element-green-4);
+    color: var(--colour-element-green-1);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):focus {
+    box-shadow: 0 0 0 0.2rem var(--colour-element-green-1);
+  }
+
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover {
+    color: var(--colour-element-green-1);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):not(.p-highlight):hover,
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):not(.p-highlight):hover {
+    background: var(--colour-element-green-4);
+  }
+
+  input.p-inputtext {
+
+    &:enabled:hover,
+    &:enabled:active,
+    &:enabled:focus {
+      border-color: var(--colour-element-green-1) !important;
+      border-right: none;
+    }
+
+    &:hover~.p-datepicker-trigger,
+    &:active~.p-datepicker-trigger,
+    &:focus~.p-datepicker-trigger {
+      border-color: var(--colour-element-green-1) !important;
+
+      .pi-calendar {
+        color: var(--colour-element-green-1);
+      }
+    }
+  }
+}
+
+.red span.p-calendar,
+.red.p-calendar {
+  input.p-inputtext {
+
+    &:enabled:hover,
+    &:enabled:active,
+    &:enabled:focus {
+      border-color: var(--colour-element-red-1) !important;
+      border-right: none;
+    }
+
+    &:hover~.p-datepicker-trigger,
+    &:active~.p-datepicker-trigger,
+    &:focus~.p-datepicker-trigger {
+      border-color: var(--colour-element-red-1) !important;
+    }
+  }
+}
+
+.cyan span.p-calendar,
+.cyan.p-calendar {
+  .p-datepicker table td>span.p-highlight {
+    color: var(--colour-element-white);
+    background: var(--colour-element-cyan-1);
+  }
+
+  .p-datepicker table td.p-datepicker-today>span {
+    background: var(--colour-element-cyan-1);
+    color: var(--colour-element-white);
+  }
+
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background: var(--colour-element-white);
+    border-color: var(--colour-element-cyan-1);
+    color: var(--colour-element-cyan-1);
+  }
+
+  .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
+    background: var(--colour-element-cyan-2);
+    color: var(--colour-element-cyan-1);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):focus {
+    box-shadow: 0 0 0 1px var(--colour-element-cyan-2);
+  }
+
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover {
+    color: var(--colour-element-cyan-1);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):not(.p-highlight):hover,
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):not(.p-highlight):hover {
+    background: var(--colour-element-cyan-2);
+  }
+
+  input.p-inputtext {
+
+    &:enabled:hover,
+    &:enabled:active,
+    &:enabled:focus {
+      border-color: var(--colour-element-cyan-1) !important;
+      border-right: none;
+    }
+
+    &:hover~.p-datepicker-trigger,
+    &:active~.p-datepicker-trigger,
+    &:focus~.p-datepicker-trigger {
+      border-color: var(--colour-element-cyan-1) !important;
+
+      .pi-calendar {
+        color: var(--colour-element-cyan-1);
+      }
+    }
+  }
+}
+
+.blue span.p-calendar,
+.blue.p-calendar {
+  .p-datepicker table td>span.p-highlight {
+    color: var(--colour-element-white);
+    background: var(--colour-element-blue-3);
+  }
+
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    background: var(--colour-element-white);
+    border-color: var(--colour-element-blue-3);
+    color: var(--colour-element-blue-1);
+  }
+
+  .p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
+    background: var(--colour-element-blue-3);
+    color: var(--colour-element-white);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):focus,
+  .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):focus {
+    box-shadow: 0 0 0 1px var(--colour-element-blue-3);
+  }
+
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year:enabled:hover,
+  .p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month:enabled:hover {
+    color: var(--colour-element-blue-3);
+  }
+
+  .p-datepicker:not(.p-disabled) .p-monthpicker .p-monthpicker-month:not(.p-disabled):not(.p-highlight):hover,
+  .p-datepicker:not(.p-disabled) .p-yearpicker .p-yearpicker-year:not(.p-disabled):not(.p-highlight):hover {
+    background: var(--colour-element-blue-3);
+    color: var(--colour-element-white);
+  }
+
+  input.p-inputtext {
+
+    &:enabled:hover,
+    &:enabled:active,
+    &:enabled:focus {
+      border-color: var(--colour-element-blue-3) !important;
+      border-right: none;
+    }
+
+    &:hover~.p-datepicker-trigger,
+    &:active~.p-datepicker-trigger,
+    &:focus~.p-datepicker-trigger {
+      border-color: var(--colour-element-blue-3) !important;
+
+      .pi-calendar {
+        color: var(--colour-element-blue-3);
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .append-to-calendar {
+    width: 355px !important;
+    min-width: 355px !important;
+  }
+}

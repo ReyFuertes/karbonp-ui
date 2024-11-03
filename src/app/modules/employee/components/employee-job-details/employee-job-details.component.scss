@@ -1,0 +1,137 @@
+@import "src/styleguide/index";
+
+.employee-jobs-details-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-start;
+
+  .column-left,
+  .column-right {
+    width: 48%;
+
+    >div {
+      margin-bottom: 30px;
+    }
+  }
+
+  .column-left {
+    margin-right: 20px;
+  }
+
+  .summary,
+  .team-manager,
+  .account {
+    padding: 25px;
+    border: 1px solid var(--colour-element-gray-5);
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: space-between;
+
+    h3 {
+      margin-bottom: 0;
+      margin-right: 8px;
+    }
+
+    >div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    span {
+      color: var(--colour-element-gray-2);
+    }
+
+    button {
+      width: fit-content;
+
+      &:nth-child(1) {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .view-fields-display {
+    div {
+      text-transform: capitalize;
+    }
+  }
+
+  .form-input-detail-fields {
+    @include form-input-detail-fields;
+
+    .view-fields > div:nth-child(2) span {
+      height: 30px;
+      padding: 3px;
+      color: var(--colour-element-gray-1);
+      position: relative;
+      left: 18px;
+      top: 10px;
+    }
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-buttons {
+    @include form-button;
+    justify-content: flex-start;
+
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 15px;
+    }
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  .form-button-red-outlined {
+    @include form-button-red-outlined;
+  }
+}
+
+::ng-deep {
+  .employee-jobs-details-container {
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+    }
+  }
+
+  .p-dialog {
+    @include dialog;
+    @include confirm-dialog;
+
+    .p-dialog-header {
+      padding-bottom: 15px;
+    }
+
+    .note-text {
+      margin-bottom: 20px;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+  }
+}

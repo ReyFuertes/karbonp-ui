@@ -1,0 +1,58 @@
+<div class="monthly-payment-report-container">
+  <div class="header" [formGroup]="form">
+    <h3>{{ 'Monthly Payment Report' | translate }}</h3>
+    <p-accordion [activeIndex]="0">
+      <p-accordionTab [header]="'Filter' | translate">
+        <div class="filter-container">
+          <div class="form-input-field">
+            <div><span>{{ 'FromDate' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="fromDate" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'ToDate' | translate }}</span></div>
+            <p-calendar [showIcon]="true" formControlName="toDate" [placeholder]="'Select' | translate"
+              [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>Office</span></div>
+            <kp-dropdown-multi-select-option [options]="[]" [label]="'SelectStatus' | translate"
+              class="cyan"></kp-dropdown-multi-select-option>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span></span></div>
+            <div class="form-buttons">
+              <button pButton class="form-button-cyan normal">{{ 'Filter' | translate }}</button>
+              <button pButton class="form-button-default normal">{{ 'Reset' | translate }}</button>
+            </div>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="content">
+    <p-table [value]="testData" [scrollable]="true" responsiveLayout="scroll" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let column of columns">{{ column | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

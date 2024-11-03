@@ -1,0 +1,149 @@
+<p-dialog [(visible)]="showBenefitsModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+  [modal]="true" styleClass="blue benefits-modal" closeIcon="false" [style]="{ width: '545px' }"
+  (onHide)="showBenefitsModal = false">
+  <div class="header">
+    <div>
+      <h4>{{ benefitsModalTitle | translate }}</h4>
+    </div>
+    <span class="material-symbols-rounded" (click)="showBenefitsModal = !showBenefitsModal">close</span>
+  </div>
+  <div class="content" [formGroup]="benefitInputSetupForm">
+    <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.LongServiceAward"
+      class="form-input-field">
+      <div><span>{{ 'SelectBeneficiary' | translate }}</span></div>
+      <p-dropdown appendTo="body" [options]="longServiceAwardOptions" formControlName="longServiceAwardType"
+        optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" styleClass="blue"
+        [showClear]="true" [filter]="true"></p-dropdown>
+      <div class="error"></div>
+    </div>
+    <div *ngIf="showAmountFields">
+      <div class="form-input-field">
+        <div>
+          <span *ngIf="benefitInputSetupForm.get('benefitInputType').value !== payrollBenefitType.CompanyCar 
+            && benefitInputSetupForm.get('benefitInputType').value !== payrollBenefitType.BursariesScholarships
+            && benefitInputSetupForm.get('benefitInputType').value !== 10"> <!-- note: what is 10? -->
+            {{ 'Amount' | translate }}</span>
+          <span *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.CompanyCar">
+            {{ 'ValueOfVehicle' | translate }}</span>
+          <span
+            *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.BursariesScholarships">
+            {{ 'TaxablePortion' | translate }}</span>
+          <span *ngIf="benefitInputSetupForm.get('benefitInputType').value === 10"><!-- note: what is 10? -->
+            {{ 'Days' | translate }}</span>
+        </div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div><!-- note: implement error -->
+      </div>
+    </div>
+    <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.SavingsFund">
+      <div class="form-input-field">
+        <div><span>{{ 'BenefitCalculationType' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="benefitCalculationOptions" formControlName="benefitCalculationType"
+          optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" styleClass="blue"
+          [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div><!-- note: implement error -->
+      </div>
+      <div *ngIf="benefitInputSetupForm.get('benefitCalculationType').value !== null">
+        <div class="form-input-field">
+          <span *ngIf="benefitInputSetupForm.get('benefitCalculationType').value === benefitCalculationType.Fixed">
+            {{ 'Amount' | translate }}</span>
+          <span *ngIf="benefitInputSetupForm.get('benefitCalculationType').value === benefitCalculationType.Percentage">
+            {{ 'Percentage' | translate }}</span>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div><!-- note: implement error -->
+        </div>
+      </div>
+    </div>
+    <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.CompanyCar"
+      class="form-input-field">
+      <div><span>{{ 'PurchasePriceIncludeMaintenancePlan' | translate }}</span></div>
+      <p-inputSwitch formControlName="companyCarIncludesMaintenancePlan" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <ng-container *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.CompanyCar
+        || benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.Custom">
+      <div class="form-input-field">
+        <div><span>{{ 'TaxablePercentage' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="taxablePercentageOptions" formControlName="benefitTaxablePercentage"
+          optionLabel="label" optionValue="value" [placeholder]="'SelectTaxablePercentage' | translate"
+          styleClass="blue" [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.BursariesScholarships">
+      <div class="form-input-field">
+        <div><span>{{ 'ExemptPortion' | translate }}</span></div>
+        <input type="number" formControlName="exemptPortion" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Type' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="bursariesScholarshipsOptions" formControlName="bursariesScholarshipsType"
+          optionLabel="label" optionValue="value" [placeholder]="'SelectTaxablePercentage' | translate"
+          styleClass="blue" [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div><!-- note: implement error -->
+      </div>
+      <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.CompanyCar"
+        class="form-input-field">
+        <div><span>{{ 'ToADisabledPerson' | translate }}</span></div>
+        <p-inputSwitch formControlName="disabledPerson" styleClass="blue"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.MedicalCosts">
+      <div class="form-input-field">
+        <div><span>{{ 'BeneficiaryOfMedicalCosts' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="medicalCostsBeneficiaryOptions"
+          formControlName="medicalCostsBeneficiaryType" optionLabel="label" optionValue="value"
+          [placeholder]="'SelectTaxablePercentage' | translate" styleClass="blue" [showClear]="true"
+          [filter]="true"></p-dropdown>
+      </div>
+    </div>
+    <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.Custom
+      && (customPaytype?.inputType === inputType.FixedAmount 
+      || customPaytype?.inputType === inputType.MonthlyForNonMonthlyEmployees)">
+      <div>
+        <span>{{ 'Amount' | translate }}: {{ customPaytype?.amount?.toString() | currencySymbol}}</span>
+      </div>
+    </div>
+    <div *ngIf="showQuantityFields" class="form-input-field">
+      <div><span>{{ 'Quantity' | translate }}</span></div>
+      <input type="number" formControlName="amount" pInputText class="blue" />
+      <div class="error"></div><!-- note: implement error -->
+    </div>
+    <ng-container *ngIf="customPaytype?.inputType === inputType.CustomRateQuantity 
+      && customPaytype?.differentRateForEachEmployee">
+      <div class="form-input-field">
+        <div><span>{{ 'CustomRate' | translate }}</span></div>
+        <input type="number" formControlName="customRate" pInputText class="blue" />
+      </div>
+    </ng-container>
+    <div *ngIf="benefitInputSetupForm.get('benefitInputType').value === payrollBenefitType.Custom
+      && customPaytype?.inputType === inputType.PercentageOfIncome ">
+      <div>
+        <span>{{ 'PercentageOfIncome' | translate }}: {{ customPaytype?.percentage }}%</span>
+      </div>
+    </div>
+    <ng-container *ngIf="employeesWithInputType?.length"> <!-- note: employeesWithInputType was not used verify!  -->
+      <div>
+        <span>{{ 'Warning' | translate }}: {{ 'WarningPreExistingValues' | translate }}</span>
+        <span>{{ 'Employees' | translate }}:
+          <span *ngFor="let employee of employeesWithInputType; index as i">{{employee}}{{ (i + 1) ===
+            employeesWithInputType.length ? '.' : ','}} </span></span>
+      </div>
+    </ng-container>
+    <!-- <ng-container *ngIf="isEdit === true && !selectedPayrollInput">
+      <div class="loading-container blue">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading..</span>
+      </div>
+    </ng-container> -->
+    <div class="form-buttons">
+      <button pButton class="form-button-blue normal" (click)="onSave()">
+        {{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="showBenefitsModal = false">
+        {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>

@@ -1,0 +1,360 @@
+<div class="payroll-submissions-philippines-1601c-container">
+  <div class="content" [formGroup]="form">
+    <div class="form-input-field-group">
+      <div>
+        <h4>{{ 'ForTheMonth' | translate }} : {{ month | date: 'MMM yyyy' }}</h4>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'AmendedReturn' | translate }} </span></div>
+        <p-inputSwitch styleClass="blue" formControlName="isAmended"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'AnyTaxesWithheld' | translate }} </span></div>
+        <p-inputSwitch styleClass="blue" formControlName="isTaxWithheld"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+      <button pButton class="form-button-default normal" (click)="onBack()">{{ 'Back' | translate }}</button>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'TaxIdentificationNumber(TIN)' | translate }}</span></div>
+        <input type="number" formControlName="tinNumber" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'RdoCode' | translate }}</span></div>
+        <input type="number" formControlName="rdoCode" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'WithholdingAgentName' | translate }}</span></div>
+        <input type="text" formControlName="companyName" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'AddressLine1' | translate }}</span></div>
+        <textarea class="blue" formControlName="addressLine1" [rows]="3" [cols]="30" pInputTextarea
+          [autoResize]="false"></textarea>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'AddressLine2' | translate }}</span></div>
+        <textarea class="blue" formControlName="addressLine2" [rows]="3" [cols]="30" pInputTextarea
+          [autoResize]="false"></textarea>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'ZipCode' | translate }}</span></div>
+        <input type="text" formControlName="addressCode" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'ContactNumber' | translate }}</span></div>
+        <input type="number" formControlName="contactNumber" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'CategoryOfWithholdingAgent' | translate }}</span> </div>
+        <p-dropdown [options]="categoryOfWithholdingAgentOptions" formControlName="category" optionLabel="label"
+          optionValue="value" [placeholder]="'Select' | translate" class="blue"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field"></div>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'EmailAddress' | translate }}</span></div>
+        <input type="text" formControlName="email" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'PayeesTaxRelief' | translate }}</span> </div>
+        <p-dropdown [options]="booleanTypeOptions" formControlName="isTaxRelief" optionLabel="label" optionValue="value"
+          [placeholder]="'Select' | translate" class="blue"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'IfYesSpecify' | translate }}</span></div>
+        <input type="text" formControlName="taxReliefDetails" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div>
+      <h4>{{ 'ComputationOfTax' | translate }}</h4>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'TotalAmountOfCompensation' | translate }}</span></div>
+          <input type="number" formControlName="totalCompensationLessNonTaxable" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'StatutoryMinimumWageForMinimumWageEarners' | translate }}</span></div>
+          <input type="number" formControlName="statutoryMinimumWage" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'HolidayOvertimeNighShiftHazardPay' | translate }}</span></div>
+          <input type="number" formControlName="holidayOvertimeNightShiftHazardPay" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'ThirteenthMonthPayOtherBenefits' | translate }}</span></div>
+          <input type="number" formControlName="thirteenthMonthPayOtherBenefits" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'DeMinimisBenefits' | translate }}</span></div>
+          <input type="number" formControlName="deMinimisBenefits" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'SssGsisPhicHdmfMandatoryContributionsUnionDues' | translate }}</span></div>
+          <input type="number" formControlName="contributionsEmployee" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'OtherNonTaxableCompensation' | translate }}</span></div>
+          <input type="number" formControlName="otherNonTaxableCompensation" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OtherNonTaxableCompensation' | translate }} {{ 'Specify' | translate }}</span></div>
+          <input type="number" formControlName="otherNonTaxableCompensationSpecify" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field"></div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'TotalNonTaxableCompensation' | translate }}</span></div>
+          <input type="number" formControlName="totalNonTaxableCompensation" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TotalTaxableCompensation' | translate }}</span></div>
+          <input type="number" formControlName="totalTaxableCompensation" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field"></div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'TaxableCompensationNotSubjectToWithholdingTax' | translate }}</span></div>
+          <input type="number" formControlName="taxableCompensationNotSubjectWithholdingTax" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'NetTaxableCompensation' | translate }}</span></div>
+          <input type="number" formControlName="netTaxableCompensation" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TotalTaxesWithheld' | translate }}</span></div>
+          <input type="number" formControlName="totalTaxesWithheld" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'AdjustmentOfTaxesWithheldFromPreviousMonth' | translate }}</span></div>
+          <input type="number" formControlName="previousMonthTaxesWithheldAdjustment" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TaxesWithheldForRemittance' | translate }}</span></div>
+          <input type="number" formControlName="taxesWithheldForRemittance" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TaxRemittedInReturnPreviouslyFiledIfAmendedReturn' | translate }}</span></div>
+          <input type="text" formControlName="taxRemittedInPreviousReturnFiled" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'OtherRemittancesMade' | translate }}</span></div>
+          <input type="text" formControlName="otherRemittancesMade" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OtherRemittancesMade' | translate }} {{ 'Specify' | translate }}</span></div>
+          <input type="number" formControlName="otherRemittancesMadeSpecify" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TotalTaxRemittancesMade' | translate }}</span></div>
+          <input type="number" formControlName="totalTaxRemittancesMade" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'TaxStillDue' | translate }}</span></div>
+          <input type="number" formControlName="taxStillDue" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Surcharge' | translate }}</span></div>
+          <input type="number" formControlName="surcharge" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Interest' | translate }}</span></div>
+          <input type="number" formControlName="interest" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'Compromise' | translate }}</span></div>
+          <input type="text" formControlName="compromise" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TotalPenalties' | translate }}</span></div>
+          <input type="number" formControlName="totalPenalties" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'TotalAmountStillDue' | translate }}</span></div>
+          <input type="number" formControlName="totalAmountStillDue" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'TaxAgentAccreditationNumber' | translate }}</span></div>
+          <input type="number" formControlName="taxAgentAccreditationNumber" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'DateOfIssue' | translate }}</span></div>
+          <p-calendar formControlName="dateOfIssue" [showIcon]="true" [placeholder]="'Select Date' | translate"
+            [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'DateOfExpiry' | translate }}</span></div>
+          <p-calendar formControlName="dateOfExpiry" [showIcon]="true" [placeholder]="'Select Date' | translate"
+            [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+          <div class="error"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4>{{ 'DetailsOfPayment' | translate }}</h4>
+      <h5>{{ 'CashBankDebitMemo' | translate }}</h5>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'DraweeBankAgency' | translate }}</span></div>
+          <input type="number" formControlName="cashBankAgency" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Number' | translate }}</span></div>
+          <input type="number" formControlName="cashNumber" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Date' | translate }}</span></div>
+          <p-calendar formControlName="cashDate" [showIcon]="true" [placeholder]="'Select Date' | translate"
+            [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field"></div>
+      </div>
+      <h5>{{ 'Check' | translate }}</h5>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'DraweeBankAgency' | translate }}</span></div>
+          <input type="text" formControlName="checkBankAgency" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Number' | translate }}</span></div>
+          <input type="number" formControlName="checkNumber" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Date' | translate }}</span></div>
+          <p-calendar formControlName="checkDate" [showIcon]="true" [placeholder]="'Select Date' | translate"
+            [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Amount' | translate }}</span></div>
+          <input type="number" formControlName="checkAmount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <h5>{{ 'TaxDebitMemo' | translate }}</h5>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'Number' | translate }}</span></div>
+          <input type="number" formControlName="debitMemoNumber" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Date' | translate }}</span></div>
+          <p-calendar formControlName="debitMemoDate" [showIcon]="true" [placeholder]="'Select Date' | translate"
+            [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Amount' | translate }}</span></div>
+          <input type="number" formControlName="debitMemoAmount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field"></div>
+      </div>
+      <h5>{{ 'Others' | translate }}</h5>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'Particulars' | translate }}</span></div>
+          <input type="number" formControlName="otherParticulars" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field"></div>
+        <div class="form-input-field"></div>
+        <div class="form-input-field"></div>
+      </div>
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'DraweeBankAgency' | translate }}</span></div>
+          <input type="text" formControlName="otherBankAgency" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Number' | translate }}</span></div>
+          <input type="text" formControlName="otherNumber" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Date' | translate }}</span></div>
+          <p-calendar formControlName="otherDate" [showIcon]="true" [placeholder]="'Select Date' | translate"
+            [dateFormat]="'dd/mm/yy'" styleClass="blue"></p-calendar>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Amount' | translate }}</span></div>
+          <input type="text" formControlName="otherAmount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-buttons">
+    <button pButton class="form-button-blue normal" (click)="onGenerate()">{{ 'Generate' | translate }}</button>
+    <button pButton class="form-button-default normal" (click)="onBack()">{{ 'Cancel' | translate }}</button>
+  </div>
+</div>

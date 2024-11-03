@@ -1,0 +1,51 @@
+<div class="payroll-employee-setup-container">
+  <div class="header">
+    <h3>{{ payrollEmployeeSetupData?.employee?.fullName }}</h3>
+    <div class="form-input-field" [formGroup]="form">
+      <div></div>
+      <p-dropdown [options]="employeeOptions" formControlName="employees" optionLabel="label" optionValue="value"
+        [placeholder]="'Select' | translate" class="blue" [showClear]="true" [filter]="true"
+        (onChange)="onChangeEmployees($event)"></p-dropdown>
+      <div class="error"></div>
+      <button pButton class="form-button-blue normal" (click)="onDownloadPayslip()">{{ 'Download' | translate
+        }}</button>
+      <button *ngIf="payslipPreview?.payslip?.payslipStatus === payslipStatusType.Draft" pButton
+        class="form-button-success normal" (click)="onApprovePayslip()">{{ 'Approve' | translate }}</button>
+      <button *ngIf="payslipPreview?.payslip?.payslipStatus === payslipStatusType.Approved" pButton
+        class="form-button-red normal" (click)="onRevertPayslip()">{{ 'Revert' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="onBack()">{{ 'Back' | translate }}</button>
+    </div>
+  </div>
+  <div class="content">
+    <p-tabView styleClass="blue" (onChange)="handleTabChange($event)" [activeIndex]="selectedTabIndex">
+      <p-tabPanel [header]="'Payroll' | translate">
+        <kp-payroll-employee-setup-payroll [payRollCalculationSetup]="payRollCalculationSetup"
+          [basicSalaryInput]="basicSalaryInput"></kp-payroll-employee-setup-payroll>
+      </p-tabPanel>
+      <p-tabPanel [header]="'Preview Payslip' | translate">
+        <kp-payroll-employee-setup-preview-payslip [employeeSetupData]="payrollEmployeeSetupData"
+          [showOutstandingEmployerLoanClosingBalance]="showOutstandingEmployerLoanClosingBalance"
+          [closingBalance]="closingBalance"
+          [payslipPreview]="payslipPreview"></kp-payroll-employee-setup-preview-payslip>
+      </p-tabPanel>
+      <p-tabPanel [header]="'Activity' | translate">
+        <kp-payroll-employee-setup-activity [payRuns]="payRuns" [payPeriod]="payPeriod"
+          [employeePaymentMethod]="employeePaymentMethod"
+          (loadActivityLogChange)="loadActivityLog($event)"></kp-payroll-employee-setup-activity>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <p-confirmDialog #cdDynamic>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cdDynamic.accept()">{{ 'Yes' | translate
+        }}</button>
+      <button pButton class="form-button-default normal" (click)="cdDynamic.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <!-- <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog> -->
+</div>

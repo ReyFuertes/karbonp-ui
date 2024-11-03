@@ -1,0 +1,63 @@
+@import "src/styleguide/index";
+
+.company-profile-dialog-office-container {
+  .form-buttons {
+    @include form-buttons;
+    justify-content: space-between;
+  }
+}
+
+::ng-deep {
+  .company-profile-dialog-office-container {
+    .p-dialog {
+      @include dialog;
+
+      .p-dialog-content {
+        .p-dropdown {
+          width: 100%;
+        }
+
+        .add-everyone {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 10px;
+          color: var(--colour-element-red-0);
+          position: relative;
+          left: -5px;
+
+          .bold {
+            font-weight: 700;
+          }
+
+          span:nth-child(2):hover {
+            opacity: 0.6;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+      margin-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,101 @@
+.input-search-container {
+  .search-field {
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 340px;
+
+    input {
+      display: inline-block;
+      font-family: inherit;
+      padding: 0 10px;
+      width: 100%;
+      height: 40px;
+      outline: none;
+      border-radius: 4px;
+      vertical-align: middle;
+      font-size: 16px;
+      transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease;
+      background-color: rgb(255, 255, 255);
+      border-color: var(--colour-element-gray-3);
+      border-style: solid;
+      border-width: 1px;
+      color: var(--colour-element-black-1);
+      padding-right: 40px;
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--colour-element-gray-3);
+    }
+  }
+}
+
+::ng-deep {
+  .overlay-input-search-container.p-overlaypanel {
+    display: flex;
+    width: 340px;
+
+    .p-overlaypanel-content {
+      padding: 0;
+      width: 100%;
+
+      .search-options {
+        top: calc(100% - 3px);
+        background-color: var(--colour-element-white);
+        border-radius: 4px;
+        width: 100%;
+        padding: 8px 0;
+        min-height: 40px;
+        animation-name: fadeIn;
+        animation-duration: 550ms;
+
+        .search-option {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          position: relative;
+          padding: 7px 15px;
+
+          &:hover {
+            background-color: var(--colour-element-yellow-5);
+          }
+        }
+
+        .option-avatar {
+          display: flex;
+          border-radius: 50%;
+          height: 31px;
+          width: 31px;
+          background-color: var(--colour-element-blue-3);
+          color: white;
+          margin-right: 10px;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+
+          img {
+            border-radius: 50%;
+            height: 31px;
+            width: 31px;
+          }
+        }
+
+        .option-text {
+          flex-grow: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}

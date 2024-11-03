@@ -1,0 +1,53 @@
+@import "src/styleguide/index";
+
+div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .name-change-account-settings {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      &:nth-child(1) {
+        margin-bottom: 4px;
+      }
+
+      &:nth-child(2) {
+        font-weight: 400 !important;
+        color: var(--colour-element-green-1);
+
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .dynamic-fields-container {
+    kp-input,
+    kp-dropdown-select,
+    kp-calendar,
+    kp-switch {
+      display: flex;
+      width: 30%;
+      margin-right: 30px;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+    
+    .form-input-field-group {
+      @include form-input-field-group;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+    }
+  }
+}

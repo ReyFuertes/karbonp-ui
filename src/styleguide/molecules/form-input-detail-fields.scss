@@ -1,0 +1,220 @@
+@mixin form-input-detail-fields {
+  .form-edit-name {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    div:first-child {
+      text-transform: capitalize;
+      color: var(--colour-element-gray-1);
+      font-size: 14px;
+    }
+
+    div:last-child {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-direction: column;
+
+      span:first-child {
+        color: var(--colour-element-black-1);
+        font-weight: 700;
+      }
+
+      span:last-child {
+        font-size: 13px;
+        line-height: 17px;
+        font-weight: 700;
+        color: var(--colour-element-green-1);
+        position: relative;
+        top: 3px;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .form-edit-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &.column {
+      flex-direction: column;
+      margin-right: 30px !important;
+
+      .form-input-field:not(:last-child) {
+        margin-right: 30px !important;
+      }
+    }
+
+    .form-input-field-group {
+      @include form-input-field-group;
+    }
+
+    .form-input-field {
+      width: 33%;
+      padding-right: 25px;
+
+      >div {
+        &:first-child {
+          height: 19px;
+        }
+
+        span {
+          font-weight: 700;
+        }
+      }
+    }
+
+    .width-50 {
+      width: 50%;
+      padding-right: 20px;
+    }
+  }
+
+  .view-fields {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    &:not(.column)>div {
+      width: 95%;
+    }
+
+    .view-fields-display {
+      @include view-display-fields;
+    }
+
+    >div:nth-child(2) {
+      display: flex;
+      flex-direction: row;
+      height: 30px;
+      justify-content: center;
+      padding: 0;
+      position: relative;
+      top: 12px;
+      width: 5%;
+      margin: 10px !important;
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+
+      span {
+        height: 30px;
+        padding: 3px;
+        color: var(--colour-element-gray-1);
+
+        &:hover {
+          cursor: pointer;
+          background-color: var(--colour-element-green-1);
+          border-radius: 4px;
+          color: var(--colour-element-white);
+        }
+      }
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 10px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}
+
+@mixin form-input-field-group {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+
+  >div {
+    width: 50%;
+
+    &:not(:last-child) {
+      padding-right: 20px;
+    }
+  }
+}
+
+@mixin view-display-fields {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+    color: var(--colour-element-black-0);
+    font-size: 14px;
+    animation-name: fadeIn;
+    animation-duration: 550ms;
+
+    div:first-child {
+      display: flex;
+      align-items: center;
+      width: 180px;
+      color: var(--colour-element-gray-1);
+      text-transform: capitalize;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 16px;
+      position: relative;
+      top: 3px;
+      margin-right: 10px;
+
+      span:first-child {
+        color: var(--colour-element-red-1);
+
+        &.check {
+          color: var(--colour-element-green-1);
+        }
+      }
+    }
+  }
+
+  &.column {
+    >div {
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+  }
+
+  .column-50 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+
+    div {
+      margin-right: 15px;
+
+      &:nth-child(1) {
+        width: 60% !important;
+      }
+
+      &:nth-child(2) {
+        width: 40% !important;
+      }
+
+      &:nth-child(2) {
+        font-size: 14px !important;
+        font-weight: 400 !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,172 @@
+@import "src/styleguide/index";
+
+.dashboard-apps-container {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 1245px;
+  margin-top: 25px;
+
+  .content {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    .title {
+      margin-bottom: 12px;
+      color: var(--colour-element-gray-2);
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+      font-size: 13px;
+      line-height: 19px;
+    }
+  }
+
+  .dashboard-apps-items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .dashboard-square-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 165px;
+    margin-bottom: 40px;
+
+    .square-apps {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+      border-radius: 16px;
+      width: 100px;
+      height: 100px;
+      background-image: linear-gradient(50deg, var(--colour-element-green-3), var(--colour-element-green-3-1));
+      margin-bottom: 8px;
+
+      &.company-profile {
+        background-image: linear-gradient(50deg, var(--colour-element-red-1), var(--colour-element-red-2));
+      }
+
+      &.time-off {
+        background-image: linear-gradient(50deg, var(--colour-element-orange-3), var(--colour-element-orange-1));
+
+        &:active,
+        &:focus {
+          box-shadow: 0 0 0 2px var(--colour-element-white), 0 0 0 4px var(--colour-element-orange-5), 0 1px 2px 0 black !important;
+        }
+      }
+
+      &.expenses {
+        background-image: linear-gradient(50deg, var(--colour-element-blue-2), var(--colour-element-blue-3));
+      }
+
+      &.reports {
+        background-image: linear-gradient(50deg, #43e5fe, #42c7db);
+
+        &:active,
+        &:focus {
+          box-shadow: 0 0 0 2px var(--colour-element-white), 0 0 0 4px var(--colour-element-cyan-5), 0 1px 2px 0 black !important;
+        }
+      }
+
+      &.payroll {
+        background-image: linear-gradient(50deg, var(--colour-element-blue-2), var(--colour-element-blue-3));
+
+        &:active,
+        &:focus {
+          box-shadow: 0 0 0 2px var(--colour-element-white), 0 0 0 4px var(--colour-element-blue-4), 0 1px 2px 0 black !important;
+        }
+      }
+
+      &.people {
+
+        &:active,
+        &:focus {
+          box-shadow: 0 0 0 2px var(--colour-element-white), 0 0 0 4px var(--colour-element-green-5), 0 1px 2px 0 black !important;
+        }
+      }
+
+      span:first-child {
+        font-size: 60px;
+        color: var(--colour-element-white);
+      }
+
+      span:nth-child(2) {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        padding: 2px 5px;
+        border-radius: 4px;
+        background-color: var(--colour-element-gray-6);
+        color: var(--colour-element-gray-1);
+        font-size: 12px;
+        line-height: 15px;
+        cursor: default;
+      }
+    }
+
+    &.disabled {
+      .square-apps {
+        background-image: none;
+        background-color: var(--colour-element-gray-4);
+        opacity: 1;
+      }
+
+      span {
+        color: var(--colour-element-gray-1);
+      }
+    }
+
+    span {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  .apps-add {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 165px;
+
+    >div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+      width: 100px;
+      height: 100px;
+      border-width: 1px;
+      border-style: dashed;
+      border-radius: 16px;
+      transition: background-color 0.2s ease;
+      border-color: var(--colour-element-gray-2);
+
+      span {
+        color: var(--colour-element-cyan-4);
+        font-size: 40px;
+      }
+
+      &:hover {
+        background-color: var(--colour-element-gray-5);
+        border-style: solid;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+:host ::ng-deep {
+  .loading-container {
+    @include loader;
+    min-height: 227px;
+  }
+}

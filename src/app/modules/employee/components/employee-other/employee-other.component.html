@@ -1,0 +1,31 @@
+<div class="employee-other-container" *ngIf="form" [formGroup]="form">
+  <div formGroupName="other">
+    <h3>T Shirt Size</h3>
+
+    <div class="input-container">
+      <div class="form-input-field">
+        <span>T Shirts</span>
+        <p-dropdown [options]="options" formControlName="tshirt" optionLabel="label"  placeholder="None"></p-dropdown>
+        <div class="error">
+          <span *ngIf="getRequiredValidation('tshirt', getOtherForm)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-input-field">
+      <span>Test</span>
+      <input type="text" formControlName="test" pInputText />
+      <div class="error">
+        <span *ngIf="getRequiredValidation('test', getOtherForm)">{{ 'This field is required' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <div>
+        <button pButton [disabled]="!getOtherForm?.valid" class="form-button-success" (click)="saveInviteLater()">{{ 'Save & continue' | translate }}</button>
+        <button pButton class="form-button-default">{{ 'Save & invite later' | translate }}</button>
+      </div>
+      <div class="delete-employee-icon">{{ 'Delete employee' | translate }}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+@mixin tooltip {
+  .p-tooltip-arrow {
+    display: none;
+  }
+
+  .p-tooltip-text {
+    //background-color: var(--colour-element-white) !important;
+    font-size: 12px;
+    color: var(--colour-element-white);
+  }
+}

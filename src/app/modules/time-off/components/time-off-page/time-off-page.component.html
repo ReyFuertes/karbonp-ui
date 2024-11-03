@@ -1,0 +1,25 @@
+<kp-header-content headerTitle="Time Off" [avatarPath]="avatarPath" [isAppLogo]="true" bgImage="time-off"
+  classLogo="time-off-avatar" appLogoName="time-off" [marginRight]="'25px'"></kp-header-content>
+<div class="time-off-page-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menusOptions" class="menu-item orange" [ngClass]="{'selected': getCurrentMenu(menu)}"
+          (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="center-container">
+      <container-element [ngSwitch]="activeMenuOption">
+        <kp-time-off-overview *ngSwitchCase="'overview'"></kp-time-off-overview>
+        <kp-time-off-request *ngSwitchCase="'requests'"></kp-time-off-request>
+        <kp-time-off-balances *ngSwitchCase="'balances'"></kp-time-off-balances>
+        <kp-time-off-calendar *ngSwitchCase="'calendar'" [employees]="employees"
+          (payloadRequestChanges)="handlePayloadRequestChanges($event)"></kp-time-off-calendar>
+        <kp-time-off-settings *ngSwitchCase="'settings'" [policies]="timeOffActivePolicies"
+          (triggerChanges)="triggerChanges($event)"></kp-time-off-settings>
+      </container-element>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+@import "src/styleguide/index";
+
+.form-input-field {
+  @include form-input-field;
+}
+
+.form-input-field-group {
+  @include form-input-field-group;
+}

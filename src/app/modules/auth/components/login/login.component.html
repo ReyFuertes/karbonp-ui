@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="header">
+    <div class="logo-container">
+      <img [src]="imgPath + 'karbonpay-text-logo.png'" />
+    </div>
+    <h1>{{ 'Welcome back' | translate }}</h1>
+    <div>
+      <div>{{ 'No account?' | translate }}</div>
+      <div (click)="onCreateAccount()">{{ 'Create an account for free' | translate }}</div>
+    </div>
+  </div>
+  <div class="content">
+    <div [formGroup]="form" class="login-form-container">
+      <div class="form-fields">
+        <div class="form-input-field column">
+          <div><span>{{ 'Email address' | translate }}</span></div>
+          <input kp-autoFocusField formControlName="email" type="text" pInputText />
+          <div class="error">
+            <span *ngIf="getRequiredValidation('email', form)">{{ 'This field is required' | translate }}</span>
+            <span *ngIf="getEmailValidation('email', form)">{{ 'That doesn’t look like an email address' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field column">
+          <div><span>{{ 'Password' | translate }}</span></div>
+          <p-password formControlName="password" [toggleMask]="true"></p-password>
+          <div class="error"></div>
+        </div>
+        <button [disabled]="!form.valid && (isLoadingAsync() | async)" pButton class="form-button-blue normal" (click)="login()">
+          <i *ngIf="(isLoadingAsync() | async)" class="pi pi-spin pi-spinner"></i>
+          <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Sign in' | translate }}</span>
+        </button>
+        <div class="forgot-password-text">{{ 'Forgot password?' | translate }}</div>
+      </div>
+    </div>
+    <div class="login-info">
+      <span>{{ 'NEW KARBON PAY' | translate }}</span>
+      <div>
+        <img [src]="imgPath + 'sample-id.jpg'" />
+        <h4>Free Advisor Accounts for external HR consultants or accountants</h4>
+      </div>
+      <p>{{ 'InviteExternalPayrollmanager' | translate:loginTranslateParam }}</p>
+      <h5>{{ 'Learn more →' | translate }}</h5>
+    </div>
+  </div>
+</div>

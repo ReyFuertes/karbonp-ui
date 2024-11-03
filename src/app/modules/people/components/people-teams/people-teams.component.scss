@@ -1,0 +1,174 @@
+@import "src/styleguide/index";
+
+.people-teams-container {
+  .content-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 21px;
+
+    >div:first-child {
+      padding-right: 20px;
+    }
+
+    button {
+      width: fit-content;
+    }
+  }
+
+  .team-list {
+    .team-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      min-height: 61px;
+      transition: background-color 0.2s ease;
+      border-top: 1px solid var(--colour-element-gray-4);
+
+      &:last-child {
+        border-bottom: 1px solid var(--colour-element-gray-4);
+      }
+
+      >div {
+        &:first-child {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          width: 80%;
+
+          >div {
+            &:first-child {
+              font-weight: 700;
+            }
+
+            &:nth-child(2) {
+              font-size: 14px;
+              color: var(--colour-element-gray-1);
+            }
+          }
+        }
+
+        &:nth-child(2) {
+          font-size: 14px;
+          color: var(--colour-element-gray-1);
+
+          span {
+            margin-right: 5px;
+
+            &:not(:first-child) {
+              font-weight: 700;
+            }
+
+            &:last-child {
+              margin-right: 15px;
+            }
+          }
+        }
+
+        &:nth-child(3) {
+          width: 70px;
+          color: var(--colour-element-gray-1);
+        }
+      }
+
+      &.selected-row {
+        background-color: var(--colour-element-green-6);
+      }
+    }
+  }
+
+  .form-button-success {
+    @include form-button-success;
+    margin-right: 15px;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+   
+    &.small {
+      min-width: fit-content;
+    }
+  }
+}
+
+::ng-deep {
+  .people-teams-overlay {
+    ~.input-multiple-select-chip-search.p-overlaypanel {
+      width: 300px !important;
+    }
+
+    &.p-overlaypanel {
+      width: 330px;
+
+      &.p-overlaypanel-flipped {
+        margin-top: -13px;
+
+        &:before {
+          border-top-color: var(--colour-element-gray-4);
+        }
+      }
+    }
+
+    .add-everyone {
+      color: var(--colour-element-green-1);
+    }
+
+    .p-overlaypanel-content div {
+      &:nth-child(3) {
+        color: var(--colour-element-gray-2);
+      }
+
+      &:nth-child(4) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        left: -5px;
+        color: var(--colour-element-green-1);
+        margin-top: 10px;
+        margin-bottom: 5px;
+
+        div:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+      margin-bottom: 5px;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .form-buttons {
+      @include form-buttons;
+      margin-top: 30px;
+
+      .form-button-success {
+        @include form-button-success;
+        margin-right: 15px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+
+      button {
+        width: fit-content !important;
+      }
+
+      span {
+        color: var(--colour-element-red-0);
+      }
+    }
+  }
+}

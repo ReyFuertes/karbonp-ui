@@ -1,0 +1,9 @@
+<div class="dropdown-multi-select-container">
+  <div class="form-input-field" [formGroup]="form">
+    <div><span>{{ label | translate }}</span></div>
+    <p-multiSelect #cmp [formControlName]="controlName" [options]="options" [selectionLimit]="selectionLimit"
+      [maxSelectedLabels]="maxSelectedLabels" optionLabel="label" [placeholder]="placeholder | translate"
+      styleClass="cyan" display="chip">
+    </p-multiSelect>
+  </div>
+</div>

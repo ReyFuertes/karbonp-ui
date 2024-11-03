@@ -1,0 +1,9 @@
+@import "src/styleguide/index";
+
+::ng-deep {
+  .goal-getter-modal {
+    .form-input-field-group {
+      @include form-input-field-group;
+    }
+  }
+}

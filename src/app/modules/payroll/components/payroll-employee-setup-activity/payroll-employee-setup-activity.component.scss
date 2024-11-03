@@ -1,0 +1,88 @@
+@import "src/styleguide/index";
+
+.payroll-employee-setup-activity-container {
+  .content {
+    >div {
+      display: flex;
+      justify-content: space-between;
+      width: 50%;
+      padding: 10px 0;
+
+      &:nth-child(1) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .form-input-field {
+          @include form-input-field;
+          width: 100%;
+        }
+      }
+
+      &:not(:first-child) {
+        border-bottom: 1px solid var(--colour-element-gray-5);
+      }
+    }
+  }
+
+  .activity-logs {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 20px;
+
+    h4 {
+      margin-bottom: 10px;
+    }
+
+    >div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 80%;
+      min-height: 40px;
+      border-bottom: 1px solid var(--colour-element-gray-5);
+      color: var(--colour-element-gray-1);
+      font-size: 14px;
+      
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        width: 50%;
+
+        span {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+  }
+}
+
+::ng-deep {
+  .payroll-employee-setup-activity-container {
+    .option-item {
+      span {
+        margin-right: 5px;
+      }
+    }
+    
+    .p-tabview {
+      @include tab-view;
+
+      .p-tabview-panels {
+        padding: 1rem 0 0;
+      }
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+  }
+}

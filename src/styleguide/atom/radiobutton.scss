@@ -1,0 +1,32 @@
+@mixin form-input-radiobutton {
+  > div {
+    margin: 10px 0;
+    
+    &:nth-child(2) {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .p-radiobutton {
+    .p-radiobutton-box {
+      &:not(:disabled) {
+        &.p-focus {
+          box-shadow: none;
+        }
+  
+        &:not(.p-hightlight):hover {
+          border-color: var(--colour-element-green-1);
+        }
+      }
+  
+      &.p-highlight {
+        border-color: var(--colour-element-green-1);
+        background: var(--colour-element-green-1);
+      }
+    }
+  }
+
+  .p-radiobutton-label {
+    margin-right: 20px;
+  }
+}

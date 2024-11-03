@@ -1,0 +1,73 @@
+@import "src/styleguide/index";
+
+.payroll-submissions-uif-container {
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-buttons {
+    @include form-buttons;
+    justify-content: center;
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+    margin-right: 8px;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+}
+
+::ng-deep {
+  .payroll-submissions-uif-container {
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+
+      tbody tr>td {
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          &:first-child span:first-child {
+            font-weight: 700;
+          }
+        }
+
+        span {
+          &.warning {
+            color: var(--colour-element-yellow-0) !important;
+          }
+          
+          &.download {
+            color: var(--colour-element-blue-1) !important;
+          }
+    
+          &.complete {
+            color: var(--colour-element-blue-1) !important;
+          }
+        }
+      }
+    }
+
+    .p-dialog {
+      @include dialog;
+
+      .p-dialog-header {
+        padding-bottom: 0;
+      }
+
+      .content {
+        height: 535px;
+      }
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

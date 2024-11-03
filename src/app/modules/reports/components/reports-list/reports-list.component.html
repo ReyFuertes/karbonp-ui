@@ -1,0 +1,14 @@
+<div class="reports-list-container">
+  <div class="header">
+    <div>{{ 'ThisSelectionOfReports' | translate }}</div>
+    <div>
+      <!-- <button pButton class="form-button-cyan normal" (click)="onCreateReport()">{{ 'Create Report' | translate }}</button> -->
+    </div>
+  </div>
+  <div class="content">
+    <div *ngFor="let menu of menuReports" class="menu-item" (click)="gotoRoute(menu?.route)" >
+      <img [src]="reportIconUrl + menu.icon" />
+      <div>{{ menu?.label | translate }}</div>
+    </div>
+  </div>
+</div>

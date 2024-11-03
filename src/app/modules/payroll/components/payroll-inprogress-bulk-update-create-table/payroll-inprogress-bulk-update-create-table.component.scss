@@ -1,0 +1,159 @@
+@import "src/styleguide/index";
+
+.payroll-bulk-update-create-table-container {
+  .filter-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .content {
+    max-width: 1024px;
+
+    .form-input-field-group {
+      @include form-input-field-group;
+    }
+
+    .p-inputswitch {
+      @include input-switch;
+    }
+
+    .form-buttons {
+      margin-top: 20px;
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-bulk-update-create-table-container {
+    .p-datatable {
+      @include datatable;
+      margin-top: 20px;
+
+      .p-dropdown {
+        @include input-dropdown;
+
+        .p-dropdown-label {
+          color: var(--colour-element-black-1);
+        }
+
+        p-dropdownitem {
+          width: 100%;
+        }
+
+        .p-dropdown-panel .p-dropdown-items {
+          width: 123px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          .p-dropdown-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+          }
+        }
+      }
+
+      .p-datatable-tbody>tr>td {
+        vertical-align: top;
+
+        &:nth-child(1) {
+          width: 125px;
+          max-width: 125px;
+        }
+
+        &:nth-child(2),
+        &:nth-child(4),
+        &:nth-child(6) {
+          width: 105px;
+          max-width: 105px;
+        }
+
+        &:nth-child(3),
+        &:nth-child(5) {
+          width: 218px;
+          max-width: 218px;
+        }
+
+        span {
+          color: var(--colour-element-black-1);
+
+          &:not(:last-child) {
+            margin-right: 0;
+            justify-content: flex-start;
+            display: flex;
+            align-items: flex-start;
+          }
+        }
+
+        &:last-child div {
+          justify-content: center;
+        }
+      }
+
+      .p-dropdown .p-dropdown-trigger {
+        width: 2.5rem;
+      }
+
+      p-paginator {
+        @include paginator;
+
+        .p-paginator {
+          justify-content: flex-end;
+          padding: 0.5rem;
+
+          .p-paginator-pages .p-paginator-page.p-highlight {
+            background-color: var(--colour-element-blue-3) !important;
+            color: var(--colour-element-white);
+          }
+        }
+      }
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    .p-multiselect {
+      @include multiselect;
+
+      .p-multiselect-token-label,
+      .p-multiselect-label:not(.p-placeholder) {
+        color: var(--colour-element-white);
+
+        .p-icon-wrapper {
+          color: var(--colour-element-white)
+        }
+      }
+    }
+
+    .form-input-field {
+      @include form-input-field;
+      width: 32%;
+
+      &.w-auto {
+        width: 65%;
+      }
+    }
+
+    .form-buttons {
+      @include form-buttons;
+      justify-content: flex-start;
+
+      .form-button-blue {
+        @include form-button-blue;
+        margin-right: 10px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+        margin-right: 8px;
+      }
+    }
+  }
+}

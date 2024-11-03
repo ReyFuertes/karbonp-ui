@@ -1,0 +1,13 @@
+<div class="dropdown-multi-select-option-container" [ngClass]="class">
+  <div class="dropdown-input" (click)="onExpand(op, $event)" [ngClass]="{'expanded': expandOptions}">
+    <div>{{ selectedValues.length }} {{ label }}1</div>
+    <span class="material-symbols-rounded" [ngClass]="{'rotated': expandOptions}">expand_more</span>
+  </div>
+  <p-overlayPanel #op styleClass="dropdown-multi-select-option-overlay">
+    <ng-template pTemplate>
+      <div class="option-items">
+        <p-checkbox *ngFor="let option of options" name="groupname" [value]="option.value" [label]="option.label" [(ngModel)]="selectedValues"></p-checkbox>
+      </div>
+    </ng-template>
+  </p-overlayPanel>
+</div>

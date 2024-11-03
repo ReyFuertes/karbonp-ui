@@ -1,0 +1,138 @@
+<kp-header-content [headerTitle]="'BulkImportSpreadsheet' | translate" bgImage="employee" classLogo="people-avatar"
+  appLogoName="people" [isAppLogo]="true" marginRight="70px" width="1090px"></kp-header-content>
+<div class="employee-bulk-import-container" [formGroup]="bulkImportForm">
+  <div class="content">
+    <div>{{ 'DownloadTheTemplateFillOutTheRequiredFields' | translate:employeeBulkImportParam }}</div>
+
+    <div class="download-steps">
+      <div>
+        <div>
+          <h3>Step 1: download template</h3>
+          <div>
+            <span>{{ 'IncludeEmployeeData' | translate }}</span>
+            <p-inputSwitch formControlName="includeEmployeeData" styleClass="success"></p-inputSwitch>
+          </div>
+          <span>This template has all the fields you need to fill out.</span>
+        </div>
+        <span class="material-symbols-rounded icon">
+          <button pButton icon="pi pi-download" class="form-button-success normal" (click)="downloadTemplateFile()"
+                  tooltipPosition="top" [pTooltip]="'Download Template File' | translate">
+            {{
+            'Download' | translate
+            }}
+          </button>
+        </span>
+      </div>
+      <div *ngIf="(isLoadingAsync() | async) === false; else loader">
+        <div class="form-input-field">
+          <div>
+            <h3>Step 2: upload spreadsheet</h3>
+            <div>
+              <span>{{ 'ReCalculatePayslips' | translate }}</span>
+              <p-inputSwitch formControlName="reCalculatePayslips" styleClass="success"></p-inputSwitch>
+            </div>
+            <span>Drag file here or click to upload</span>
+          </div>
+          <p-fileUpload #fileUploadControl (uploadHandler)="onUploadBulkImport()" styleClass="success" name="file[]" accept=".xls,.xlsx,.csv" [customUpload]="true" (onSelect)="onDocumentChange($event)"></p-fileUpload>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="bulkImportView; else loader">
+      <div class="bulk-import-view-calculating" *ngIf="bulkImportView?.status <= employeeBulkImportStatusType.Completed" >
+        <h5 *ngIf="bulkImportView?.status < employeeBulkImportStatusType.CalculatingPayslipData">
+          {{'Employee Bulk Import In Progress' | translate}}
+        </h5>
+        <h5 *ngIf="bulkImportView?.status === employeeBulkImportStatusType.Completed">
+          {{'Employee Bulk Import Completed' | translate}}
+        </h5>
+        <p>{{ 'Last Import' | translate }}: {{ bulkImportView?.updatedDateTime | date: 'dd MMM yyyy HH:mm'}}</p>
+        <div>
+          <span>{{'Total Records Found' | translate}}</span>
+          <span>{{bulkImportView?.totalEmployees}}</span>
+        </div>
+        <div>
+          <span>{{'Validating Data' | translate}}</span>
+          <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.ValidatingData" class="progress-bar-container">
+            <p-progressBar [showValue]="true" [value]="progressValue" styleClass="green">
+              <ng-template pTemplate="content" let-value>
+                <span>{{progressValue}}/100</span>
+              </ng-template>
+            </p-progressBar>
+          </div>
+          <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.ValidatingData" class="material-symbols-rounded check">check</span>
+        </div>
+        <div>
+          <span>{{'Importing Employee Data' | translate}}</span>
+          <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.ImportingEmployeeData" class="progress-bar-container">
+            <p-progressBar [showValue]="true" [value]="progressValue" styleClass="green">
+              <ng-template pTemplate="content" let-value>
+                <span>{{progressValue}}/100</span>
+              </ng-template>
+            </p-progressBar>
+          </div>
+          <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.ImportingEmployeeData" class="material-symbols-rounded check">check</span>
+        </div>
+        <div>
+          <span>{{'Generating Payslip Data' | translate}}</span>
+          <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.GeneratingPayslipData" class="progress-bar-container">
+            <p-progressBar [showValue]="true" [value]="progressValue" styleClass="green">
+              <ng-template pTemplate="content" let-value>
+                <span>{{progressValue}}/100</span>
+              </ng-template>
+            </p-progressBar>
+          </div>
+          <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.GeneratingPayslipData" class="material-symbols-rounded check">check</span>
+        </div>
+        <div>
+          <span>{{'Calculating Payslips' | translate}}</span>
+          <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.CalculatingPayslipData" class="progress-bar-container">
+            <p-progressBar [showValue]="true" [value]="progressValue" styleClass="green">
+              <ng-template pTemplate="content" let-value>
+                <span>{{progressValue}}/100</span>
+              </ng-template>
+            </p-progressBar>
+          </div>
+          <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.CalculatingPayslipData" class="material-symbols-rounded check">check</span>
+        </div>
+      </div>
+      <div class="bulk-import-view-completed" *ngIf="bulkImportView?.status === employeeBulkImportStatusType.Failed" >
+        <h5>{{ 'Employee Bulk Import Failed' | translate}}:</h5>
+        <p>{{ 'Last Import' | translate }} {{ bulkImportView?.updatedDateTime | date: 'dd MMM yyyy HH:mm'}}</p>
+        <p-table *ngIf="bulkImportView?.errors?.length > 0" [value]="bulkImportView?.errors" class="p-datatable-time-off-errors">
+          <ng-template pTemplate="header">
+            <tr>
+              <th> {{'Error Description' | translate}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-error>
+            <tr>
+              <td>{{ error | translate}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-table *ngIf="bulkImportView?.errors?.length === 0" [value]="bulkImportView.items">
+          <ng-template pTemplate="header">
+            <tr>
+              <th> {{'Row Number' | translate}}</th>
+              <th> {{'Error Description' | translate}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-importItem>
+            <tr>
+              <td>{{importItem.rowNumber}}</td>
+              <td>
+                <div *ngFor="let error of importItem.validationErrors">{{ error | translate}} </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </ng-container>
+
+  </div>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

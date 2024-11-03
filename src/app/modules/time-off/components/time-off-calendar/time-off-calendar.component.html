@@ -1,0 +1,52 @@
+<div class="time-off-calendar-container" >
+  <div class="header">
+    <h2>{{ 'Time Off Calendar' | translate }}</h2>
+    <button pButton class="form-button-default normal" #overlayFilterTarget (click)="onFilter(op, $event)">{{ 'Filter' |
+      translate }}</button>
+  </div>
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+  <div class="calendar-legend">
+    <div>
+      <div class="holiday-dot"></div>
+      <div>{{ 'Holidays' | translate }}</div>
+    </div>
+    <div>
+      <div class="incentive-leave"></div>
+      <div>Service Incentive Leave</div>
+    </div>
+  </div>
+
+  <p-overlayPanel #op styleClass="time-off-filter-overlay" [dismissable]="true">
+    <h4>{{ 'Filter' | translate }}</h4>
+    <div class="form-input-field">
+      <div><span>{{ 'Employees' | translate }}</span></div>
+      <kp-input-multiple-select-chip #inputMultipleSelectChipComponent [options]="searchedEmployees"
+        [isLoading]="isLoadingAsync() | async" (inputTextChange)="handleInputTextChange($event)"
+        (selectedValuesChange)="handleSelectedValuesChange($event)" placeholder="Firstname, Lastname"
+        styleClass="orange" />
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'Leave Type' | translate }}</span></div>
+      <p-multiSelect [options]="timeOffPolicies" [(ngModel)]="timeOffPolicy" [maxSelectedLabels]="2" optionLabel="label"
+        [showClear]="true" [placeholder]="'Select' | translate" styleClass="orange">
+        <ng-template let-country pTemplate="footer">
+          <div class="ms-footer">
+            <b> {{ timeOffPolicy ? timeOffPolicy?.length : 0 }} </b>
+            <span>item {{ (timeOffPolicy ? timeOffPolicy?.length : 0) > 1 ? 's' : '' }} selected.</span>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+      <div class="error"></div>
+    </div>
+    <div class="form-buttons">
+      <button [disabled]="inputMultipleSelectChipComponent.selectedValues?.length === 0 || timeOffPolicy?.length === 0"
+        pButton class="form-button-orange normal" (click)="onSaveFilter()">
+        <i class="pi pi-spin pi-spinner" [ngClass]="{'is-loading': (isRequestLoading() | async) === true}"></i>
+        <span *ngIf="(isRequestLoading() | async) === false">{{ 'Filter' | translate }}</span>
+      </button>
+      <button pButton class="form-button-default normal" (click)="onClear()">{{ 'Clear' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="op.hide()">{{ 'Close' | translate }}</button>
+    </div>
+  </p-overlayPanel>
+</div>

@@ -1,0 +1,337 @@
+@import "src/styleguide/index";
+
+.payroll-overview-container {
+  .top-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    h3 {
+      margin-bottom: 0;
+    }
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+  }
+
+  .content {
+    .thumbnail-3cols-graphs {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+ 
+      >div {
+        width: 20%;
+        min-width: 250px;
+        margin-right: 20px;
+        animation-name: fadeIn;
+        animation-duration: 550ms;
+      }
+
+      .gross-pay {
+        background-color: var(--colour-element-gray-6);
+        padding: 15px;
+        border-radius: 4px;
+
+        >div {
+          &:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 90px;
+              color: var(--colour-element-cyan-1);
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+
+          &:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 16px;
+              font-weight: 700;
+              margin-bottom: 5px;
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+
+      .tax {
+        width: 25%;
+        background-color: var(--colour-element-red-5);
+        padding: 15px;
+        border-radius: 4px;
+
+        >div {
+          &:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 90px;
+              color: var(--colour-element-red-1);
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+
+          &:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 16px;
+              font-weight: 700;
+              margin-bottom: 5px;
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+
+      .net-pay {
+        width: 25%;
+        background-color: var(--colour-element-gray-6);
+        padding: 15px;
+        border-radius: 4px;
+
+        >div {
+          &:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 90px;
+              color: var(--colour-element-blue-1);
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+
+          &:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 16px;
+              font-weight: 700;
+              margin-bottom: 5px;
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+
+      .employees {
+        width: 25%;
+        background-color: var(--colour-element-green-6);
+        padding: 15px;
+        border-radius: 4px;
+
+        >div {
+          &:first-child {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 90px;
+              color: var(--colour-element-green-1);
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+
+          &:nth-child(2) {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            span:first-child {
+              font-size: 16px;
+              font-weight: 700;
+              margin-bottom: 5px;
+            }
+
+            span:nth-child(2) {
+              font-size: 20px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+
+    .thumbnail-2col-graphs {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin: 30px 0;
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+
+      .gross-pay-graph {
+        height: 200px;
+      }
+
+      >div {
+        width: 50%;
+        min-width: 250px;
+        margin-right: 20px;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: var(--colour-element-gray-6);
+        animation-name: fadeIn;
+        animation-duration: 550ms;
+      }
+
+      .graph-details {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        >div {
+          &:nth-child(1) {
+            width: fit-content;
+            margin-right: 10px;
+          }
+
+          &:nth-child(2) {
+            width: 100%;
+          }
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 150px; 
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 4px;
+
+            &:first-child {
+              color: var(--colour-element-white);
+              background-color: var(--colour-element-cyan-1);
+
+              span:first-child {
+                font-size: 20px;
+                font-weight: 700;
+              }
+
+              span:nth-child(2) {
+                font-size: 14px;
+              }
+            }
+
+            &:nth-child(2) {
+              color: var(--colour-element-white);
+              background-color: var(--colour-element-blue-1);
+
+              span:first-child {
+                font-size: 20px;
+                font-weight: 700;
+              }
+
+              span:nth-child(2) {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-overview-container {
+    p-chart {
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+    }
+
+    .p-progressbar {
+      white-space: nowrap;
+    }
+
+    .p-progressbar-determinate .p-progressbar-value-animate {
+      transition: width 0.1s ease-in-out;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .filter-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .form-buttons {
+        @include form-buttons;
+        justify-content: flex-start;
+    
+        .form-button-blue {
+          @include form-button-blue;
+        }
+      }
+    }
+
+    .form-button-default {
+      @include form-button-default;
+      margin-right: 15px
+    }
+
+    .form-input-field {
+      @include form-input-field;
+      width: 30%;
+
+      &:nth-child(3n + 1),
+      &:nth-child(3n + 2) {
+        margin-right: 30px;
+      }
+    }
+  }
+}

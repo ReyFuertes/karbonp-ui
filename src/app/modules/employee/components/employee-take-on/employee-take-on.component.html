@@ -1,0 +1,208 @@
+<div class="employee-take-on-container" *ngIf="form" [formGroup]="form" >
+  <div class="form-input-detail-fields">
+    <h3>{{ 'Employee Take On' | translate }}</h3>
+    <ng-container *ngIf="actionState === 'edit' && currentSection === 'take_on'; else employeeSkillsEquityView">
+      <div class="form-edit-fields column">
+        <h4>{{ 'Non-Taxable' | translate }}</h4>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div> <span>{{ 'Thirteenth Month Pay & Other Benefits (Non-Taxable)' | translate }}</span> </div>
+            <input type="number" formControlName="thirteenthMonthPayOtherBenefitsNonTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div> <span>{{ 'Deminimis Benefits (Non-Taxable)' | translate }}</span> </div>
+            <input type="number" formControlName="deminimisBenefitsNonTaxable" pInputText class="success" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('deminimisBenefitsNonTaxable', form)">{{ 'This field is required' | translate
+                }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div> <span>{{ 'Salaries and Other Compensation (Non-Taxable)' | translate }}</span> </div>
+            <input type="number" formControlName="salariesOtherCompensationNonTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div> <span>{{ 'SSS (Non-Taxable)' | translate }}</span> </div>
+            <input type="number" formControlName="sssContributionsNonTaxable" pInputText class="success" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('sssContributionsNonTaxable', form)">{{ 'This field is required' | translate
+                }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'PHIC (Non-Taxable)' | translate }}</span>
+            </div>
+            <input type="number" formControlName="phicContributionsNonTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'HDMF (Non-Taxable)' | translate }}</span>
+            </div>
+            <input type="number" formControlName="hdmfContributionsNonTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group margin-bottom-20">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Total Income (Non-Taxable)' | translate }}</span>
+            </div>
+            <div>₱21.00</div>
+          </div>
+        </div>
+        <h4>{{ 'Taxable' | translate }}</h4>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Basic Salary (Taxable)' | translate }}</span>
+            </div>
+            <input type="number" formControlName="basicSalaryTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Thirteenth Month Pay & Other Benefits (Taxable)' | translate }}</span>
+            </div>
+            <input type="number" formControlName="thirteenthMonthPayOtherBenefitsTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Salaries and Other Compensation (Taxable)' | translate }}</span>
+            </div>
+            <input type="number" formControlName="salariesOtherCompensationTaxable" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field"></div>
+        </div>
+        <div class="form-input-field-group margin-bottom-20">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Total Income (Taxable)' | translate }}</span>
+            </div>
+            <div>--</div>
+          </div>
+        </div>
+        <h4>{{ 'Tax' | translate }}</h4>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Tax Withheld' | translate }}</span>
+            </div>
+            <input type="number" formControlName="taxWithheld" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field"></div>
+        </div>
+        <div class="form-buttons">
+          <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">
+            {{ 'Save' | translate }}
+          </button>
+          <button pButton class="form-button-default normal" (click)="onCancel('take_on')">
+            {{ 'Cancel' | translate }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #employeeSkillsEquityView>
+      <div *ngIf="isLoaded; else loader" class="view-fields">
+        <div class="view-fields-display">
+          <h4>{{ 'Non-Taxable' | translate }}</h4>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Thirteenth Month Pay & Other Benefits (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.thirteenthMonthPayOtherBenefitsNonTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Deminimis Benefits (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.deminimisBenefitsNonTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+          </div>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Salaries and Other Compensation (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.salariesOtherCompensationNonTaxable | currency:'PHP') ?? '--'}}</div>
+            </div>
+            <div>
+              <div>{{ 'SSS (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.sssContributionsNonTaxable | currency:'PHP') ?? '--'}}</div>
+            </div>
+          </div>
+          <div class="column-50">
+            <div>
+              <div>{{ 'PHIC (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.phicContributionsNonTaxable | currency:'PHP') ?? '--'}}</div>
+            </div>
+            <div>
+              <div>{{ 'HDMF (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.hdmfContributionsNonTaxable | currency:'PHP') ?? '--'}}</div>
+            </div>
+          </div>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Total Income (Non-Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.totalIncomeNonTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+            <div></div>
+          </div>
+          <h4>{{ 'Taxable' | translate }}</h4>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Basic Salary (Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.basicSalaryTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+            <div>
+              <div>{{ 'Thirteenth Month Pay & Other Benefits (Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.thirteenthMonthPayOtherBenefitsTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+          </div>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Salaries and Other Compensation (Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.salariesOtherCompensationTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+            <div></div>
+          </div>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Total Income (Taxable)' | translate }}</div>
+              <div>{{ (employeeTakeOn?.totalIncomeTaxable | currency:'PHP') ?? '--' }}</div>
+            </div>
+            <div></div>
+          </div>
+          <h4>{{ 'Tax' | translate }}</h4>
+          <div class="column-50">
+            <div>
+              <div>{{ 'Tax Withheld' | translate }}</div>
+              <div>{{ (employeeTakeOn?.taxWithheld | currency:'PHP') ?? '--' }}</div>
+            </div>
+            <div></div>
+          </div>
+        </div>
+        <div>
+          <span class="material-symbols-rounded" (click)="onEdit('take_on')">edit_square</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

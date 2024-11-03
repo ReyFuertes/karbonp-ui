@@ -1,0 +1,11 @@
+<div *ngIf="field" class="form-input-field">
+  <div>
+    <span>{{ controlName | translate }}</span>
+    <span *ngIf="field.required">*</span>
+  </div>
+  <input [type]="field.type" [formControl]="registerFormControl(field)" pInputText class="success" />
+  <div class="error">
+    <span *ngIf="getRequiredValidation(field.name, form)">{{ 'This field is required' | translate }}</span>
+    <span *ngIf="getEmailValidation(field.name, form)">{{ 'That doesn’t look like an email address' | translate }}</span>
+  </div>
+</div>

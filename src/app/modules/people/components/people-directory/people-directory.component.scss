@@ -1,0 +1,210 @@
+@import "src/styleguide/index";
+
+.people-directory-container {
+  h2 {
+    margin: 0;
+  }
+
+  .container-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    >* {
+      margin-right: 15px;
+    }
+  }
+
+  .header-content {
+    display: none;
+    position: relative;
+    border-radius: 4px;
+    background-color: var(--colour-element-white-bg-1);
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+
+    &.show {
+      display: flex;
+      visibility: visible;
+      opacity: 1;
+      margin-top: 20px;
+      padding: 28px 30px;
+      height: auto;
+    }
+  }
+
+  .employee-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+
+  .people,
+  .advisors {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    animation-name: fadeIn;
+    animation-duration: 350ms;
+
+    .person {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 320px;
+      margin: 30px 10px 0 0;
+      border-radius: 0 4px 4px 0;
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--colour-element-white-bg-1);
+
+        .name-position div:first-child {
+          color: var(--colour-element-green-1);
+        }
+      }
+
+      .is-pending {
+        background-color: var(--colour-element-yellow-1);
+        text-transform: capitalize;
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        line-height: 15px;
+      }
+    }
+  }
+
+  .name-position {
+    >div {
+      &:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: var(--colour-element-green-0);
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 23px;
+      }
+
+      &:nth-child(2) {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .initial-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 80px;
+    background-color: var(--colour-element-green-1);
+    color: var(--colour-element-white);
+    border-radius: 50%;
+    margin-right: 15px;
+    cursor: pointer;
+
+    span {
+      font-size: 22px;
+    }
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  button.status {
+    @include employee-status;
+
+    border: none;
+    text-transform: capitalize;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: fit-content;
+    margin-bottom: 5px;
+  }
+}
+
+::ng-deep {
+  .p-overlaypanel.people-directory-filter-overlay {
+    @include overlay-panel;
+
+    .p-overlaypanel-content {
+      max-height: 250px;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      width: 130px;
+    }
+
+    p-checkbox:first-child {
+      margin-bottom: 10px;
+    }
+
+    .p-checkbox {
+      @include input-checkbox;
+    }
+  }
+
+  .people-directory-container {
+    .loading-container {
+      @include loader;
+      min-height: 337px;
+    }
+
+    kp-input-search {
+      min-width: 30%;
+
+      .p-inputtext {
+        border: 1px solid var(--colour-input-border);
+        font-size: 16px;
+
+        &:hover,
+        &:focus,
+        &:active {
+          border: 1px solid var(--colour-element-green-1) !important;
+        }
+      }
+    }
+
+    p-paginator {
+      @include paginator;
+    }
+
+    .form-button-success {
+      @include form-button-success;
+    }
+
+    .form-button-outlined {
+      @include form-button-outlined;
+
+      &.toggle-filter {
+        border-color: var(--colour-element-green-1) !important;
+        color: var(--colour-element-green-1) !important;
+      }
+
+      &:hover,
+      &:focus {
+        border-color: var(--colour-element-green-1) !important;
+        color: var(--colour-element-green-1) !important;
+      }
+
+      &:focus {
+        box-shadow:
+          0 0 0 2px var(--colour-element-white),
+          0 0 0 4px var(--colour-element-green-5),
+          0 1px 2px 0 var(--colour-element-black-1) !important;
+      }
+    }
+  }
+}

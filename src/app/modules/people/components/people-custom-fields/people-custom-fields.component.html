@@ -1,0 +1,120 @@
+<div class="people-custom-fields-container">
+  <div class="content-header" *ngIf="isEditCustomField === false">
+    <div>Collect and store custom information for your employees, anything from favourite ice cream to license numbers.
+      For each custom field you can set rules around who completes the information and when.
+    </div>
+    <button pButton class="form-button-default normal" [disabled]="isEditCustomField" (click)="onAddCustomerField()">{{
+      'Add category' | translate }}</button>
+  </div>
+  <div class="content">
+    <ng-container *ngIf="isEditCustomField === false; else editCustomField">
+      <div class="field-items">
+        <div class="field-item">
+          <div class="item-container">
+            <div class="item-header">
+              <div>
+                <h3>Food preferences</h3>
+                <span class="material-symbols-rounded">edit_square</span>
+              </div>
+              <span class="material-symbols-rounded">delete</span>
+            </div>
+            <div class="item-row">
+              <div>Food preferences</div>
+              <div>
+                <div>Multi-line text</div>
+                <button pButton class="form-button-default small" (click)="isEditCustomField = true">{{ 'Edit' |
+                  translate }}</button>
+              </div>
+            </div>
+            <div class="item-action">
+              <span class="material-symbols-rounded">add</span>
+              <div (click)="isEditCustomField = true">{{ 'Add custom field' | translate }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let customField of newCustomFields; let i = index" class="field-items default">
+        <div class="field-item">
+          <div class="item-container">
+            <div class="item-header">
+              <div>
+                <h3>{{ 'Default Category' | translate }}</h3>
+                <span class="material-symbols-rounded">edit_square</span>
+              </div>
+              <span class="material-symbols-rounded" (click)="onRemoveCustomField(i)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+            </div>
+            <div class="item-action btn">
+              <span class="material-symbols-rounded">add</span>
+              <div>{{ 'Add custom field' | translate }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-template #editCustomField>
+    <div class="edit-customer-field-container">
+      <h3>{{ 'Edit custom field' | translate }}</h3>
+      <div>
+        <div class="form-input-field column">
+          <div><span>{{ 'Title' | translate }}</span></div>
+          <input type="text" pInputText class="success" tooltipPosition="right" pTooltip="You can phrase this as simple prompt (e.g 'Employee ID#') or a question (e.g. 'What is the employee's ID #?')" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field column">
+          <div><span>Help text (optional)</span></div>
+          <textarea pInputTextarea [rows]="5" [cols]="30" class="success" tooltipPosition="right" pTooltip="Add additional text to clarify your question or field" [autoResize]="autoResize"></textarea>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field column">
+          <div><span>Type</span></div>
+          <p-dropdown [options]="customFieldTypes" class="success" tooltipPosition="right" pTooltip="Select the type of answer you're looking for.
+          You can offer multiple choices by selecting 'Dropdown'" optionLabel="label"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-radiobutton" tooltipPosition="right" pTooltip="Should this field appear when admins add a new employee or during employee onboarding?">
+          <div>Does field appear in the new employee flow?</div>
+          <div>
+            <p-radioButton name="groupname" value="1" label="Yes" [(ngModel)]="selectedEmployeeFlow"></p-radioButton>
+            <p-radioButton name="groupname" value="2" label="No" [(ngModel)]="selectedEmployeeFlow"></p-radioButton>
+          </div>
+        </div>
+        <div class="form-input-radiobutton">
+          <div>Can employees see this on their own profile?</div>
+          <div>
+            <p-radioButton name="groupname" value="3" label="Yes" [(ngModel)]="selectedEditEmployeeProfile"></p-radioButton>
+            <p-radioButton name="groupname" value="4" label="No" [(ngModel)]="selectedEditEmployeeProfile"></p-radioButton>
+          </div>
+        </div>
+        <div class="form-input-radiobutton">
+          <div>Can employees edit this field?</div>
+          <div>
+            <p-radioButton name="groupname" value="5" label="Yes" [(ngModel)]="selectedEditEmployeeField"></p-radioButton>
+            <p-radioButton name="groupname" value="6" label="No" [(ngModel)]="selectedEditEmployeeField"></p-radioButton>
+          </div>
+        </div>
+        <div class="form-input-radiobutton" tooltipPosition="right" pTooltip="Select Yes if an employe's manager should see this field on their direct reports profiles
+        
+        A manager cannot edit this field">
+          <div>Can an employee's manager see this field?</div>
+          <div>
+            <p-radioButton name="groupname" value="7" label="Yes" [(ngModel)]="selectedEditEmployeeManager"></p-radioButton>
+            <p-radioButton name="groupname" value="8" label="No" [(ngModel)]="selectedEditEmployeeManager"></p-radioButton>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <div>
+            <button pButton class="form-button-success">{{ 'Add' | translate }}</button>
+            <button pButton class="form-button-default" (click)="isEditCustomField = false">{{ 'Cancel' | translate
+              }}</button>
+          </div>
+
+          <span class="material-symbols-rounded">delete</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+</div>

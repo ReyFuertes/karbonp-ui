@@ -1,0 +1,44 @@
+@import "src/styleguide/index";
+
+.reports-settings-container {
+  h2 {
+    margin-bottom: 5px;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .option {
+      width: 33%;
+      margin-bottom: 30px;
+    }
+  }
+
+  .form-buttons {
+    @include form-buttons;
+    justify-content: flex-start;
+
+    .form-button-cyan {
+      @include form-button-cyan;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}
+
+::ng-deep {
+  .reports-settings-container {
+    .p-checkbox {
+      @include input-checkbox;
+    }
+  }
+}

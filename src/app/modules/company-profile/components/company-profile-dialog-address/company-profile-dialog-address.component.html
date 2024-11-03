@@ -1,0 +1,46 @@
+<div class="company-profile-dialog-address-container">
+  <p-dialog [(visible)]="showModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false" [modal]="true" styleClass="red" closeIcon="false" [style]="{width: '490px'}" (onHide)="modalChange.emit(false)">
+    <div class="header">
+      <div>
+        <span class="material-symbols-rounded">add_location</span>
+        <h4>{{ 'Add registered address' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showModal = !showModal">close</span>
+    </div>
+    <div class="content">
+      <div class="form-fields">
+        <div class="form-input-field column">
+          <div><span>{{ 'Address 1' | translate }}</span></div>
+          <input kp-autoFocusField type="text" pInputText class="red" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field column">
+          <div><span>{{ 'County' | translate }}</span></div>
+          <input type="text" pInputText class="red" />
+          <div class="error"></div>
+        </div>
+        <div class="form-edit-tpc">
+          <div class="form-input-field column">
+            <div><span>{{ 'Town/City' | translate }}</span></div>
+            <input type="text" pInputText class="red" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field column">
+            <div><span>{{ 'Postal Code' | translate }}</span></div>
+            <input type="text" pInputText class="red" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field column">
+          <div><span>{{ 'Country' | translate }}</span></div>
+          <p-dropdown appendTo="body" [options]="countries" optionLabel="label"  class="red" panelStyleClass="red"></p-dropdown>
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-red">{{ 'Save changes' | translate }}</button>
+        <button pButton class="form-button-default" (click)="modalChange.emit(false)">{{ 'Cancel' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+</div>

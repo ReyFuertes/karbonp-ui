@@ -1,0 +1,14 @@
+<div class="create-account-company-container" *ngIf="!isLoading; else loading">
+  <div class="logo-container">
+    <img [src]="imgPath + 'karbonpay-text-logo.png'" />
+  </div>
+  <container-element [ngSwitch]="activeMenuOption">
+    <kp-create-account *ngSwitchCase="'create_account'" [form]="form" (changePage)="handlePageChange($event)"></kp-create-account>
+    <kp-setup-company *ngSwitchCase="'setup_company'" [form]="form" (changePage)="handlePageChange($event)"></kp-setup-company>
+  </container-element>
+</div>
+<ng-template #loading>
+  <div class="loading-container blue">
+    <i class="pi pi-spin pi-spinner"></i>
+  </div>
+</ng-template>

@@ -1,0 +1,93 @@
+<div class="employee-skills-equity-container" *ngIf="form" [formGroup]="form" >
+  <div class="form-input-detail-fields">
+    <h3>{{ 'Skills And Equity' | translate }}</h3>
+    <ng-container *ngIf="actionState === 'edit' && currentSection === 'skills_equity'; else employeeSkillsEquityView">
+      <div class="form-edit-fields column">
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Gender' | translate }}</span>
+              <span>*</span>
+            </div>
+            <p-dropdown [options]="genderType" optionLabel="label" formControlName="gender" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error">
+              <span *ngIf="getRequiredValidation('gender', form)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Marital Status' | translate }}</span>
+              <span>*</span>
+            </div>
+            <p-dropdown [options]="maritalStatusType" formControlName="maritalStatus" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error">
+              <span *ngIf="getRequiredValidation('maritalStatus', form)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Number of Dependants' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="numberOfDependents" pInputText class="success" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('numberOfDependents', form)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Nationality' | translate }}</span>
+            </div>
+            <p-dropdown [options]="passportCountryCodes" formControlName="passportCountryCodeId" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">
+            {{ 'Save' | translate }}
+          </button>
+          <button pButton class="form-button-default normal" (click)="onCancel('skills_equity')">
+            {{ 'Cancel' | translate }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #employeeSkillsEquityView>
+      <div *ngIf="isLoaded; else loader" class="view-fields">
+        <div class="view-fields-display">
+          <div>
+            <div>{{ 'Gender' | translate }}</div>
+            <div>{{ (genderType[employeeSkillsAndEquity?.gender - 1]?.label) ?? '--' }}</div>
+          </div>
+          <div>
+            <div>{{ 'Marital Status' | translate }}</div>
+            <div>{{ (maritalStatusType[employeeSkillsAndEquity?.maritalStatus - 1]?.label) ?? '--' }}</div>
+          </div>
+          <div>
+            <div>{{ 'Number of Dependents' | translate }}</div>
+            <div>{{ (employeeSkillsAndEquity?.numberOfDependents) ?? '--' }}</div>
+          </div>
+          <div>
+            <div>{{ 'Nationality' | translate }}</div>
+            <div>{{ (getPassportCountryCode?.label) ?? '--' }}</div>
+          </div>
+        </div>
+        <div>
+          <span class="material-symbols-rounded" (click)="onEdit('skills_equity')">edit_square</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

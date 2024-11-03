@@ -1,0 +1,87 @@
+<div class="payroll-payment-details-container">
+  <ng-container *ngIf="(isLoadingAsync() | async) === false; else loading">
+    <ng-container *ngIf="paymentDetail; else noResults">
+      <div class="header">
+        <h4>{{ 'PaymentDetails' | translate }}</h4>
+        <h5>
+          <span>{{ paymentDetail?.payPeriod | payPeriodDescription: paymentDetail?.payRunName }} - </span>
+          <span>{{ paymentDetail?.payRunDate | date:'dd MMM yyyy' }}</span>
+        </h5>
+        <p>{{ 'Amount' | translate }}: {{ paymentTotal?.toString() | currencySymbol }}</p>
+      </div>
+      <div class="content">
+        <div class="details">
+          <div class="row">
+            <div>
+              <span>{{ 'Status' | translate }}:</span>
+              <span>{{ paymentStatusType[paymentDetail?.status] | translate }}</span>
+            </div>
+            <div>
+              <span>{{ 'NextReminder' | translate }}:</span>
+              <span>{{ (paymentDetail?.nextReminderDate | date:'dd MMM yyyy') ?? '--' }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <span>{{ 'PaymentScheduledFor' | translate }}:</span>
+              <span>{{ paymentDetail?.shouldArriveDate | date:'dd MMM yyyy' }}</span>
+            </div>
+            <div>
+              <span *ngIf="paymentDetail?.status !== paymentStatusType.Declined">{{ 'AuthorizedBy' | translate
+                }}:</span>
+              <span *ngIf="paymentDetail?.status === paymentStatusType.Declined">{{ 'DeclinedBy' | translate }}:</span>
+              <span>{{ (paymentDetail?.authorizer) ?? '--' }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <span>{{ 'PaymentMethod' | translate }}:</span>
+              <span>{{ paymentDetail?.bank | translate}} - {{ paymentDetail?.paymentMethod | translate }}</span>
+            </div>
+            <div>
+              <span>{{ 'PaymentsSucceeded' | translate }}:</span>
+              <span>{{ succeededPaymentsCount }} / {{ totalPaymentsCount }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <span>{{ 'MessageToRecipient' | translate }}:</span>
+              <span>{{ paymentDetail?.reference }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="employee-list">
+          <p-table [value]="paymentDetail?.employees" [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>{{ 'Employee' | translate }}</th>
+                <th>{{ 'Amount' | translate }}</th>
+                <th>{{ 'Status' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+              <tr>
+                <td>{{ row?.employee }}</td>
+                <td>{{ row?.amount?.toString() | currencySymbol }}</td>
+                <td>{{ paymentStatusType[paymentDetail?.status] | translate }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="form-buttons">
+          <button pButton class="form-button-default normal" (click)="onBack()">{{ 'Back' | translate }}</button>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loading>
+    <div class="loading-container blue">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

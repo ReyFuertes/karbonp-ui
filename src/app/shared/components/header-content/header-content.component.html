@@ -1,0 +1,53 @@
+<div class="header-content" [ngStyle]="{'background-image': getColor}">
+  <div [ngStyle]="{'width': width}">
+    <div class="avatar-container" [ngStyle]="{'margin-right': marginRight}">
+      <div *ngIf="isAppLogo === false" class="editable-avatar" [ngClass]="styleClass">
+        <img *ngIf="avatarPath" [ngStyle]="{'border-radius': getLogoShape}"
+          [ngClass]="{'is-company-logo': isCompanyLogo}" [src]="avatarPath" />
+        <div *ngIf="!avatarPath" class="default-icon">
+          <span class="material-symbols-rounded">photo_camera</span>
+        </div>
+        <!-- <input #uploader type="file" accept="image/png,image/jpeg,image/gif" (change)="onFileChange($event)"
+          class="file-input" #file>
+        <div class="edit-logo" (click)="uploader.click()">
+          <div class="change-image-text"><span>{{ 'Change image' | translate }}</span></div>
+          <span class="material-symbols-rounded">edit_square</span>
+        </div> -->
+      </div>
+      <div *ngIf="isAppLogo === true" class="avatar {{classLogo}}">
+        <container-element [ngSwitch]="getAppLogo">
+          <span class="material-symbols-rounded">{{ getAppLogo }}</span>
+        </container-element>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="headerTitle; else loading" class="header-title">
+        <h1>{{ headerTitle }}</h1>
+        <div *ngIf="status">
+          <ng-container *ngIf="status?.name !== 'Active'">
+            <button pButton class="form-button-default small" [ngClass]="toCssClass(status?.name)" tooltipPosition="top"
+              [pTooltip]="status?.description | translate">
+              {{ status?.name | translate }}</button>
+            <button *ngIf="status.name === notInvited" pButton
+              class="form-button-default small status send-invite header" tooltipPosition="top"
+              [pTooltip]="status?.description | translate">
+              {{ 'Invite' | translate }}</button>
+            <button *ngIf="status.name === pending" pButton
+              class="form-button-default small status resend-invite header" tooltipPosition="top"
+              [pTooltip]="status?.description | translate">
+              {{ 'Resend Invite' | translate }}</button>
+          </ng-container>
+        </div>
+      </div>
+      <div class="title-appointment">
+        <h5 *ngIf="jobTitle">{{ jobTitle }}</h5>
+        <h5 *ngIf="dateOfAppointment">{{ 'Started' | translate }} {{ dateOfAppointment | date: 'dd MMM yyyy' }}</h5>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    <div class="loading-container white">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

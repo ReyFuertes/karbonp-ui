@@ -1,0 +1,176 @@
+@import "./styleguide/index";
+
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
+html,
+body {
+  margin: 0;
+  color: var(--colour-element-black-1);
+  font-size: 16px;
+  font-family: "Lato", sans-serif;
+  line-height: 21px;
+}
+
+.p-component {
+  font-family: "Lato", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--colour-element-black-1);
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 38px;
+  line-height: 40px;
+}
+
+h2 {
+  font-size: 28px;
+  line-height: 34px
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 30px;
+  margin-bottom: 20px;
+}
+
+h4 {
+  font-size: 20px;
+  line-height: 28px;
+  margin-bottom: 15px;
+}
+
+h5 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  margin-bottom: 15px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--colour-element-gray-1);
+}
+
+.block-container {
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: block;
+  position: absolute;
+  height: -webkit-fill-available;
+  width: 100%;
+  transition: opacity 0.28s ease;
+  z-index: 999;
+}
+
+::placeholder {
+  color: var(--colour-element-gray-1);
+  opacity: 1;
+}
+
+::-ms-input-placeholder {
+  color: var(--colour-element-gray-1);
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+span.small {
+  font-size: 12px;
+  color: var(--colour-element-gray-1);
+  font-weight: 400 !important;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.no-results-found {
+  margin-top: 20px;
+  border-radius: 4px;
+  background: var(--colour-element-white-bg-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--colour-element-gray-1);
+  padding: 20px;
+  animation-name: fadeIn;
+  animation-duration: 550ms;
+  
+  h5 {
+    font-weight: 400;
+    margin: 0;
+    color: var(--colour-element-gray-1)
+  }
+}
+
+.element-link {
+  color: var(--colour-element-blue-2);
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.mp-left-space {
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+}
+
+.loading-container {
+  @include loader;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.p-tooltip {
+  @include tooltip;
+}

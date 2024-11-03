@@ -1,0 +1,107 @@
+@mixin input-checkbox {
+  label {
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 15px;
+
+    &.p-checkbox-label-active {
+      font-weight: 700;
+    }
+  }
+
+  .p-checkbox-box {
+    padding: 10px;
+    box-shadow: none;
+    border-radius: 4px;
+
+    &:hover {
+      border-color: var(--colour-element-green-1);
+    }
+
+    &.p-focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.cyan {
+  label {
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 15px;
+  }
+
+  &:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+    border-color: var(--colour-element-cyan-1);
+  }
+
+  .p-checkbox {
+    .p-checkbox-box {
+      border: 1px solid var(--colour-element-cyan-1);
+      box-shadow: none;
+
+      &:hover {
+        border-color: var(--colour-element-cyan-1);
+      }
+    }
+
+    .p-checkbox-box.p-highlight {
+      border-color: var(--colour-element-white);
+      background: var(--colour-element-cyan-1);
+    }
+
+    .p-checkbox-box .p-checkbox-icon {
+      color: var(--colour-element-white);
+    }
+  }
+}
+
+.success {
+  label {
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 15px;
+    color: var(--colour-element-black-1);
+  }
+
+  .p-checkbox {
+    .p-checkbox-box.p-highlight {
+      border-color: var(--colour-element-white);
+      background: var(--colour-element-green-1);
+    }
+
+    .p-checkbox-box .p-checkbox-icon {
+      color: var(--colour-element-white);
+    }
+
+    &:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+      box-shadow: 0 0 0 0.2rem var(--colour-element-green-6);
+      border-color: var(--colour-element-green-1);
+    }
+  }
+}
+
+.orange {
+  label {
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 15px;
+    color: var(--colour-element-black-1);
+  }
+
+  .p-checkbox {
+    .p-checkbox-box.p-highlight {
+      border-color: var(--colour-element-white);
+      background: var(--colour-element-orange-1);
+    }
+
+    .p-checkbox-box .p-checkbox-icon {
+      color: var(--colour-element-white);
+    }
+
+    &:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+      box-shadow: 0 0 0 0.2rem var(--colour-element-orange-5);
+      border-color: var(--colour-element-orange-1);;
+    }
+  }
+}

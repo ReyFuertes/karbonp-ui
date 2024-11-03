@@ -1,0 +1,43 @@
+<div class="dynamic-fields-container" *ngIf="form">
+  <ng-container *ngFor="let group of groupFields">
+    <ng-container *ngFor="let field of group.fields">
+      <ng-container *ngIf="group.groupName === 'none'">
+        <ng-container *ngTemplateOutlet="fields"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="group.groupName !== 'none'">
+        <div [ngClass]="{'form-input-field-group': true}" class="form-input-field-group ">
+          <ng-container *ngTemplateOutlet="fields"></ng-container>
+        </div>
+      </ng-container>
+      <ng-template #fields>
+        <ng-container [ngSwitch]="field.type">
+          <ng-container *ngSwitchCase="'email'">
+            <kp-input [type]="field.type" [form]="form" [controlName]="field.name" [required]="field.required"
+              [value]="field?.value"></kp-input>
+          </ng-container>
+          <ng-container *ngSwitchCase="'text'">
+            <kp-input [type]="field.type" [form]="form" [controlName]="field.name" [required]="field.required"
+              [value]="field?.value"></kp-input>
+          </ng-container>
+          <ng-container *ngSwitchCase="'dropdown'">
+            <kp-dropdown-select [type]="field.type" [form]="form" [controlName]="field.name" [required]="field.required"
+              [options]="field.options" [value]="field?.value"></kp-dropdown-select>
+          </ng-container>
+          <ng-container *ngSwitchCase="'switch'">
+            <kp-switch [type]="field.type" [form]="form" [controlName]="field.name" [value]="field?.value"
+              [required]="field.required"></kp-switch>
+          </ng-container>
+          <ng-container *ngSwitchCase="'date'">
+            <kp-calendar [type]="field.type" [form]="form" [controlName]="field.name" [required]="field.required"
+              [value]="field?.value"></kp-calendar>
+          </ng-container>
+          <ng-container *ngSwitchCase="'hidden'">
+            <div [ngStyle]="{'display': 'none'}">
+              <kp-input [type]="field.type" [form]="form" [controlName]="field.name" [value]="field?.value"></kp-input>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+</div>

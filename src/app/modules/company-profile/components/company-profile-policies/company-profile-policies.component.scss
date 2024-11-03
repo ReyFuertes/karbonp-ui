@@ -1,0 +1,45 @@
+@import "src/styleguide/index";
+
+.company-profile-policies-container {
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 30px;
+
+    h2 {
+      margin: 0;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .content {
+    .note-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      border-radius: 4px;
+      background: var(--colour-element-white-bg-1);
+      color: var(--colour-element-gray-1);
+      font-size: 16px;
+      line-height: 21px;
+
+      p {
+        max-width: 590px;
+      }
+
+      span {
+        color: var(--colour-element-red-1);
+      }
+    }
+  }
+}

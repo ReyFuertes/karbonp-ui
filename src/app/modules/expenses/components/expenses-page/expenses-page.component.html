@@ -1,0 +1,16 @@
+<kp-header-content headerTitle="Expenses" [avatarPath]="avatarPath" appLogoName="expenses" [isAppLogo]="true" bgImage="expenses" classLogo="expenses-avatar" [marginRight]="'25px'"></kp-header-content>
+<div class="expenses-page-body">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menusOptions" class="menu-item blue" [ngClass]="{'selected': getCurrentMenu(menu)}" (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="center-container">
+      <container-element [ngSwitch]="activeMenuOption">
+        <kp-expenses-settings *ngSwitchCase="'settings'"></kp-expenses-settings>
+      </container-element>
+    </div>
+  </div>

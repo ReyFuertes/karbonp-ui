@@ -1,0 +1,120 @@
+<div class="time-off-balances-container">
+  <div class="header">
+    <h2>{{ 'Time Off Balances' | translate }}</h2>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'Date' | translate }}</span>
+          <span>*</span>
+        </div>
+        <p-calendar [(ngModel)]="filterDate" [showIcon]="true" [placeholder]="'Select Date' | translate"
+          [dateFormat]="'dd/mm/yy'" styleClass="orange"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Paypoints' | translate }}</span></div>
+        <p-multiSelect [options]="currentUserPaypoints" [(ngModel)]="selectedCurrentUserPaypoints"
+          [maxSelectedLabels]="2" optionLabel="label" [showClear]="true" [placeholder]="'Select' | translate"
+          styleClass="orange" display="chip">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ selectedCurrentUserPaypoints ? selectedCurrentUserPaypoints.length : 0 }} </b>
+              <span>item {{ (selectedCurrentUserPaypoints ? selectedCurrentUserPaypoints?.length : 0) > 1 ? 's' : '' }}
+                selected.</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Statuses' | translate }}</span></div>
+        <p-multiSelect [options]="employeeSelectStatustype" [(ngModel)]="selectedStatusTypes" [maxSelectedLabels]="2"
+          optionLabel="label" [showClear]="true" [placeholder]="'Select' | translate" styleClass="orange"
+          display="chip">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ selectedStatusTypes ? selectedStatusTypes.length : 0 }} </b>
+              <span>{{ 'item' | translate }} {{ (selectedStatusTypes ? selectedStatusTypes.length : 0) > 1 ? 's' : '' }}
+                {{ 'selected' | translate }}</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+    </div>
+    <div>
+      <div class="form-input-field w-auto">
+        <div><span>{{ 'EmployeesOptional' | translate }}</span></div>
+        <p-multiSelect [options]="employees" [(ngModel)]="selectedEmployeeIds" [filter]="true"
+          [selectionLimit]="selectionLimit" [maxSelectedLabels]="maxSelectedLabels" optionLabel="fullName"
+          optionValue="id" [placeholder]="'Select' | translate"
+          styleClass="orange {{ selectedEmployeeIds?.length <= 2 ? 'h-40' : 'h-auto' }}" display="chip"
+          [showClear]="true" (onClear)="onClear()">
+          <ng-template pTemplate="footer">
+            <div class="ms-footer">
+              <b> {{ selectedEmployeeIds ? selectedEmployeeIds.length : 0 }} </b>
+              <span>{{ 'item' | translate }} {{ (selectedEmployeeIds ? selectedEmployeeIds.length : 0) > 1 ? 's' : '' }}
+                {{ 'selected' | translate }}</span>
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button [disabled]="!filterDate || (isLoadingEmployeesSelectorAsync() | async) === true" pButton
+          class="form-button-orange large" (click)="onSaveFilter()">
+          {{ 'Filter' | translate }}
+        </button>
+        <button [disabled]="selectedEmployeeIds?.length === 0 || (isLoadingEmployeesSelectorAsync() | async) === true"
+          pButton class="form-button-default large" (click)="onClear()">{{ 'Clear' | translate }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <ng-container *ngIf="(isLoadingEmployeesSelectorAsync() | async) === false; else loading">
+      <p-table *ngIf="balanceReportDatatable?.length > 0; else noResults" [value]="balanceReportDatatable"
+        styleClass="p-datatable-striped" paginatorStyleClass="orange" [showCurrentPageReport]="true" [scrollable]="true"
+        [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>{{ 'Employee' | translate }}</th>
+            <th>{{ 'EmployeeNo' | translate }}</th>
+            <th>{{ 'OrganizationalUnit' | translate }}</th>
+            <th>{{ 'IOD' | translate }}</th>
+            <th>{{ 'Leavew/oPay' | translate }}</th>
+            <th>{{ 'MaternityLeave' | translate }}</th>
+            <th>{{ 'ServiceIncentiveLeave' | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-balanceReport>
+          <tr *ngIf="balanceReport?.employeeName?.trim() !== ''">
+            <td>{{ (balanceReport?.employeeName) ?? '--' }}</td>
+            <td>{{ (balanceReport?.number) ?? '--' }}</td>
+            <td>{{ (balanceReport?.organizationalUnit) ?? '--' }}</td>
+            <td>{{ (balanceReport?.leaveTypeIOD) ?? '--' }}</td>
+            <td>{{ (balanceReport?.leaveTypeLWP) ?? '--' }}</td>
+            <td>{{ (balanceReport?.leaveTypeML) ?? '--' }}</td>
+            <td>{{ (balanceReport?.leaveTypeSIV) ?? '--' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+  </div>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loading>
+    <div class="loading-container orange">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

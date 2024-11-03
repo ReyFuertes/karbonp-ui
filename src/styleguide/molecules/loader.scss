@@ -1,0 +1,41 @@
+@mixin loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  animation-name: fadeIn;
+  animation-duration: 550ms;
+
+  &.success {
+    color: var(--colour-element-green-2);
+  }
+
+  &.orange {
+    color: var(--colour-element-orange-2);
+  }
+
+  &.blue {
+    color: var(--colour-element-blue-2);
+  }
+
+  &.cyan {
+    color: var(--colour-element-cyan-1);
+  }
+
+  &.white {
+    color: var(--colour-element-white);
+
+    i {
+      color: var(--colour-element-white) !important;
+    }
+  }
+
+  i {
+    font-size: 3rem;
+  }
+
+  span {
+    margin-top: 5px;
+  }
+}

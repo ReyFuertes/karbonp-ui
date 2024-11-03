@@ -1,0 +1,67 @@
+@import "src/styleguide/index";
+
+.payroll-employee-setup-container {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+      margin-bottom: 0;
+    }
+
+    .form-input-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      width: fit-content;
+      height: 50px;
+      
+      p-dropdown {
+        width: 250px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+    margin-right: 8px;
+  }
+
+  .form-button-success {
+    @include form-button-success;
+    margin-right: 8px;
+  }
+
+  .form-button-red {
+    @include form-button-red;
+    margin-right: 8px;
+  }
+}
+
+::ng-deep {
+  .payroll-employee-setup-container {
+    .p-confirm-dialog {
+      @include confirm-dialog;
+    }
+
+    .p-tabview {
+      @include tab-view;
+
+      .p-tabview-panels {
+        padding: 1rem 0 0;
+      }
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+  }
+}

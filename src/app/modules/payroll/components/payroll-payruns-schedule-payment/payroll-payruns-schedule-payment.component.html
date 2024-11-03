@@ -1,0 +1,242 @@
+<div class="payroll-payruns-schedule-payment-container">
+  <div class="header">
+    <h4>{{ 'SchedulePayment' | translate }}</h4>
+    <p-steps [model]="steps" [readonly]="true" [readonly]="false" [activeIndex]="activeIndex"
+      (activeIndexChange)="onActiveIndexChange($event)" />
+  </div>
+  <div class="content">
+    <div [ngSwitch]="activeIndex">
+      <ng-container *ngSwitchCase="0">
+        <ng-container *ngIf="payRunPaymentEmployees?.length > 0; else noValidEmployee">
+          <p-table [value]="payRunPaymentEmployees" [scrollable]="true" [paginator]="true" [rows]="10"
+            [rowsPerPageOptions]="[10, 20, 30, 50, 100]" styleClass="blue" paginatorStyleClass="blue"
+            [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords}">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>
+                  <p-inputSwitch [(ngModel)]="checkAllEmployees" (onChange)="onCheckAll($event)"
+                    styleClass="blue"></p-inputSwitch>
+                </th>
+                <th>{{ 'Employee' | translate }}</th>
+                <th>{{ 'Status' | translate }}</th>
+                <th>{{ 'Amount' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+              <tr>
+                <td>
+                  <p-inputSwitch [(ngModel)]="row.payEmployee" (onChange)="payEmployeeChange()"
+                    styleClass="blue"></p-inputSwitch>
+                </td>
+                <td>{{ row?.employeeName }}</td>
+                <td>{{ 'Ready' | translate }}</td>
+                <td>{{ row?.netPay | currencySymbol }}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <tr>
+                <td colspan="3" class="text-right">{{ 'Totals' | translate }}:</td>
+                <td>{{ getTotalPayAmount?.toString() | currencySymbol }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="1">
+        <div class="payment-details" [formGroup]="form">
+          <div>
+            <h4>{{ 'Total' | translate}}: {{ getTotalPayAmount?.toString() | currencySymbol }}</h4>
+            <div *ngIf="transactionFee !== null && payRunPaymentEmployees?.length !== 0">
+              <p>{{ 'TransactionFees' | translate }}: {{ getTotalTransactionFees?.toString() | currencySymbol }}</p>
+            </div>
+            <div class="form-input-field">
+              <div><span>{{ 'SendNow' | translate }}</span></div>
+              <p-inputSwitch formControlName="sendNow" (onChange)="sendNowUpdated($event)"
+                styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="!form.get('sendNow').value" class="form-input-field">
+              <div><span>{{ 'Payby' | translate }}</span><span>*</span></div>
+              <p-calendar formControlName="payByDate" appendTo="body" [showIcon]="true"
+                [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="blue"></p-calendar>
+              <div class="error">
+                <span *ngIf="getRequiredValidation('payByDate', form)">
+                  {{ 'vPayByDateIsRequired' | translate }}</span>
+                <span *ngIf="form.get('payByDate').hasError('dateInPast')">
+                  {{ 'vPayByDateInFuture' | translate }}</span>
+                <span *ngIf="form.get('payByDate').hasError('dateOnPublicHoliday')">
+                  {{ 'vPayByDateIsOnPublicHoliday' | translate }}</span>
+                <span *ngIf="form.get('payByDate').hasError('dateOnSunday')">
+                  {{ 'vPayByDateIsOnSunday' | translate }}</span>
+              </div>
+            </div>
+            <ng-container *ngIf="form.get('sendNow').value">
+              <div class="info">
+                <span>{{ 'PayBy' | translate }}:</span>
+                <span>{{ form.get('payByDate').value | date:'dd MMM yyyy' }}</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="(isSelectedDateTomorrow
+              && !isSelectedDateSaturday) 
+              || isSelectedDateMonday
+              || selectedDateComesAfterPublicHoliday">
+              <div class="error-info">
+                <span>{{ 'NextDayPaymentNotification' | translate }} {{
+                  form.get('payByDate').value | date:'dd MMM yyyy' }}</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="isSelectedDateSaturday">
+              <div class="error-info">
+                <span>{{ 'PaymentsMadeOnASaturdayMessage' | translate }}</span>
+                <span>{{ form.get('payByDate').value | date:'dd MMM yyyy' }}</span>
+              </div>
+            </ng-container>
+            <div class="form-input-field">
+              <div><span>{{ 'MessageToRecipient' | translate }}</span></div>
+              <textarea formControlName="reference" styleClass="blue" rows="3" [cols]="30" pInputTextarea
+                [autoResize]="true"></textarea>
+              <div class="error">
+                <span *ngIf="getRequiredValidation('reference', form)">
+                  {{ 'vMessageToRecipientIsRequired' | translate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="2">
+        <div class="bank-details" [formGroup]="form">
+          <div>
+            <h5>{{ 'SelectYourBankingPreference' | translate }}</h5>
+            <h5 *ngIf="getTotalPayAmount">
+              <span>{{ 'Total' | translate }} : </span>
+              <span>{{ getTotalPayAmount?.toString() | currencySymbol }}</span>
+            </h5>
+          </div>
+          <p-accordion [multiple]="true" [activeIndex]="[0,1,2,3]">
+            <ng-container *ngFor="let detail of bankingDetailList">
+              <ng-container *ngTemplateOutlet="bankingTemplate;context:{ name: detail.name }"></ng-container>
+            </ng-container>
+            <ng-template #bankingTemplate let-name="name">
+              <p-accordionTab>
+                <ng-template pTemplate="header">
+                  <span class="header-container">
+                    <p-avatar [image]="imagePath + 'banks/' + bankingDetailTypes.get(name)?.name?.toLowerCase() +'.png'"
+                      shape="circle" />
+                    <span>{{ bankingDetailTypes.get(name)?.name }}</span>
+                  </span>
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <div class="list">
+                    <div>
+                      <span>{{ 'AccountHolder' | translate }}:</span>
+                      <span>{{ bankingDetailTypes.get(name)?.accountHolder }}</span>
+                    </div>
+                    <div>
+                      <span>{{ 'AccountNumber' | translate }}:</span>
+                      <span>{{ bankingDetailTypes.get(name)?.accountNumber }}</span>
+                    </div>
+                    <div>
+                      <span>{{ 'BranchCode' | translate }}:</span>
+                      <span>{{ bankingDetailTypes.get(name)?.branchCode }}</span>
+                    </div>
+                    <div>
+                      <span>{{ 'AccountType' | translate }}:</span>
+                      <span>{{ bankingDetailTypes.get(name)?.accountType | translate}}</span>
+                    </div>
+                    <div *ngIf="directPayment !== null">
+                      <span>{{ 'Reference' | translate}}:</span>
+                      <span>PS{{ directPayment?.clientCode }}</span>
+                    </div>
+                  </div>
+                  <div class="list-toggle">
+                    <div class="form-input-field">
+                      <div><span>{{ 'OnlineBanking' | translate }}</span></div>
+                      <p-inputSwitch (onChange)="onChangeBanking(bankingDetailTypes.get(name), 0)"
+                        [formControlName]="bankingDetailTypes.get(name).toggles[0]" styleClass="blue"></p-inputSwitch>
+                    </div>
+                    <div class="form-input-field">
+                      <div><span>{{ 'TelephoneBanking' | translate }}</span></div>
+                      <p-inputSwitch (onChange)="onChangeBanking(bankingDetailTypes.get(name), 1)"
+                        [formControlName]="bankingDetailTypes.get(name).toggles[1]" styleClass="blue"></p-inputSwitch>
+                    </div>
+                    <div class="form-input-field">
+                      <div><span>{{ 'BankAtLocalBranch' | translate }}</span></div>
+                      <p-inputSwitch (onChange)="onChangeBanking(bankingDetailTypes.get(name), 2)"
+                        [formControlName]="bankingDetailTypes.get(name).toggles[2]" styleClass="blue"></p-inputSwitch>
+                    </div>
+                  </div>
+                </ng-template>
+              </p-accordionTab>
+            </ng-template>
+          </p-accordion>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="3">
+        <div class="confirmation">
+          <div class="confirmation-details">
+            <h4>{{ 'Details' | translate}}</h4>
+            <div>
+              <span>{{ 'Employees' | translate }}:</span>
+              <span>{{ getTotalEmployeesToPay }}</span>
+            </div>
+            <div>
+              <span>{{ 'Total' | translate }}:</span>
+              <span>{{ getTotalPayAmount?.toString() | currencySymbol }}</span>
+            </div>
+            <div *ngIf="form.get('payByDate').value !== null">
+              <span>{{ 'PayBy' | translate }}:</span>
+              <span>{{ form.get('payByDate').value | date:'dd MMM yyyy'}}</span>
+            </div>
+            <div>
+              <span>{{ 'MessageToRecipient' | translate }}:</span>
+              <span>{{ form.get('reference').value }}</span>
+            </div>
+          </div>
+          <div *ngIf="form.get('selectedBank').value as selectedBank" class="selected-bank">
+            <h4>{{ 'BankDetails' | translate}}</h4>
+            <div>
+              <img [src]="imagePath + 'banks/' + form.get('selectedBank').value?.icon" />
+              <div>
+                <div>
+                  <span>{{ 'AccountHolder' | translate }}:</span>
+                  <span>{{ selectedBank?.accountHolder }}</span>
+                </div>
+                <div>
+                  <span>{{ 'AccountNumber' | translate }}:</span>
+                  <span>{{ selectedBank?.accountNumber }}</span>
+                </div>
+                <div>
+                  <span>{{ 'BranchCode' | translate }}:</span>
+                  <span>{{ selectedBank?.branchCode }}</span>
+                </div>
+                <div>
+                  <span>{{ 'AccountType' | translate }}:</span>
+                  <span>{{ selectedBank?.accountType }}</span>
+                </div>
+                <div *ngIf="directPayment !== null">
+                  <span>{{ 'Reference' | translate}}:</span>
+                  <span>PS{{ directPayment?.clientCode }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="form-buttons">
+    <button pButton class="form-button-default normal" (click)="onBackPrevious()">
+      {{ activeIndex !== 0 ? 'Previous' : 'Back' | translate }}</button>
+    <button *ngIf="activeIndex !== 3" [disabled]="isDisabled" pButton class="form-button-blue normal"
+      (click)="onNext()">
+      {{ 'Next' | translate }}</button>
+    <button *ngIf="activeIndex === 3" [disabled]="isDisabled" pButton class="form-button-blue normal"
+      (click)="onConfirm()">
+      {{ 'Confirm' | translate }}</button>
+  </div>
+  <ng-template #noValidEmployee>
+    <div>
+      <h4>{{ 'NoValidEmployeesToPay' | translate }}</h4>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,47 @@
+<p-dialog [(visible)]="showGoalGetterModal" [closeOnEscape]="true" [dismissableMask]="false" [showHeader]="false"
+  [modal]="true" styleClass="blue goal-getter-modal" closeIcon="false" [style]="{ 'min-width': '445px'}"
+  (onHide)="showGoalGetterModal = false">
+  <div class="header">
+    <div>
+      <h4>{{ 'TheGoalGetter' | translate }} </h4>
+    </div>
+    <span class="material-symbols-rounded" (click)="showGoalGetterModal = !showGoalGetterModal">close</span>
+  </div>
+  <div class="content" [formGroup]="form">
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'Type' | translate }} </span></div>
+        <p-dropdown appendTo="body" [options]="goalGetterOptions" formControlName="goalGetterType" optionValue="value"
+          [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'GoalNetAmount' | translate }} </span></div>
+        <input type="number" formControlName="goalNetAmount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <!-- [showOutstandingEmployerLoanClosingBalance]="showOutstandingEmployerLoanClosingBalance"
+      [closingBalance]="closingBalance"  -->
+    </div>
+    <kp-payroll-employee-setup-preview-payslip *ngIf="calculatedGoalGetter"
+      [employeeSetupData]="payrollEmployeeSetupData"
+      [payslipPreview]="payslipPreview"></kp-payroll-employee-setup-preview-payslip>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="form-buttons">
+      <button [disabled]="!form.valid && (isLoadingAsync() | async)" pButton class="form-button-blue normal"
+        (click)="form.valid ? onCalculate() : null">
+        <i *ngIf="(isLoadingAsync() | async)" class="pi pi-spin pi-spinner"></i>
+        <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Calculate' | translate }}</span>
+      </button>
+      <ng-container *ngIf="calculatedGoalGetter">
+        <button pButton icon="pi pi-check" pButton class="form-button-blue outlined normal" (click)="onApply()">
+          {{ 'Apply' | translate }} </button>
+        <button pButton icon="pi pi-download" (click)="generateGoalGetterPaySlipPDF()" class="form-button-blue outlined normal">
+          {{ 'DownloadSamplePayslip' | translate }} </button>
+      </ng-container>
+      <button pButton class="form-button-default normal" (click)="showGoalGetterModal = false">
+        {{ 'Cancel' | translate }} </button>
+    </div>
+  </ng-template>
+</p-dialog>

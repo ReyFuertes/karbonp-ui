@@ -1,0 +1,70 @@
+<kp-header-content [headerTitle]="'QuickAddEmployee' | translate" bgImage="employee" classLogo="people-avatar"
+  appLogoName="people" [isAppLogo]="true" marginRight="70px" width="1090px"></kp-header-content>
+<div class="employee-quick-add-container">
+  <div class="header">
+    <h2>{{ 'AddAndInviteYourEntireTeam' | translate }}</h2>
+  </div>
+  <div *ngIf="form" [formGroup]="form" class="content">
+    <div>
+      <ng-container formArrayName="firstLastEmail">
+        <div class="input-row" [ngClass]="'row-' + i" *ngFor="let row of getFirstLastEmail?.controls; let i = index"
+          >
+          <div class="form-input-field" [formGroupName]="i">
+            <div>
+              <span>{{ 'First name' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="text" formControlName="firstName" pInputText class="success" />
+            <div class="error">
+              <!-- <span *ngIf="getRequiredValidation('firstName', getFirstLastAddress)">{{ 'This field is required' | translate }}</span> -->
+            </div>
+          </div>
+          <div class="form-input-field" [formGroupName]="i">
+            <div>
+              <span>{{ 'Last name' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="text" formControlName="lastName" pInputText class="success" />
+            <div class="error">
+              <!-- <span *ngIf="getRequiredValidation('firstName', row)">{{ 'This field is required' | translate }}</span> -->
+            </div>
+          </div>
+          <div class="form-input-field" [formGroupName]="i">
+            <div>
+              <span>{{ 'Email address' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="text" formControlName="email" pInputText class="success" />
+            <div class="error">
+              <!-- <span *ngIf="getRequiredValidation('firstName', row)">{{ 'This field is required' | translate }}</span> -->
+            </div>
+          </div>
+          <div *ngIf="i !== 0" class="remove">
+            <span class="material-symbols-rounded" (click)="onRemove(i)" tooltipPosition="top"
+              [pTooltip]="'Remove' | translate">close</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="action-buttons">
+      <div class="add-employee">
+        <span class="material-symbols-rounded">add</span>
+        <span (click)="addFirstLastAddress()">{{ 'AddAnotherEmployee' | translate }}</span>
+      </div>
+      <div class="form-buttons">
+        <button [disabled]="!form.valid" pButton class="form-button-success" (click)="onAddEmployees()">
+          <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+          <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Add employees' | translate }}</span>
+        </button>
+        <p-checkbox name="groupname" formControlName="sendImmediately" [binary]="true"
+          [label]="'SendInviteImmediately' | translate"></p-checkbox>
+      </div>
+    </div>
+  </div>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+</div>

@@ -1,0 +1,36 @@
+<div class="create-report-container">
+  <div class="header" [formGroup]="form">
+    <h3>{{ 'September report (07/09/2024)' | translate }}</h3>
+    <div class="filter-container">
+      <div class="form-input-field">
+        <div><span>{{ 'FromDate' | translate }}</span></div>
+        <p-calendar [showIcon]="true" formControlName="fromDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'ToDate' | translate }}</span></div>
+        <p-calendar [showIcon]="true" formControlName="toDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" class="cyan"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div class="title">{{ 'Select the employees you want to see in the report' | translate }}</div>
+        <div class="label">
+          <span class="material-symbols-rounded noselect">add</span>
+          <div class="add-everyone noselect">{{ 'Add everyone' | translate }}</div>
+        </div>
+        <kp-input-multiple-select-chip styleClass="success"></kp-input-multiple-select-chip>
+      </div>
+    </div>
+    <div class="content">
+      <div class="form-input-field">
+        <div><span></span></div>
+        <div class="form-buttons">
+          <button pButton class="form-button-cyan normal">{{ 'Save' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

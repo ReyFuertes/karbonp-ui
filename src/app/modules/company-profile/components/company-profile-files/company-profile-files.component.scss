@@ -1,0 +1,104 @@
+@import "src/styleguide/index";
+
+.company-profile-files-container {
+  width: 100%;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 30px;
+    
+    h2 {
+      margin: 0;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .content {
+    .file-picker-container {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 13px;
+      transition: background-color .5s ease;
+      border: 1px dashed var(--colour-element-gray-3);
+      border-radius: 4px;
+      background-color: var(--colour-element-white-bg-1);
+
+      span {
+        font-size: 32px;
+        color: var(--colour-element-gray-2);
+        margin-right: 15px;
+      }
+
+      button {
+        margin: 0 15px;
+      }
+
+      div:last-child {
+        color: var(--colour-element-red-1);
+        margin-left: 5px;
+      }
+    }
+
+    .list-items {
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0;
+
+      h4 {
+        margin-bottom: 0;
+      }
+
+      > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--colour-element-gray-4);
+        height: 50px;
+        padding: 0 5px;
+        
+        button {
+          display: none;
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: var(--colour-element-white-bg-1);
+
+          button {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  .description {
+    color: var(--colour-element-gray-1);
+    border-radius: 4px;
+    padding: 45px;
+    text-align: center;
+    background-color: var(--colour-element-white-bg-1);
+  }
+
+  .form-button-red {
+    @include form-button-red;
+  }
+
+  .form-button-red-outlined {
+    @include form-button-red-outlined;
+    margin-right: 15px;
+  }
+}

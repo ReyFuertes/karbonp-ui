@@ -1,0 +1,37 @@
+@import "src/styleguide/index";
+
+.payroll-bulk-update-page-container {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .p-tabview {
+    @include tab-view;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+}
+
+::ng-deep {
+  .payroll-bulk-update-page-container {
+    .form-buttons {
+      @include form-buttons;
+      justify-content: flex-start;
+
+      .form-button-blue {
+        @include form-button-blue;
+        margin-right: 10px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+    }
+  }
+}

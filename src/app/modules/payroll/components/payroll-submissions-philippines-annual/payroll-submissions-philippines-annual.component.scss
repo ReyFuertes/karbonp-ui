@@ -1,0 +1,120 @@
+@import "src/styleguide/index";
+
+.payroll-submissions-philippines-annual-container {
+  padding: 15px 0;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    >div {
+      width: 50%;
+
+      &:nth-child(2) {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    span.settings {
+      color: var(--colour-element-blue-1);
+      font-size: 35px;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .employees-container {
+    margin: 20px 0;
+  }
+
+  .validations {
+    width: 100%;
+    margin-top: 20px;
+    animation-name: fadeIn;
+    animation-duration: 500ms;
+
+    h5 {
+      margin-bottom: 5px;
+    }
+
+    >div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background-color: var(--colour-element-yellow-5);
+      padding: 10px;
+      border: 1px solid var(--colour-element-yellow-1);
+      border-radius: 4px;
+      margin-bottom: 20px;
+
+      >div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 40px;
+
+        span {
+          &:nth-child(2) {
+            color: var(--colour-element-blue-1);
+          }
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-submissions-philippines-annual-container {
+    p-paginator {
+      @include paginator;
+    }
+
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+      animation-name: fadeIn;
+      animation-duration: 500ms;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+      max-width: 350px;
+    }
+  }
+
+  .p-overlaypanel.submission-filter-overlay {
+    .p-overlaypanel-content {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .overlay-menu {
+      >div {
+        display: flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 0 10px;
+        font-size: 14px;
+        
+        &:hover {
+          cursor: pointer;
+          background-color: var(--colour-element-blue-4);
+        }
+      }
+    }
+  }
+}

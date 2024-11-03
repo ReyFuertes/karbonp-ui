@@ -1,0 +1,106 @@
+@import "src/styleguide/index";
+
+.dashboard-task-notification-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 960px;
+    margin-left: 100px;
+    animation-name: fadeIn;
+    animation-duration: 550ms;
+
+    .title {
+      margin-top: 30px;
+      font-weight: 700;
+      color: var(--colour-element-gray-1);
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--colour-element-gray-5);
+    }
+
+    .list {
+      padding-left: 15px;
+
+      .row {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--colour-element-gray-5);
+
+        &.payments>div:first-child,
+        &.payruns>div:first-child {
+          color: var(--colour-element-blue-1);
+        }
+
+        &.inactive-employees>div:first-child {
+          color: var(--colour-element-green-1);
+        }
+
+        &.official-business-requests>div:first-child,
+        &.overtime-requests>div:first-child {
+          color: var(--colour-element-red-0);
+        }
+
+        &.time-off-requests>div:first-child {
+          color: var(--colour-element-orange-1);
+        }
+
+        div:first-child {
+          font-size: 16px;
+          color: var(--colour-element-violet-2);
+          margin-bottom: 5px;
+          font-weight: 700;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        a {
+          color: var(--colour-element-gray-1);
+          font-size: 13px;
+
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          background-color: var(--colour-element-white-bg-1);
+          border: 1px solid var(--colour-element-white-bg-1);
+          margin-right: 8px;
+          border-radius: 4px;
+          margin-bottom: 5px;
+          padding: 5px 10px;
+          color: var(--colour-element-black-1);
+
+          &:hover {
+            cursor: pointer;
+            color: var(--colour-element-black-1) !important;
+            background-color: var(--colour-element-gray-5);
+            border: 1px solid var(--colour-element-gray-5);
+
+            a {
+              color: var(--colour-element-black-1);
+            }
+          }
+
+          &:active,
+          &:focus {
+            box-shadow: 0 0 0 2px var(--colour-element-white), 0 0 0 4px var(--colour-element-gray-6), 0 1px 2px 0 black !important;
+          }
+        }
+
+        div:not(:first-child) {
+          font-size: 13px;
+          color: var(--colour-element-gray-3);
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+}

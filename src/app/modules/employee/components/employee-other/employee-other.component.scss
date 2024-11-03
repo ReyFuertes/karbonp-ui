@@ -1,0 +1,27 @@
+@import "src/styleguide/index";
+
+.form-buttons {
+  @include form-button;
+  justify-content: space-between;
+  
+  .form-button-success {
+    @include form-button-success;
+    margin-right: 10px;
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+}
+
+::ng-deep {
+  .employee-other-container {
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

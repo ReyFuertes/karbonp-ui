@@ -1,0 +1,26 @@
+<div class="payroll-metrics-container">
+  <h3>Metrics</h3>
+  <div class="header" [formGroup]="form">
+    <div class="filter-container">
+      <div class="form-input-field">
+        <div><span>{{ 'FromDate' | translate }}</span></div>
+        <p-calendar [showIcon]="true" formControlName="fromDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" class="blue"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'ToDate' | translate }}</span></div>
+        <p-calendar [showIcon]="true" formControlName="toDate" [placeholder]="'Select' | translate"
+          [dateFormat]="'dd/mm/yy'" class="blue"></p-calendar>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span></span></div>
+        <div class="form-buttons">
+          <button pButton class="form-button-blue normal">{{ 'Filter' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="gotoOverview()">{{ 'Overview' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

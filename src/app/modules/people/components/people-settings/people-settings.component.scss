@@ -1,0 +1,98 @@
+@import "src/styleguide/index";
+
+.people-settings-container {
+  .header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+
+  .btn-actions {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 20px;
+  }
+}
+
+::ng-deep {
+  .people-settings-container {
+    .p-datatable-people-settings {
+      @include datatable;
+      margin-right: 0;
+
+      &:last-child {
+        width: 100px;
+      }
+    }
+
+    .p-dialog {
+      @include dialog;
+      max-height: 100%;
+
+      .header {
+        margin-bottom: 0;
+
+        h4 {
+          text-transform: capitalize;
+        }
+      }
+
+      .content {
+        margin-bottom: 0;
+      }
+
+      .form-buttons {
+        @include form-buttons;
+        justify-content: right;
+        margin: 0 0 5px 20px;
+      }
+    }
+
+    .p-inputtextarea {
+      @include textarea-field;
+      margin-bottom: 0;
+      height: 114px;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    p-paginator {
+      @include paginator;
+    }
+
+    .p-tabview {
+      @include tab-view;
+    }
+
+    .p-confirm-dialog {
+      @include confirm-dialog;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 15px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 10px;
+      min-width: 95px;
+    }
+
+    .loading-container {
+      @include loader;
+      min-height: 330px;
+    }
+  }
+}

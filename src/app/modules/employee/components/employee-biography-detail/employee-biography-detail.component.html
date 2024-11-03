@@ -1,0 +1,14 @@
+<div class="biography-detail-container" *ngIf="form" [formGroup]="getBiographyForm">
+  <div class="form-edit-fields column" >
+    <div class="form-input-field w-100">
+      <div><span>{{ 'WhatDoesFirstNameDoAtCompanyName' | translate:bioTranslateParam }}</span></div>
+      <p-editor #bioTextAreaFocus formControlName="biographyDo" />
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field w-100">
+      <div><span>{{ ('AfewThingsAboutFirstName' | translate:bioTranslateParam) }}</span></div>
+      <p-editor #bioTextAreaFocus formControlName="biographyAbout" />
+      <div class="error"></div>
+    </div>
+  </div>
+</div>

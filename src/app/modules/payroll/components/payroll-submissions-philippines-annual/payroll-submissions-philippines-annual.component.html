@@ -1,0 +1,76 @@
+<div class="payroll-submissions-philippines-annual-container">
+  <div class="header">
+    <div class="form-input-field">
+      <div><span></span></div>
+      <p-dropdown [options]="taxSeasons" [(ngModel)]="selectedTaxSeason" optionLabel="label" optionValue="value"
+        [placeholder]="'Select' | translate" styleClass="blue" (onChange)="onChangeTax($event)" (onClear)="onClear()"
+        [showClear]="true" [filter]="true"></p-dropdown>
+      <div class="error"></div>
+    </div>
+    <div>
+      <span *ngIf="employeesWithPayRunData?.length > 0" class="material-symbols-rounded settings" tooltipPosition="top"
+        [pTooltip]="'Settings' | translate" (click)="op.toggle($event)">settings</span>
+      <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'" [hideTransitionOptions]="'100ms'"
+        styleClass="submission-filter-overlay">
+        <div class="overlay-menu">
+          <div (click)="downloadAnnualizationReport()">
+            <span class="material-symbols-rounded">download</span>
+            <span>{{ 'DownloadAnnualizationReport' | translate }}</span>
+          </div>
+          <div (click)="getScheduleReportExcelExport()">
+            <span class="material-symbols-rounded">download</span>
+            <span>{{ 'DownloadAlphalistSchedule1Report' | translate }}</span>
+          </div>
+        </div>
+      </p-overlayPanel>
+    </div>
+  </div>
+  <div class="content">
+    <div class="employees-container" *ngIf="employeesWithPayRunData?.length > 0; else noResults">
+      <p-table [value]="employeesWithPayRunData" [scrollable]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="number">{{ 'Number' | translate }}<p-sortIcon field="number" /> </th>
+            <th pSortableColumn="firstName">{{ 'LastName' | translate }}<p-sortIcon field="firstName" /></th>
+            <th pSortableColumn="lastName">{{ 'FirstName' | translate }}<p-sortIcon field="lastName" /></th>
+            <th>{{ 'BIR2316' | translate }}</th>
+            <th> <span class="material-symbols-rounded">settings</span> </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row?.number }}</td>
+            <td>{{ row?.firstName }}</td>
+            <td>{{ row?.lastName }}</td>
+            <td>
+              <span (click)="onDownloadPdf(row)" class="material-symbols-rounded download" tooltipPosition="top"
+                [pTooltip]="'Download' | translate">download</span>
+            </td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-paginator *ngIf="employeestotalCount > 0" #paginator (onPageChange)="onPaginateEmployees($event)"
+        [first]="paginationVars.pageNumber" [rows]="paginationVars.pagesize" [totalRecords]="employeestotalCount"
+        [rowsPerPageOptions]="[10, 20, 30, 50, 100]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" styleClass="blue" />
+    </div>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <p-dialog header="Info" [modal]="true" styleClass="info-modal" [(visible)]="showDownloadAnnualInfoModal"
+    [style]="{ width: '440px'}">
+    <p>{{ 'DocumentIsBusyGeneratingMessage' | translate }}</p>
+    <ng-template pTemplate="footer">
+      <div class="form-buttons">
+        <button tabindex="-1" pButton class="form-button-default normal"
+          (click)="showDownloadAnnualInfoModal = false">{{
+          'Close' | translate
+          }}</button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

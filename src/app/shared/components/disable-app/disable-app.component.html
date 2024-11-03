@@ -1,0 +1,7 @@
+<div class="disable-app-container">
+  <h4>{{ (disabled ? 'Enable app' : 'Disable app') }}</h4>
+  <p>{{ description }}</p>
+  <button pButton class="form-button-red normal" [ngClass]="{'disabled': disabled}" (click)="onDisabled()">
+    <span>{{ (disabled ? 'Enable app' : 'Disable app') | translate }}</span>
+  </button>
+</div>

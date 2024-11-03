@@ -1,0 +1,90 @@
+@import "src/styleguide/index";
+
+.dropdown-multi-select-option-container {
+  .dropdown-input {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    width: 100%;
+    height: 40px;
+    outline: none;
+    border-radius: 4px;
+    vertical-align: middle;
+    font-size: 16px;
+    border: 1px solid var(--colour-input-border);
+    border-color: var(--colour-element-gray-4);
+
+    > div {
+      width: 100%;
+      color: var(--colour-element-black-1);
+    }
+
+    &.expanded,
+    &.expanded ~ span {
+      border-color: var(--colour-element-green-1);
+      color: var(--colour-element-green-1);
+    }
+
+    span {
+      font-size: 28px;
+      transform: rotate(0deg);
+      transition: all 0.3s;
+
+      &.rotated {
+        transform: rotate(180deg);
+      }
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      cursor: pointer;
+      color: var(--colour-element-green-1);
+      border-color: var(--colour-element-green-1) !important;
+    }
+  }
+}
+
+.cyan.dropdown-multi-select-option-container {
+  .dropdown-input {
+    border-color: var(--colour-element-cyan-2);
+
+    &.expanded,
+    &.expanded ~ span {
+      border-color: var(--colour-element-cyan-1);
+      color: var(--colour-element-cyan-1);
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      cursor: pointer;
+      color: var(--colour-element-cyan-1);
+      border-color: var(--colour-element-cyan-1) !important;
+    }
+  }
+}
+
+::ng-deep {
+  .dropdown-multi-select-option-overlay {
+    &.p-overlaypanel.p-overlaypanel-flipped:before {
+      border-top-color: var(--colour-element-gray-4) !important;
+    }
+
+    .p-overlaypanel-content {
+      padding: 0;
+
+      .option-items {
+        display: flex;
+        flex-direction: column;
+        padding: 15px 10px;
+        width: 300px;
+      }
+
+      .p-checkbox {
+        @include input-checkbox;
+        margin: 5px;
+      }
+    }
+  }
+}

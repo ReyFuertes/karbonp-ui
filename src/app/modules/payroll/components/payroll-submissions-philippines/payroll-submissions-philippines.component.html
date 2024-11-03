@@ -1,0 +1,74 @@
+<div class="payroll-submissions-philippines-container">
+  <div class="content">
+    <p-table *ngIf="philippinesSubmissions?.length > 0; else noResults" [value]="philippinesSubmissions"
+      [scrollable]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'Month' | translate}}</th>
+          <th>{{ '1601C' | translate }}</th>
+          <th>{{ 'SSS-R3' | translate }}</th>
+          <th>{{ 'SSS-R5' | translate }}</th>
+          <th>{{ 'SSSLoan' | translate }}</th>
+          <th>{{ 'HDMF' | translate }}</th>
+          <th>{{ 'HDMFLoan' | translate }}</th>
+          <th>{{ 'PHIC' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>
+            <div>
+              <span>{{ row?.month | date: 'MMM yyyy'}}</span>
+              <span *ngIf="row?.hasInProgressPayRuns" class="material-symbols-rounded warning" tooltipPosition="top"
+                [pTooltip]="'SubmissionInProgressPayRunsMessage' | translate">warning</span>
+            </div>
+          </td>
+          <td>
+            <span class="material-symbols-rounded download"
+              (click)="onDownloadPdf(submissionDocumentType.BIR1601C, row?.month)" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+            <span>
+              <span (click)="onEdit(submissionDocumentType.BIR1601C, row?.month)" class="material-symbols-rounded"
+                tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span>
+            </span>
+          </td>
+          <td>
+            <span *ngIf="row?.hasSSSContributions" (click)="onDownloadPdf(submissionDocumentType.SSSR3, row?.month)"
+              class="material-symbols-rounded download" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+          </td>
+          <td>
+            <span *ngIf="row?.hasSSSContributions" (click)="onDownloadPdf(submissionDocumentType.SSSR5, row?.month)"
+              class="material-symbols-rounded download" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+          </td>
+          <td>
+            <span *ngIf="row?.hasSSSLoan" (click)="onDownloadPdf(submissionDocumentType.SSSLoan, row?.month)"
+              class="material-symbols-rounded download" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+          </td>
+          <td>
+            <span *ngIf="row?.hasHDMFContributions" (click)="onDownloadPdf(submissionDocumentType.HDMF, row?.month)"
+              class="material-symbols-rounded download" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+          </td>
+          <td>
+            <span *ngIf="row?.hasHDMFLoan" (click)="onDownloadPdf(submissionDocumentType.HDMFLoan, row?.month)"
+              class="material-symbols-rounded download" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+          </td>
+          <td>
+            <span *ngIf="row?.hasPHICContributions" (click)="onDownloadPdf(submissionDocumentType.PHIC, row?.month)"
+              class="material-symbols-rounded download" tooltipPosition="top"
+              [pTooltip]="'Download' | translate">download</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+</div>

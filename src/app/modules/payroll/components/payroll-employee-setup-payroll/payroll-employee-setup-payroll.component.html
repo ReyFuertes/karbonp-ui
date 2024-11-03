@@ -1,0 +1,451 @@
+<div class="payroll-employee-setup-payroll-container">
+  <div class="content">
+    <div class="payroll-info">
+      <div>
+        <span>{{ 'PayRun' | translate }}:</span>
+        <span>{{ employeeSetupData?.payRun?.fromDate | date: 'dd MMM yyyy'}} </span>
+        <span>- {{ employeeSetupData?.payRun?.toDate | date: 'dd MMM yyyy'}} </span>
+      </div>
+      <ng-container *ngIf="payslipPreview?.payslip as payslip">
+        <div>
+          <div *ngIf="currentCountryISOCode === countryISOCodeType.MEX"
+            [ngClass]="{'element-link': !isApproved(payslip)}"
+            (click)="isApproved(payslip) ? showProRatePercentageModal = true : null">
+            <span>{{ 'ProRataPercentage' | translate }} </span>:
+            <span *ngIf="isApproved(payslip) && !payslip?.proRataPercentage">
+              {{ payslip?.proRataPercentage ?? 0 }} </span>
+            <span *ngIf="!isApproved(payslip) && payslip?.proRataOverridePercentage">{{
+              payslip?.proRataOverridePercentage ?? 0 }} </span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="payroll-content-container">
+      <div class="income" *ngIf="basicSalaryInput">
+        <h4>{{ 'Income' | translate }} </h4>
+        <ng-container *ngIf="payslipPreview?.payslip as payslip">
+          <div *ngIf="payslip.payslipStatus === payslipStatusType.Draft">
+            <div class="form-input-field">
+              <div></div>
+              <p-dropdown [options]="incomeAllowanceOptions" optionLabel="resource" optionValue="inputType"
+                [placeholder]="'Select' | translate" styleClass="blue" (onChange)="onChangeIncomes($event)"
+                [showClear]="true" [filter]="true"></p-dropdown>
+              <div class="error"></div>
+            </div>
+            <button *ngIf="payRollCalculationSetup?.enableGoalGetter === true" pButton class="form-button-blue normal"
+              (click)="showGoalGetterModal = true" (click)="onGoalGetter()">
+              {{ 'TheGoalGetter' | translate }} </button>
+          </div>
+        </ng-container>
+        <div>
+          <div class="base-earnings">
+            <div>
+              <span>{{ 'BaseEarnings' | translate }} </span>
+              <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                (click)="onEditBaseEarnings()">edit_square</span>
+            </div>
+            <div>
+              <div>
+                <span>{{ 'SetAmount' | translate }} </span>
+                <span>{{ basicSalaryInput?.fixedAmount?.toString() | currencySymbol }} </span>
+              </div>
+            </div>
+          </div>
+          <div class="input-row-items">
+            <ng-container *ngFor="let inputType of getIncomeTypePayrollInputs">
+              <div>
+                <span>{{ inputType?.resource | translate }}</span>
+                <div>
+                  <span>{{ inputType?.amount?.toString() | currencySymbol }}</span>
+                  <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                    (click)="onEditIncome(inputType)">edit_square</span>
+                  <span class="material-symbols-rounded delete" tooltipPosition="top" [pTooltip]="'Delete' | translate"
+                    (click)="onDeletePayrollInput(inputType)">delete</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div *ngIf="basicSalaryInput?.paidForAdditionalHours" class="employee-additional-hours">
+            <div></div>
+            <div>
+              <div>
+                <span>{{ 'AdditionalHours' | translate }} </span>
+                <span>{{ basicSalaryInput?.additionalHours?.toString() | currencySymbol }} </span>
+              </div>
+              <div>
+                <span>{{ 'OvertimeHours' | translate }} </span>
+                <span>{{ basicSalaryInput?.overtimeOverrideHours?.toString() | currencySymbol }} </span>
+              </div>
+              <div *ngIf="currentCountryISOCode !== 'PHL'">
+                <span>{{ 'ShortHours' | translate }} </span>
+                <span>{{ basicSalaryInput?.shortHours?.toString() | currencySymbol }} </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="basicSalaryInput?.overrideCalculatedHourlyRate" class="override-calculated-hourly-rate">
+            <div>
+              <span>{{ 'OverrideCalculatedHourlyRate' | translate }} </span>
+              <span></span>
+            </div>
+            <div>
+              <div>
+                <span>{{ 'RateOverride' | translate }} </span>
+                <span>{{ basicSalaryInput?.rateOverride?.toString() | currencySymbol }} </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="basicSalaryInput?.paymentType === paymentType?.Daily" class="daily">
+            <div>
+              <span>{{ 'DailyPaid' | translate }} </span>
+              <span></span>
+            </div>
+            <div>
+              <div>
+                <span>{{ 'DailyRate' | translate }} </span>
+                <span>{{ (basicSalaryInput?.dailyRate?.toString() ?? '0') | currencySymbol }} </span>
+              </div>
+              <div>
+                <span>{{ 'DaysWorked' | translate }} </span>
+                <span>{{ (basicSalaryInput?.daysWorked?.toString() ?? '0') }} </span>
+              </div>
+              <div *ngIf="basicSalaryInput?.dontAutoPayPublicHolidays">
+                <span>{{ 'DontAutoPayPublicHolidays' | translate }} </span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="basicSalaryInput?.paymentType === paymentType?.Hourly" class="hourly">
+            <div>
+              <span>{{ 'HourlyPaid' | translate }} </span>
+              <span></span>
+            </div>
+            <div>
+              <div>
+                <span>{{ 'HourlyRate' | translate }} </span>
+                <span>{{ (basicSalaryInput?.hourlyRate?.toString() ?? '0') | currencySymbol }} </span>
+              </div>
+              <div>
+                <span>{{ 'NormalHours' | translate }} </span>
+                <span>{{ (basicSalaryInput?.normalHours?.toString() ?? '0') }} </span>
+              </div>
+              <div>
+                <span>{{ 'OvertimeHours' | translate }} </span>
+                <span>{{ (basicSalaryInput?.overtimeOverrideHours?.toString() ?? '0') }} </span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="element-link" (click)="gotoEmployeeAddHours()">{{ 'EmployeeAdditionalHours' | translate }}
+            </span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      <div class="deductions">
+        <h4>{{ 'Deductions' | translate }} </h4>
+        <div >
+          <div class="form-input-field">
+            <div></div>
+            <p-dropdown [options]="deductionOptions" (onChange)="onChangeDeductions($event)" optionLabel="resource"
+              optionValue="inputType" [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true"
+              [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="input-row-items">
+            <ng-container *ngFor="let inputType of getDeductionsPayrollInputs">
+              <div>
+                <span>{{ inputType?.resource | translate }}</span>
+                <div>
+                  <span>{{ inputType?.amount?.toString() | currencySymbol }}</span>
+                  <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                    (click)="onEditDeductions(inputType)">edit_square</span>
+                  <span class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Delete' | translate"
+                    (click)="onDeletePayrollInput(inputType)">delete</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="allowances">
+        <h4>{{ 'Allowances' | translate }} </h4>
+        <div>
+          <div class="form-input-field">
+            <div></div>
+            <p-dropdown [options]="allowancesOptions" (onChange)="onChangeAllowances($event)" optionLabel="resource"
+              optionValue="inputType" [placeholder]="'Select' | translate" class="blue" [showClear]="true"
+              [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="input-row-items">
+            <ng-container *ngFor="let inputType of getAllowancePayrollInputs">
+              <div>
+                <span>{{ inputType?.resource | translate }}</span>
+                <div>
+                  <span>{{ inputType?.amount?.toString() | currencySymbol }}</span>
+                  <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                    (click)="onEditAllowances(inputType)">edit_square</span>
+                  <span class="material-symbols-rounded delete" tooltipPosition="top" [pTooltip]="'Delete' | translate"
+                    (click)="onDeletePayrollInput(inputType)">delete</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="benefits">
+        <h4>{{ 'Benefits' | translate }} </h4>
+        <div>
+          <div class="form-input-field">
+            <div></div>
+            <p-dropdown [options]="benefitsAllowanceOptions" (onChange)="onChangeBenefits($event)"
+              optionLabel="resource" optionValue="inputType" [placeholder]="'Select' | translate" class="blue"
+              [showClear]="true" [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="input-row-items">
+            <ng-container *ngFor="let inputType of getBenefitPayrollInputs">
+              <div>
+                <span>{{ inputType?.resource | translate }}</span>
+                <div>
+                  <span>{{ inputType?.amount?.toString() | currencySymbol }}</span>
+                  <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                    (click)="onEditBenefit(inputType)">edit_square</span>
+                  <span class="material-symbols-rounded delete" tooltipPosition="top" [pTooltip]="'Delete' | translate"
+                    (click)="onDeletePayrollInput(inputType)">delete</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="other">
+        <h4>{{ 'Others' | translate }} </h4>
+        <div>
+          <div class="form-input-field">
+            <div></div>
+            <p-dropdown [options]="otherAllowanceOptions" (onChange)="onChangeOthers($event)" optionLabel="resource"
+              optionValue="inputType" [placeholder]="'Select' | translate" class="blue" [showClear]="true"
+              [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="input-row-items">
+            <ng-container *ngFor="let inputType of getOtherPayrollInputs">
+              <div>
+                <span>{{ inputType?.resource | translate }}</span>
+                <div>
+                  <span>{{ inputType?.amount?.toString() | currencySymbol }}</span>
+                  <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                    (click)="onEditOther(inputType)">edit_square</span>
+                  <span class="material-symbols-rounded delete" tooltipPosition="top" [pTooltip]="'Delete' | translate"
+                    (click)="onDeletePayrollInput(inputType)">delete</span>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <h4>{{ 'Notes' | translate }} </h4>
+        <ng-container *ngIf="payslipPreview?.payslip as payslip">
+          <div>
+            <span>{{ payslip?.notes ?? ('PublicNotes' | translate) }}</span>
+            <div>
+              <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                (click)="onEditPublicNote()">edit_square</span>
+              <span *ngIf="payslip?.notes" class="material-symbols-rounded delete" tooltipPosition="top"
+                [pTooltip]="'Delete' | translate" (click)="onDeleteNote(payslip, false)">delete</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="payslipPreview?.payslip as payslip">
+          <div>
+            <span>{{ payslip?.privateNotes ?? ('PrivateNotes' | translate) }}</span>
+            <div>
+              <span class="material-symbols-rounded edit" tooltipPosition="top" [pTooltip]="'Edit' | translate"
+                (click)="onEditPrivateNote()">edit_square</span>
+              <span *ngIf="payslip?.privateNotes" class="material-symbols-rounded delete" tooltipPosition="top"
+                [pTooltip]="'Delete' | translate" (click)="onDeleteNote(payslip, true)">delete</span>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <p-dialog [(visible)]="showProRatePercentageModal" [closeOnEscape]="true" [dismissableMask]="true"
+    [showHeader]="false" [modal]="true" styleClass="blue" closeIcon="false" [style]="{width: '445px'}"
+    (onHide)="showProRatePercentageModal = false">
+    <div class="header">
+      <div>
+        <h4>{{ 'OverrideProRataPercentage' | translate }} </h4>
+      </div>
+      <span class="material-symbols-rounded"
+        (click)="showProRatePercentageModal = !showProRatePercentageModal">close</span>
+    </div>
+    <div class="content">
+      <div class="form-input-field">
+        <div><span>{{ 'Percentage' | translate }} </span></div>
+        <input type="number" [(ngModel)]="proRataOverridePercentage" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-blue normal" (click)="onSaveProRatePercentageOverride()">
+          {{ 'Save' | translate }} </button>
+        <button pButton class="form-button-default normal" (click)="showProRatePercentageModal = false">
+          {{ 'Cancel' | translate }} </button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-dialog [(visible)]="showBaseEarningsModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+    [modal]="true" styleClass="blue" closeIcon="false" [style]="{ width: '545px' }"
+    (onHide)="showBaseEarningsModal = false">
+    <div class="header">
+      <div>
+        <h4>{{ 'BaseEarnings' | translate }} </h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showBaseEarningsModal = !showBaseEarningsModal">close</span>
+    </div>
+    <div class="content" [formGroup]="baseEarningsForm">
+      <div class="form-input-field-group">
+        <div class="form-input-field">
+          <div><span>{{ 'PaymentType' | translate }} </span></div>
+          <p-dropdown appendTo="body" [options]="paymentTypeOptions" formControlName="paymentType" optionspan="span"
+            optionValue="value" [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true"
+            [filter]="true"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div *ngIf="hasPaymentAmountOnDesignation" class="form-input-field">
+          <div><span>{{ 'OverrideDesignationPay' | translate }} </span></div>
+          <p-inputSwitch formControlName="overrideFixedPay" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+      </div>
+      <div *ngIf="baseEarningsForm.get('paymentType').value === paymentType.Fixed 
+        || baseEarningsForm.get('paymentType').value === paymentType.Monthly">
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'SetAmount' | translate }} </span></div>
+            <input type="number" formControlName="setAmount" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PaidForAdditionalHours' | translate }} </span></div>
+            <p-inputSwitch formControlName="paidForAdditionalHours" styleClass="blue"></p-inputSwitch>
+          </div>
+        </div>
+        <div *ngIf="baseEarningsForm.get('paidForAdditionalHours').value">
+          <div class="form-input-field-group">
+            <div class="form-input-field">
+              <div><span>{{ 'AdditionalHours' | translate }} </span></div>
+              <input type="number" formControlName="additionalHours" pInputText class="blue" />
+              <div class="error"></div>
+            </div>
+            <div class="form-input-field">
+              <div>
+                <span>
+                  {{ 'OvertimeHours' | translate }}
+                  <span *ngIf="currentCountryISOCode !== countryISOCodeType.MEX">
+                    (x{{ payrollCalculationSettings[0]?.normalOvertimeMultiplier}})</span>
+                </span>
+              </div>
+              <input type="number" formControlName="overtimeOverrideHours" pInputText class="blue" />
+              <div class="error"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'OverrideCalculatedHourlyRate' | translate }} </span></div>
+          <p-inputSwitch formControlName="overrideCalculatedHourlyRate" styleClass="blue"></p-inputSwitch>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field" *ngIf="baseEarningsForm.get('overrideCalculatedHourlyRate')?.value">
+            <div><span>{{ 'RateOverride' | translate }} </span></div>
+            <input type="number" formControlName="rateOverride" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'EnableDailyBreakdownForFixedPay' | translate }} </span></div>
+            <p-inputSwitch formControlName="calculateDailyBreakdownForFixedPay" styleClass="blue"></p-inputSwitch>
+            <div class="error"></div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="baseEarningsForm.get('paymentType').value === paymentType.Hourly">
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'HourlyRate' | translate }} </span></div>
+            <input type="number" formControlName="hourlyRate" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'DontAutoPayPublicHolidays' | translate }} </span></div>
+            <p-inputSwitch formControlName="dontAutoPayPublicHolidays" styleClass="blue"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'NormalHours' | translate }} </span></div>
+            <input type="number" formControlName="normalHours" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'OvertimeHours' | translate }} </span></div>
+            <input type="number" formControlName="overtimeOverrideHours" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="baseEarningsForm.get('paymentType')?.value === paymentType.Daily">
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'DailyRate' | translate }} </span></div>
+            <input type="number" formControlName="dailyRate" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'DaysWorked' | translate }} </span></div>
+            <input type="number" formControlName="daysWorked" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'OvertimeHours' | translate }} </span></div>
+            <input type="number" formControlName="overtimeOverrideHours" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'DontAutoPayPublicHolidays' | translate }} </span></div>
+            <p-inputSwitch formControlName="dontAutoPayPublicHolidays" styleClass="blue"></p-inputSwitch>
+          </div>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-blue normal" (click)="onSaveBaseEarnings()">
+          {{ 'Save' | translate }} </button>
+        <button pButton class="form-button-default normal" (click)="showBaseEarningsModal = false">
+          {{ 'Cancel' | translate }} </button>
+      </div>
+    </div>
+  </p-dialog>
+  <ng-template #loading>
+    <div class="loading-container blue">
+      <i class="pi pi-spin pi-spinner"></i>
+      <span>Loading..</span>
+    </div>
+  </ng-template>
+  <kp-payroll-employee-setup-payroll-deductions-dialog
+    #pESPDeduction></kp-payroll-employee-setup-payroll-deductions-dialog>
+  <kp-payroll-employee-setup-payroll-allowances-dialog
+    #pESPAllowance></kp-payroll-employee-setup-payroll-allowances-dialog>
+  <kp-payroll-employee-setup-payroll-income-dialog #pESPIncome></kp-payroll-employee-setup-payroll-income-dialog>
+  <kp-payroll-employee-setup-payroll-notes-public-dialog
+    #pESPNotesPublic></kp-payroll-employee-setup-payroll-notes-public-dialog>
+  <kp-payroll-employee-setup-payroll-notes-private-dialog
+    #pESPNotePrivate></kp-payroll-employee-setup-payroll-notes-private-dialog>
+  <kp-payroll-employee-setup-payroll-benefits-dialog #pESPBenefits></kp-payroll-employee-setup-payroll-benefits-dialog>
+  <kp-payroll-employee-setup-payroll-other-dialog #pESPOther></kp-payroll-employee-setup-payroll-other-dialog>
+  <kp-payroll-employee-setup-payroll-goal-getter-dialog
+    #pESPGoalGetter></kp-payroll-employee-setup-payroll-goal-getter-dialog>
+</div>

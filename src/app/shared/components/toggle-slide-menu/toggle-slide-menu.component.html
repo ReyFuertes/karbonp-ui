@@ -1,0 +1,13 @@
+<div class="toggle-slide-menu-container">
+  <div class="outer-container noselect">
+    <ng-container *ngFor="let menu of menus; let i = index">
+      <div tabindex="1" role="button" (mouseover)="setWidth(i)" [ngClass]="{'slide': selectedMenu === i,
+      'first-is-selected': selectedMenu === 0, 
+      'middle-not-selected': selectedMenu === 2,
+      'last-not-selected': selectedMenu === 1}">
+        <span class="material-symbols-rounded">{{ menu.value }}</span>
+        <div *ngIf="selectedMenu === i">{{ menu.label }}</div>
+      </div>
+    </ng-container>
+  </div>
+</div>

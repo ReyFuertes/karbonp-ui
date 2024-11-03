@@ -1,0 +1,10 @@
+
+@import "src/styleguide/index";
+
+.p-inputswitch {
+  @include input-switch;
+}
+
+.form-input-field-group {
+  @include form-input-field-group;
+}

@@ -1,0 +1,102 @@
+@import "src/styleguide/index";
+
+.payroll-payment-details-container {
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--colour-element-gray-5);
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .content {
+    .details .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      width: 100%;
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+      padding: 5px;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 35px;
+        width: 50%;
+
+        span {
+          margin-right: 8px;
+          width: 50%;
+
+          &:nth-child(1) {
+            color: var(--colour-element-gray-1);
+          }
+
+          &:nth-child(2) {
+            color: var(--colour-element-black-1);
+          }
+        }
+      }
+
+      &:last-child {
+        >div {
+          width: 100%;
+          align-items: flex-start;
+        }
+
+        span {
+          &:nth-child(1) {
+            width: 24%;
+          }
+        }
+      }
+    }
+
+    .employee-list {
+      margin-top: 20px;
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+
+  .loading-container {
+    @include loader;
+    justify-content: center !important;
+    min-height: 350px;
+  }
+}
+
+::ng-deep {
+  .payroll-payment-details-container {
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+
+      tr td {
+        white-space: nowrap;
+
+        &:last-child {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

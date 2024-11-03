@@ -1,0 +1,62 @@
+<div class="payroll-employee-setup-activity-container">
+  <div class="content">
+    <div *ngIf="payRuns" class="filter-container">
+      <div class="form-input-field">
+        <div><span>{{ 'Period' | translate }}</span></div>
+        <p-dropdown [options]="payRuns" [(ngModel)]="selectedPeriod" optionLabel="label"
+          [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true" [filter]="true">
+          <ng-template pTemplate="selectedItem">
+            <div *ngIf="selectedPeriod">
+              <div class="option-item">
+                <span>{{ 'From' | translate}}</span>
+                <span>{{ selectedPeriod?.fromDate | date: 'dd MMM yyyy'}}</span>
+                <span>{{ 'To' | translate}}</span>
+                <span>{{ selectedPeriod?.toDate | date: 'dd MMM yyyy' }}</span>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template let-row pTemplate="item">
+            <div class="option-item">
+              <span>{{ 'From' | translate}}</span>
+              <span>{{ row?.fromDate | date: 'dd MMM yyyy'}}</span>
+              <span>{{ 'To' | translate}}</span>
+              <span>{{ row?.toDate | date: 'dd MMM yyyy' }}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <button pButton class="form-button-blue normal loader" (click)="filterActivityLogs()">
+        <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+        <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Load' | translate }}</span>
+      </button>
+    </div>
+    <div *ngIf="payPeriod !== null">
+      <span>{{ 'PayPeriod' | translate }}:</span>
+      <span>{{ (payPeriod | payPeriodDescription : payPeriod?.name) ?? 'Custom' }}</span>
+    </div>
+    <div *ngIf="employeePaymentMethod !== null">
+      <span>{{ 'PaymentMethod' | translate }}:</span>
+      <span>{{ employeePaymentMethod?.name }}</span>
+    </div>
+  </div>
+  <div class="activity-logs">
+    <h4>{{ 'ActivityLog' | translate }}</h4>
+    <div *ngFor="let activityLog of activityLogs">
+      <div>
+        <span> {{ activityLog?.userFullName }} </span>
+        <span> {{ 'On' | translate }} </span>
+        <span> {{ activityLog?.date | date: 'dd MMM yyyy @ HH:mm' }} </span>
+      </div>
+      <div class="actions">
+        <ng-container *ngFor="let action of activityLog?.actions">
+          <span> {{ action | translate }} </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+</div>

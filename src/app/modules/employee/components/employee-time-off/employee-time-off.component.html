@@ -1,0 +1,364 @@
+<div class="employee-time-off-container">
+  <p-tabView styleClass="success" (onChange)="handleTabChange($event)" [activeIndex]="selectedTabIndex">
+    <p-tabPanel [header]="'Overview' | translate">
+      <div *ngIf="(isTimeOffLoading() | async) === false; else loader" >
+        <div *ngFor="let latestTimeBalance of latestTimeBalances; let i = index" class="time-off-container">
+          <div class="row">
+            <div>
+              <!-- <span class="material-symbols-rounded" [ngStyle]="{'color': getPolicyColor[i + 1]}">{{ getPolicyIcon[i + 1] }}</span> -->
+              <span></span>
+              <h4>{{ latestTimeBalance?.leaveSetup?.name | translate }}</h4>
+              <span class="material-symbols-rounded">info</span>
+            </div>
+            <div>
+              <span>2024</span>
+              <span class="material-symbols-rounded">arrow_drop_down</span>
+              <button pButton class="form-button-default small" #overlayTarget (click)="requestHolidayTimeOff(op, $event, latestTimeBalance)">
+                {{ 'Request time off' | translate }}</button>
+            </div>
+          </div>
+          <div class="row">
+            <p-progressBar styleClass="success" [showValue]="false" [value]="getProgressBarValue(latestTimeBalance?.timeOffActivity)"></p-progressBar>
+          </div>
+          <div class="row">
+            <div></div>
+            <span>{{ latestTimeBalance?.timeOffActivity?.closingBalance }} {{ 'days available' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel [header]="'Balance history' | translate">
+      <div class="time-off-balance-history" *ngIf="(isTimeOffLoading() | async) === false; else loader" >
+        <div class="row">
+          <div>
+            <div class="form-input-field">
+              <p-dropdown *ngIf="policies" [options]="[]" [(ngModel)]="balanceHistoryLeavePolicyId" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            </div>
+          </div>
+          <div>
+            <button [ngStyle]="{'margin-right': '0'}" [disabled]="!balanceHistoryLeavePolicyId" pButton class="form-button-success normal" (click)="showTimeOffAdjustmentsDialog = !showTimeOffAdjustmentsDialog">{{ 'Add adjustments' |
+              translate }}</button>
+          </div>
+        </div>
+        <div class="table-row">
+          <table class="table">
+            <thead>
+              <tr>
+                <th *ngFor="let policy of policies">{{ policy?.label | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td *ngFor="let timeOffActivity of timeOffActivities"><b>{{ (timeOffActivity?.closingBalance) ?? '--' }}</b></td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="timeOffAdjustments?.length > 0; else noResults">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th [ngStyle]="{'width': '150px'}">{{ 'Date' | translate }}</th>
+                  <th [ngStyle]="{'width': '150px'}">{{ 'Type' | translate }}</th>
+                  <th [ngStyle]="{'width': '150px'}">{{ 'Amount' | translate }}</th>
+                  <th>{{ 'Description' | translate }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let timeOffAdjustment of timeOffAdjustments">
+                  <td>{{ (timeOffAdjustment?.date | date: 'dd MMM yyyy') ?? '--' }}</td>
+                  <td>{{ (policyObj ? policyObj[timeOffAdjustment?.leaveSetupId]?.label : '') ?? '--' }}</td>
+                  <td>{{ (timeOffAdjustment?.amount) ?? '--' }}</td>
+                  <td>{{ (timeOffAdjustment?.description) ?? '--' }}</td>
+                  <td>
+                    <div>
+                      <span></span>
+                      <span class="material-symbols-rounded" (click)="onDeleteAdjustment(timeOffAdjustment)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p-paginator #paginator [rows]="1" [totalRecords]="12" [rowsPerPageOptions]="[10,20]" [pageLinkSize]="5"></p-paginator>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel [header]="'Booked' | translate">
+      <div class="time-off-booked" *ngIf="(isTimeOffLoading() | async) === false; else loader" >
+        <div *ngIf="getTimeOffBookings?.length > 0; else noResults">
+          <p-table [value]="timeOffBookings?.timeOffBookings" [paginator]="true" [rows]="5" styleClass="success">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>{{ 'Type' | translate }}</th>
+                <th [ngStyle]="{'width': '120px'}">{{ 'From Date' | translate }}</th>
+                <th [ngStyle]="{'width': '120px'}">{{ 'To Date' | translate }}</th>
+                <th>{{ 'Status' | translate }}</th>
+                <th>{{ 'Note' | translate }}</th>
+                <th>{{ 'Approve/Decline' | translate }}</th>
+                <th>{{ 'Total Days ' | translate }}</th>
+                <th></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-timeOff>
+              <tr>
+                <td>{{ (timeOff?.timeOffBooking?.leaveSetup?.name) ?? '--' }}</td>
+                <td>{{ (timeOff?.timeOffBooking?.fromDate | date: 'dd MMM yyyy') ?? '--' }}</td>
+                <td>{{ (timeOff?.timeOffBooking?.toDate | date: 'dd MMM yyyy') ?? '--' }}</td>
+                <td [ngClass]="{'is-approved': timeOff?.timeOffBooking?.status === 1}">
+                  <span>{{ (employeeRequestStatusType[timeOff?.timeOffBooking?.status]?.label) ?? '--' }}</span>
+                </td>
+                <td>{{ (timeOff?.timeOffBooking?.note) ?? '--' }}</td>
+                <td>{{ (timeOff?.timeOffBooking?.approvedDeclinedBy) ?? '--' }}</td>
+                <td>{{ (timeOff?.totalDays) ?? '--' }}</td>
+                <td>
+                  <div>
+                    <span class="material-symbols-rounded" (click)="onView(timeOff)" tooltipPosition="top" [pTooltip]="'View' | translate">visibility</span>
+                    <span class="material-symbols-rounded" (click)="onDeleteTimeOff(timeOff)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel [header]="'Policies' | translate">
+      <div class="time-off-policies-container" *ngIf="employeeTimeOffSetupPolicies; else loader" >
+        <ng-container *ngFor="let employeeTimeOffSetupPolicy of employeeTimeOffSetupPolicies">
+          <div class="form-input-field">
+            <div>
+              <span>{{ getTimeOffSetupPolicy(employeeTimeOffSetupPolicy?.timeOffSetupId)?.name | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeTimeOffSetupPolicy?.entitlementPolicies" [(ngModel)]="employeeTimeOffSetupPolicy.timeOffPolicyId" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </ng-container>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveEmployeeTimeOffSetupPolicy()">{{ 'Save' | translate }}</button>
+          <!-- <button pButton class="form-button-default normal">{{ 'Cancel' | translate }}</button> -->
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel [header]="'Take On' | translate">
+      <div class="time-off-take-on-container" *ngIf="(isTimeOffLoading() | async) === false; else loader" >
+        <table [ngStyle]="{'margin-bottom': '0'}">
+          <thead>
+            <tr>
+              <th>{{ 'Type' | translate }}</th>
+              <th>{{ 'End of Take-On' | translate }}</th>
+              <th>{{ 'Cycle Start' | translate }}</th>
+              <th>{{ 'Cycle End' | translate }}</th>
+              <th>{{ 'Previous Cycle Bal.' | translate }}</th>
+              <th>{{ 'Accrued' | translate }}</th>
+              <th>{{ 'Taken' | translate }}</th>
+              <th>{{ 'Closing Bal.' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let employeeTimeOffTakeOn of employeeTimeOffTakeOns">
+              <td>{{ (employeeTimeOffTakeOn?.leaveSetup?.name) ?? '--' }}</td>
+              <td>
+                <p-calendar [(ngModel)]="employeeTimeOffTakeOn.endOfTakeOnPeriod" [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+              </td>
+              <td [ngStyle]="{'width': '100px'}">{{ (employeeTimeOffTakeOn?.cycleStart | date: 'dd/MM/yyyy') ?? '--' }}</td>
+              <td [ngStyle]="{'width': '100px'}">{{ (employeeTimeOffTakeOn?.cycleEnd | date: 'dd/MM/yyyy') ?? '--' }}</td>
+              <td><input [(ngModel)]="employeeTimeOffTakeOn.previousCycleBalance" type="number" class="success" pInputText /></td>
+              <td><input [(ngModel)]="employeeTimeOffTakeOn.accrued" type="number" class="success" pInputText /></td>
+              <td><input [(ngModel)]="employeeTimeOffTakeOn.taken" type="number" class="success" pInputText /></td>
+              <td><input [(ngModel)]="employeeTimeOffTakeOn.closingBalance" type="number" class="success" pInputText /></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveEmployeeTimeOffTakeOns()">{{ 'Save' | translate }}</button>
+          <!-- <button pButton class="form-button-default normal">{{ 'Cancel' | translate }}</button> -->
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel [header]="'Activities' | translate">
+      <div class="time-off-activities" *ngIf="(isTimeOffLoading() | async) === false; else loader" >
+        <div *ngFor="let employeeTimeOffActivity of employeeTimeOffActivities">
+          <div class="row">
+            <h4>{{ employeeTimeOffActivity?.leaveSetup?.name | translate }}</h4>
+            <div class="form-input-field">
+              <p-dropdown [options]="employeeTimeOffActivity?.dateRange" [(ngModel)]="employeeTimeOffActivity.selectedDateRange.value" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            </div>
+          </div>
+          <div class="table-container">
+            <p-table [value]="employeeTimeOffActivity?.timeOffActivities" [paginator]="true" [rows]="5">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>{{ 'Month' | translate }}</th>
+                  <th>{{ 'Opening Bal.' | translate }}</th>
+                  <th>{{ 'Amount' | translate }}</th>
+                  <th>{{ 'Accrual' | translate }}</th>
+                  <th>{{ 'Taken' | translate }}</th>
+                  <th>{{ 'Closing Balance' | translate }}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-timeOffActivity>
+                <tr>
+                  <td>{{ (timeOffActivity?.month | date: 'dd MMM yyyy') ?? '--' }}</td>
+                  <td>{{ (timeOffActivity?.openingBalance) ?? '--' }}</td>
+                  <td>{{ (timeOffActivity?.adjustments) ?? '--' }}</td>
+                  <td>{{ (timeOffActivity?.accrual) ?? '--' }}</td>
+                  <td>{{ (timeOffActivity?.taken) ?? '--' }}</td>
+                  <td>{{ (timeOffActivity?.closingBalance) ?? '--' }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+  <p-overlayPanel #op styleClass="employee-time-off-overlay" [dismissable]="true">
+    <div *ngIf="form" [formGroup]="form">
+      <div class="row">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Start date' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-calendar formControlName="fromDate" [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('fromDate', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'End date' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-calendar formControlName="toDate" [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('toDate', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-input-field column">
+        <div><span>{{ 'Notes' | translate }}</span></div>
+        <textarea #inputNotes formControlName="note" class="success" rows="3" [cols]="30" pInputTextarea [autoResize]="true"></textarea>
+        <div class="error"></div>
+      </div>
+      <div *ngFor="let row of getTimeOffBookingsForm?.controls; let i = index" class="form-input-field-group" formArrayName="timeOffBookingItems">
+        <div class="form-input-field column" [formGroupName]="i">
+          <div><span>{{ 'Partial' | translate }}</span></div>
+          <p-inputSwitch [falseValue]="1" [trueValue]="2" formControlName="timeOffType" styleClass="success"></p-inputSwitch>
+        </div>
+        <div class="form-input-field column" [formGroupName]="i">
+          <ng-container *ngIf="getTimeOffBookingsForm.value[i]?.timeOffType === 2">
+            <div><span>{{ 'Hours' | translate }}</span></div>
+            <input #inputHours type="number" formControlName="hours" maxlength="1" max="8" min="1" pattern="[0-9]{1}" class="success" pInputText />
+          </ng-container>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <div>
+          <button [disabled]="!form.valid" pButton class="form-button-success normal" (click)="onSaveChanges()">{{ 'Request time off' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="onClose()">{{ 'Cancel' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </p-overlayPanel>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <p-dialog [header]="'Booking Details' | translate" [(visible)]="showBookingDetailsDialog" [dismissableMask]="true" [modal]="true" [style]="{width: '600px'}">
+    <div>
+      <div class="dialog-content">
+        <div class="view-fields">
+          <div class="view-display-fields">
+            <div>
+              <div>Type</div>
+              <div>{{ (selectedTimeOff?.timeOffBooking?.leaveSetup?.name) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>From Date</div>
+              <div>{{ (selectedTimeOff?.timeOffBooking?.fromDate) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>To Date</div>
+              <div>{{ (selectedTimeOff?.timeOffBooking?.toDate) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>Total Days</div>
+              <div>{{ (selectedTimeOff?.totalDays) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>Date Requested</div>
+              <div>--</div>
+            </div>
+            <div>
+              <div>Status</div>
+              <div>{{ (employeeRequestStatusType[selectedTimeOff?.timeOffBooking?.status]?.label) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>Approved By</div>
+              <div>{{ (selectedTimeOff?.timeOffBooking?.approvedDeclinedBy) ?? '--' }}</div>
+            </div>
+            <div>
+              <div>Approved Date</div>
+              <div>--</div>
+            </div>
+            <div>
+              <div>Approved Note</div>
+              <div>{{ (selectedTimeOff?.timeOffBooking?.note) ?? '--' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-default" (click)="showBookingDetailsDialog = false">{{ 'Close' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-dialog [header]="'Add Time Off Adjustments' | translate" [(visible)]="showTimeOffAdjustmentsDialog" [dismissableMask]="true" [modal]="true" [style]="{width: '400px'}">
+    <div *ngIf="timeAdjustmentForm" [formGroup]="timeAdjustmentForm">
+      <div class="dialog-content">
+        <div class="form-input-field-group">
+          <div class="form-input-field column width-60">
+            <div>
+              <span>{{ 'Date' | translate }}</span>
+              <span>*</span>
+            </div>
+            <p-calendar [showIcon]="true" formControlName="date" appendTo="body" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field width-40">
+            <div>
+              <span>{{ 'Amount' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="amount" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Description' | translate }}</span>
+          </div>
+          <textarea [rows]="5" [cols]="30" formControlName="description" pInputTextarea [autoResize]="false" class="success"></textarea>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button [disabled]="!timeAdjustmentForm.valid" pButton class="form-button-success" (click)="onSaveTimeAdjustments()">{{ 'Save' | translate }}</button>
+        <!-- <button pButton class="form-button-default" (click)="showTimeOffAdjustmentsDialog = false">{{ 'Cancel' | translate }}</button> -->
+      </div>
+    </div>
+  </p-dialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

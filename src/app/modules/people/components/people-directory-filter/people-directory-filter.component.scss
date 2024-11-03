@@ -1,0 +1,67 @@
+@import "src/styleguide/index";
+
+:host {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: row;
+  width: 100%;
+}
+
+.all-filter {
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+.filter-by-type-container,
+.filter-by-status-container,
+.filter-by-teams-container,
+.filter-by-offices-container {
+  width: 200px;
+
+  >div:first-child {
+    display: flex;
+    flex-direction: row;
+    color: var(--colour-element-black-1);
+
+    >div {
+      &:first-child {
+        margin-right: 5px;
+        margin-bottom: 10px;
+        color: var(--colour-element-gray-1);
+        font-size: 15px;
+      }
+
+      &:nth-child(2) {
+        color: var(--colour-element-green-1);
+      }
+    }
+  }
+}
+
+.filter-by-type-items>div,
+.filter-by-status-items>div,
+.filter-by-teams-items>div,
+.filter-by-offices-items>div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  div:nth-child(2) {
+    min-width: 30px;
+  }
+
+  span {
+    display: none;
+    margin-left: 5px;
+    color: var(--colour-element-green-1);
+  }
+
+  &:hover span {
+    display: block;
+    cursor: pointer;
+  }
+}

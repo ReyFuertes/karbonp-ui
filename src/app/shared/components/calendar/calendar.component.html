@@ -1,0 +1,11 @@
+<div *ngIf="field" class="form-input-field">
+  <div>
+    <span>{{ field.name | translate }}</span>
+    <span *ngIf="field.required">*</span>
+  </div>
+  <p-calendar [showIcon]="true" [formControl]="registerFormControl(field)" [placeholder]="'Select' | translate" [dateFormat]="'dd/mm/yy'"
+    class="success"></p-calendar>
+  <div class="error">
+    <span *ngIf="getRequiredValidation(field.name)">{{ 'This field is required' | translate }}</span>
+  </div>
+</div>

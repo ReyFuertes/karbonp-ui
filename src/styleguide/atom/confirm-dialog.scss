@@ -1,0 +1,40 @@
+@mixin confirm-dialog {
+  margin-bottom: 95px;
+
+  .p-dialog-header {
+    padding: 1.1rem;
+  }
+
+  .p-dialog-content {
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  &.p-confirm-dialog .p-confirm-dialog-message {
+    margin-left: 0;
+  }
+
+  .p-dialog-header-icons {
+    display: none;
+  }
+
+  .p-dialog-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+
+    .form-button-success {
+      @include form-button-success;
+      margin-right: 8px;
+    }
+
+    .form-button-red {
+      @include form-button-red;
+      margin-right: 8px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+@mixin employee-status {
+
+  &.onboarding,
+  &.pending-offboarding,
+  &.pending {
+    text-transform: uppercase;
+    color: var(--colour-element-yellow-0) !important;
+    background-color: var(--colour-element-yellow-5);
+  }
+
+  &.not-invited,
+  &.long-term-absence,
+  &.offboarded {
+    text-transform: uppercase;
+    color: var(--colour-element-red-0) !important;
+    background-color: var(--colour-element-red-5);
+  }
+
+  &:not(.header) {
+    &.active,
+    &.send-invite,
+    &.resend-invite {
+      color: var(--colour-element-white);
+      background-color: var(--colour-element-green-1);
+    }
+  }
+
+  &.active,
+  &.send-invite,
+  &.resend-invite {
+    color: var(--colour-element-green-1);
+    background-color: var(--colour-element-white);
+  }
+}

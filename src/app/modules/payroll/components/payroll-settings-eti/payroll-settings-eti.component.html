@@ -1,0 +1,36 @@
+<div class="payroll-settings-eti-container">
+  <div class="content">
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'Minimum Monthly Earnings' | translate }}</span></div>
+        <input type="text" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Minimum Earnings Normal Rate' | translate }}</span></div>
+        <input type="text" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'Special Economic Zone' | translate }}</span></div>
+      <p-inputSwitch styleClass="blue"></p-inputSwitch>
+    </div>
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div><span>{{ 'Time zone' | translate }}</span></div>
+        <p-dropdown [options]="[]" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate"
+          class="blue"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'ETI Compliant' | translate }}</span></div>
+        <p-inputSwitch styleClass="blue"></p-inputSwitch>
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button pButton class="form-button-blue normal">{{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default normal">{{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

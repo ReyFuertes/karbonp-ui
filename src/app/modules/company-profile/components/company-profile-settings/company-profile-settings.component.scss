@@ -1,0 +1,13 @@
+@import "src/styleguide/index";
+
+::ng-deep {
+  .company-profile-settings-container {
+    .loading-container {
+      @include loader;
+    }
+
+    .p-confirm-dialog {
+      @include confirm-dialog;
+    }
+  }
+}

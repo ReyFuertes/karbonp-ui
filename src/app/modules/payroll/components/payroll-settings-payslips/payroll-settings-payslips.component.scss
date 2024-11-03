@@ -1,0 +1,48 @@
+@import "src/styleguide/index";
+
+.payroll-settings-payslips-container {
+  .content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px solid var(--colour-element-gray-5);
+    border-radius: 4px;
+    margin: 0 10px 10px;
+    padding: 20px;
+    
+    >div {
+      width: 48%;
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: flex-end;
+    padding-right: 10px;
+    
+    .form-button-blue {
+      @include form-button-blue;
+      min-width: 100px;
+      margin-right: 10px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-settings-payslips-container {
+    .p-inputswitch {
+      @include input-switch;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

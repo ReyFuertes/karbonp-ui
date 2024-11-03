@@ -1,0 +1,243 @@
+@import "src/styleguide/index";
+
+.header-content {
+  height: 85px;
+  margin-top: 61px;
+  display: flex;
+  align-items: center;
+
+  >div {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .header-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    
+    h1 {
+      font-weight: 700;
+      font-size: 34px;
+      line-height: 42px;
+      color: var(--colour-element-white);
+      margin-bottom: 0;
+    }
+
+    >div {
+      display: flex;
+      align-items: flex-end;
+      flex-direction: row;
+      height: 30px;
+
+      div {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: row;
+        height: 30px;
+        padding: 5px 10px;
+        border-radius: 2px;
+        font-size: 12px;
+        font-weight: 700;
+        min-width: 120px;
+        justify-content: center;
+      }
+
+      button {
+        border: none;
+        margin-left: 15px;
+
+        @include employee-status;
+      }
+    }
+  }
+
+  .avatar-container {
+    margin-right: 30px;
+    width: 130px;
+    top: -8px;
+    position: relative;
+
+    .editable-avatar {
+      width: 130px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+
+      .edit-logo {
+        display: flex;
+        position: relative;
+        justify-content: flex-end;
+        align-items: center;
+        flex-direction: row;
+        top: calc(130px - 35px);
+        font-size: 13px;
+        color: var(--colour-element-white);
+        border-radius: 0 0 4px;
+
+        .change-image-text {
+          display: flex;
+          align-items: center;
+          height: 35px;
+          justify-content: center;
+
+          span {
+            display: none;
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+
+          .change-image-text span {
+            display: block;
+            font-size: 13px;
+            position: relative;
+            left: 6px;
+          }
+
+          span {
+            color: var(--colour-element-white) !important;
+          }
+        }
+
+        span {
+          font-size: 18px;
+          margin: 0 5px;
+          color: var(--colour-element-gray-1);
+        }
+
+        &:hover {
+          background-color: var(--colour-element-gray-3);
+        }
+      }
+
+      &.success .edit-logo:hover {
+        background-color: var(--colour-element-green-2);
+      }
+
+      &.dashboard .edit-logo:hover {
+        background-color: var(--colour-element-blue-2);
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      img,
+      .default-icon {
+        position: absolute;
+        box-shadow: 2px 2px 7px 0 rgba(0, 0, 0, 0.14);
+        width: 130px;
+        height: 130px;
+        background-color: var(--colour-element-white);
+      }
+
+      .default-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+
+        span {
+          font-size: 50px;
+          color: var(--colour-element-gray-3);
+        }
+      }
+    }
+
+    .avatar {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--colour-element-white);
+      padding: 20px;
+      height: 130px;
+      width: 130px;
+      position: absolute;
+      box-shadow: 2px 2px 7px 0 rgba(0, 0, 0, 0.14);
+      border-radius: 6px;
+
+      span {
+        font-size: 63px;
+      }
+
+      &.default-avatar {
+        span {
+          color: var(--colour-element-green-1);
+        }
+      }
+
+      &.people-avatar {
+        span {
+          color: var(--colour-element-green-1);
+        }
+      }
+
+      &.company-avatar {
+        span {
+          color: var(--colour-element-red-0);
+        }
+      }
+
+      &.time-off-avatar {
+        span {
+          color: var(--colour-element-orange-1);
+        }
+      }
+
+      &.expenses-avatar {
+        span {
+          color: var(--colour-element-blue-3);
+        }
+      }
+
+      &.reports-avatar {
+        span {
+          color: var(--colour-element-cyan-1);
+        }
+      }
+
+      &.payroll-avatar {
+        span {
+          color: var(--colour-element-blue-3);
+        }
+      }
+    }
+  }
+
+  .title-appointment {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    h5 {
+      margin-bottom: 0;
+      margin-right: 8px;
+      color: var(--colour-element-white);
+    }
+  }
+
+  .form-button-default {
+    @include form-button-default;
+  }
+}
+
+@media screen and (min-device-width: 728px) and (max-device-width: 1800px) {
+  .header-content {
+    >div {
+      width: 100%;
+    }
+
+    .avatar-container .editable-avatar {
+      width: 102px;
+    }
+  }
+}

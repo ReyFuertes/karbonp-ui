@@ -1,0 +1,200 @@
+<div class="information-report-container">
+  <div class="header" [formGroup]="form">
+    <h3>{{ 'InformationReport' | translate }}</h3>
+    <p-accordion [activeIndex]="0">
+      <p-accordionTab [header]="'Filter' | translate">
+        <div class="filter-container">
+          <div class="form-input-field w-auto">
+            <div><span>{{ 'Employees' | translate }}</span></div>
+            <p-multiSelect formControlName="employees" [options]="employeeOptions" [filter]="true"
+              [selectionLimit]="selectionLimit" [maxSelectedLabels]="maxSelectedLabels" optionLabel="label"
+              [placeholder]="'Select' | translate"
+              styleClass="cyan filter {{ form.get('employees').value?.length <= 2 ? 'h-40' : 'h-auto' }}" display="chip"
+              [showClear]="true" [selectAll]="false" (onChange)="onChangeEmployees($event)">
+              <ng-template pTemplate="footer">
+                <div class="ms-footer">
+                  <b> {{ form.get('employees')?.value ? form.get('employees')?.value?.length : 0 }} </b>
+                  <span>{{ 'item' | translate }} {{ (form.get('employees')?.value ?
+                    form.get('employees')?.value?.length
+                    : 0)
+                    > 1 ? 's' : '' }}
+                    {{ 'selected' | translate }}</span>
+                </div>
+              </ng-template>
+            </p-multiSelect>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPeriods' | translate }}</span></div>
+            <p-dropdown [options]="payPeriods" formControlName="payPeriods" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan" [showClear]="true" [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'PayPoints' | translate }}</span></div>
+            <p-dropdown [options]="payPoints" formControlName="payPoints" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="cyan" [showClear]="true" [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div class="form-buttons">
+              <button pButton class="form-button-cyan normal loader" (click)="onFilter()">
+                <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+                <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Filter' | translate }}</span>
+              </button>
+              <button pButton class="form-button-default normal" (click)="onReset()">{{ 'Reset' | translate }}</button>
+            </div>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="content" *ngIf="isAvailableForExport; else noResults">
+    <div class="table-header-actions-container">
+      <span>{{ 'Export' | translate }}</span>
+      <span class="material-symbols-rounded export" [ngClass]="{'disabled': !isAvailableForExport}"
+        tooltipPosition="top" [pTooltip]="isAvailableForExport ? 'Export information report' : '' | translate"
+        (click)="isAvailableForExport ? onExport() : null">export_notes</span>
+    </div>
+    <p-table [value]="informationReport" [scrollable]="true" styleClass="p-datatable-striped" [paginator]="true"
+      [rows]="10" [rowsPerPageOptions]="[10, 20]" class="cyan">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngIf="currentCountryISOCode !== 'PHL'">{{'Employee' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'PHL'">{{'FirstName' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'PHL'">{{'MiddleName' | translate }}</th>
+          <th *ngIf="currentCountryISOCode ===  'PHL'">{{'LastName' | translate }}</th>
+          <th>{{'EmployeeNumber' | translate }}</th>
+          <th>{{'MobileNumber' | translate }}</th>
+          <th>{{'LandLine' | translate }}</th>
+          <th>{{'Email' | translate }}</th>
+          <th>{{'JobTitle' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA' || currentCountryISOCode === 'PHL'">{{'IncomeTaxNumber' | translate
+            }}
+          </th>
+          <th *ngIf="currentCountryISOCode === 'MEX'">{{'TaxIdentificationNumber' | translate }}</th>
+          <th>{{'DateOfBirth' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA'">{{'IdNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'MEX'">{{'CURPNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'MEX'">{{'SocialSecurityNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'PHL'">{{'PhilSysNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'PHL'">{{'HDMFNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'PHL'">{{'PhilHealthNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'PHL'">{{'SocialSecurityNumber' | translate }}</th>
+          <th>{{'PassportForeignIdNumber' | translate }}</th>
+          <th>{{'PassportCountryCode' | translate }}</th>
+          <th>{{'StartDate' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'MEX'">{{'DateOfSeniority' | translate }}</th>
+          <th>{{'LastDayOfService' | translate }}</th>
+          <th>{{'PaymentMethod' | translate }}</th>
+          <th>{{'ResidentialAddress' | translate}} {{ 'AddressLine1' | translate }}</th>
+          <th>{{'ResidentialAddress' | translate }} {{ 'AddressLine2' | translate }}</th>
+          <th>{{'ResidentialAddress' | translate}} {{'City' | translate }}</th>
+          <th>{{'ResidentialAddress' | translate}} {{'PostalCode' | translate }}</th>
+          <th>{{'ResidentialAddress' | translate}} {{ 'StateProvince' | translate }}</th>
+          <th>{{'ResidentialAddress' | translate}} {{ 'Country' | translate }}</th>
+          <th>{{'SameAsResidential' | translate}} {{'PostalAddress'| translate }}</th>
+          <th>{{'PostalAddress' | translate }} {{ 'AddressLine1' | translate }}</th>
+          <th>{{'PostalAddress' | translate }} {{ 'AddressLine2' | translate }}</th>
+          <th>{{'PostalAddress' | translate }} {{'City' | translate }}</th>
+          <th>{{'PostalAddress' | translate }} {{'PostalCode' | translate }}</th>
+          <th>{{'PostalAddress' | translate }} {{'StateProvince' | translate }}</th>
+          <th>{{'PostalAddress' | translate}} {{ 'Country' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA'">{{'Bank' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA'">{{'AccountNumber' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'MEX'">{{'CLABE' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA'">{{'BranchCode' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA'">{{'AccountType' | translate }}</th>
+          <th *ngIf="currentCountryISOCode === 'ZA'">{{'AccountOwner' | translate }}</th>
+          <th>{{'OrganizationalUnit' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td *ngIf="currentCountryISOCode === 'PHL'">{{row?.employee?.firstName}}</td>
+          <td *ngIf="currentCountryISOCode === 'PHL'">{{row?.employee?.middleName}}</td>
+          <td *ngIf="currentCountryISOCode === 'PHL'">{{row?.employee?.lastName}}</td>
+          <td *ngIf="currentCountryISOCode !== 'PHL'"> {{row?.employee?.firstName}} {{row?.employee?.lastName}}</td>
+          <td> {{row?.employee?.number}} </td>
+          <td> {{row?.employee?.mobileNumber}} </td>
+          <td> {{row?.employee?.landLine}} </td>
+          <td> {{row?.employee?.email}} </td>
+          <td> {{row?.employee?.jobTitle}} </td>
+          <td> {{row?.employee?.incomeTaxNumber}} </td>
+          <td> {{row?.employee?.dateOfBirth | date: 'dd MMM yyyy'}} </td>
+          <td *ngIf="row?.passportCountryCode === null">{{row?.employee?.identificationNumber}} </td>
+          <td *ngIf="row?.passportCountryCode === null && currentCountryISOCode === 'PHL'">{{row?.employee?.hdmfNo}}
+          </td>
+          <td *ngIf="row?.passportCountryCode === null && currentCountryISOCode === 'PHL'">
+            {{row?.employee?.philippineHealthNo}} </td>
+          <td *ngIf="row?.passportCountryCode === null && currentCountryISOCode === 'PHL'">
+            {{row?.employee?.alternativeIdentificationNumber}} </td>
+          <td *ngIf="row?.passportCountryCode === null && currentCountryISOCode === 'MEX'">
+            {{row?.employee?.alternativeIdentificationNumber}} </td>
+          <td *ngIf="row?.passportCountryCode === null"> </td>
+          <td *ngIf="row?.passportCountryCode === null"> </td>
+          <td *ngIf="row?.passportCountryCode !== null"></td>
+          <td *ngIf="row?.passportCountryCode !== null">{{row?.employee?.identificationNumber}}</td>
+          <td *ngIf="row?.passportCountryCode !== null">{{row?.passportCountryCode.code}}</td>
+          <td> {{row?.employee?.dateOfAppointment | date: 'dd MMM yyyy'}} </td>
+          <td *ngIf="currentCountryISOCode === 'MEX'"> {{row?.employee?.dateOfSeniority | date: 'dd MMM yyyy'}} </td>
+          <td *ngIf="row?.employeeService !== null">{{row?.employeeService.lastDayOfService | date: 'dd MMM yyyy'}}</td>
+          <td *ngIf="row?.employeeService === null"></td>
+          <td *ngIf="row?.paymentMethod === null"></td>
+          <td *ngIf="row?.paymentMethod !== null">{{row?.paymentMethod.name}}</td>
+          <td>{{row?.employee?.residentialAddress.line1}}</td>
+          <td>{{row?.employee?.residentialAddress.line2}}</td>
+          <td>{{row?.employee?.residentialAddress.city}}</td>
+          <td>{{row?.employee?.residentialAddress.postalCode}}</td>
+          <td>{{row?.employee?.residentialAddress.stateProvince}}</td>
+          <td>{{row?.residentialAddressCountry}}</td>
+          <td>{{row?.employee?.postalSameAsResidential ? 'Yes' : 'No'}}</td>
+          <td>
+            <div *ngIf="!row?.employee?.postalSameAsResidential">{{row?.employee?.postalAddress?.line1}}</div>
+          </td>
+          <td>
+            <div *ngIf="!row?.employee?.postalSameAsResidential">{{row?.employee?.postalAddress?.line2}}</div>
+          </td>
+          <td>
+            <div *ngIf="!row?.employee?.postalSameAsResidential">{{row?.employee?.postalAddress?.city}}</div>
+          </td>
+          <td>
+            <div *ngIf="!row?.employee?.postalSameAsResidential">{{row?.employee?.postalAddress?.postalCode}}</div>
+          </td>
+          <td>
+            <div *ngIf="!row?.employee?.postalSameAsResidential">{{row?.employee?.postalAddress.stateProvince}}</div>
+          </td>
+          <td>
+            <div>{{row?.postalAddressCountry}}</div>
+          </td>
+          <td *ngIf="currentCountryISOCode === 'ZA'">
+            <div *ngIf="row?.bank !== null">{{row?.bank.name}}</div>
+          </td>
+          <td *ngIf="currentCountryISOCode === 'ZA'">
+            <div *ngIf="row?.employee !== null">{{row?.employee?.bankAccountNumber}}</div>
+          </td>
+          <td *ngIf="currentCountryISOCode === 'MEX'">
+            <div *ngIf="row?.employee !== null">{{row?.employee?.bankAccountNumber}}</div>
+          </td>
+          <td *ngIf="currentCountryISOCode === 'ZA'">
+            <div *ngIf="row?.employee !== null">{{row?.employee?.bankBranchCode}}</div>
+          </td>
+          <td *ngIf="currentCountryISOCode === 'ZA'">
+            <div *ngIf="row?.bankAccountType !== null">{{row?.bankAccountType.name}}</div>
+          </td>
+          <td *ngIf="currentCountryISOCode === 'ZA'">
+            <div *ngIf="row?.employee?.holderRelationship === 0">{{'Own' | translate}}</div>
+            <div *ngIf="row?.employee?.holderRelationship === 1">{{'Joint' | translate}}</div>
+            <div *ngIf="row?.employee?.holderRelationship === 2">{{'ThirdParty' | translate}}</div>
+          </td>
+          <td>{{getOrganizationalUnitData(row?.employee?.organizationalUnit)}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+</div>

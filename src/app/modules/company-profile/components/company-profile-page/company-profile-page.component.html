@@ -1,0 +1,21 @@
+<kp-header-content headerTitle="Company Profile" [avatarPath]="avatarPath" bgImage="company-profile" classLogo="company-avatar" appLogoName="company-profile" [isAppLogo]="true" marginRight="60px"></kp-header-content>
+<div class="company-profile-page-container">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menus" class="menu-item selectable red" [ngClass]="{'selected': getCurrentMenu(menu)}" (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="center-container">
+      <container-element [ngSwitch]="activeMenuOption">
+        <kp-company-profile-overview *ngSwitchCase="'overview'"></kp-company-profile-overview>
+        <kp-company-profile-tools *ngSwitchCase="'tools'"></kp-company-profile-tools>
+        <kp-company-profile-files *ngSwitchCase="'files'"></kp-company-profile-files>
+        <kp-company-profile-policies *ngSwitchCase="'policies'"></kp-company-profile-policies>
+        <kp-company-profile-settings *ngSwitchCase="'settings'"></kp-company-profile-settings>
+      </container-element>
+    </div>
+  </div>
+</div>

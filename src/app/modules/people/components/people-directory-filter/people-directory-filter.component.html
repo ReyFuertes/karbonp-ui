@@ -1,0 +1,66 @@
+<div class="filter-by-type-container">
+  <div>
+    <div>{{ 'Filter by type' | translate }}</div>
+    <div>{{ 'All' | translate }}</div>
+  </div>
+  <div class="filter-by-type-items">
+    <ng-container *ngFor="let type of getEmployementType">
+      <div>
+        <p-checkbox [label]="type.label" name="groupname" class="success simple" [binary]="true" tooltipPosition="top"
+          [pTooltip]="type.label"></p-checkbox>
+        <div>
+          <span>Only</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="filter-by-status-container">
+  <div>
+    <div>{{ 'Filter by status' | translate }}</div>
+    <div class="all-filter" (click)="onCheckAll('status')">
+      <span *ngIf="isStatusSelectAll">{{ 'Uncheck All' | translate }}</span>
+      <span *ngIf="!isStatusSelectAll">{{ 'All' | translate }}</span>
+    </div>
+  </div>
+  <div *ngIf="statuses" class="filter-by-status-items">
+    <ng-container *ngFor="let status of statuses">
+      <div>
+        <p-checkbox [(ngModel)]="checkedStatuses" [label]="status.name" [value]="status.id" name="groupname"
+          class="success simple" tooltipPosition="top" [pTooltip]="status.description"
+          (onChange)="filterStatusChange.emit(checkedStatuses)"></p-checkbox>
+        <!-- <span>Only</span> -->
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="filter-by-teams-container">
+  <div>
+    <div>Filter by team</div>
+    <div>All</div>
+  </div>
+  <div class="filter-by-teams-items">
+    <ng-container *ngFor="let type of filterByTeams">
+      <div>
+        <p-checkbox [label]="type.label" name="groupname" class="success simple" tooltipPosition="top"
+          [pTooltip]="type.label" [binary]="true"></p-checkbox>
+        <span>Only</span>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="filter-by-offices-container">
+  <div>
+    <div>Filter by office</div>
+    <div>All</div>
+  </div>
+  <div class="filter-by-offices-items">
+    <ng-container *ngFor="let type of filterByOffices">
+      <div>
+        <p-checkbox [label]="type.label" name="groupname" class="success simple" tooltipPosition="top"
+          [pTooltip]="type.label" [binary]="true"></p-checkbox>
+        <span>Only</span>
+      </div>
+    </ng-container>
+  </div>
+</div>

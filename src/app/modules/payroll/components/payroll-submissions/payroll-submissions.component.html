@@ -1,0 +1,51 @@
+<div class="payroll-submissions-container">
+  <div class="header">
+    <div>
+      <h3>{{ 'Submissions' | translate }}</h3>
+    </div>
+    <div>
+      <button pButton class="form-button-blue outlined normal" (click)="onShowFilingSetupModal()">
+        {{ 'Finding Details' | translate }}</button>
+    </div>
+  </div>
+  <div class="content">
+    <p-accordion [multiple]="true" [activeIndex]="[0,1]">
+      <p-accordionTab header="Monthly"> <!-- note: make persistent -->
+        <kp-payroll-submissions-philippines
+          *ngIf="currentCountryISOCode === countryISOCodeType.PHL"></kp-payroll-submissions-philippines>
+        <p-tabView *ngIf="currentCountryISOCode !== countryISOCodeType.PHL">
+          <p-tabPanel [header]="'EMP201' | translate">
+            <kp-payroll-submissions-monthly-emp201></kp-payroll-submissions-monthly-emp201>
+          </p-tabPanel>
+          <p-tabPanel [header]="'UIF' | translate">
+            <kp-payroll-submissions-monthly-uif></kp-payroll-submissions-monthly-uif>
+          </p-tabPanel>
+        </p-tabView>
+      </p-accordionTab>
+      <p-accordionTab header="Annual">
+        <kp-payroll-submissions-philippines-annual
+          *ngIf="currentCountryISOCode === countryISOCodeType.PHL"></kp-payroll-submissions-philippines-annual>
+        <p-tabView>
+          <p-tabPanel *ngIf="currentCountryISOCode !== countryISOCodeType.PHL" [header]="'IRP5/IT3(A)'">
+            <kp-payroll-submissions-annual-irp5-it3></kp-payroll-submissions-annual-irp5-it3>
+          </p-tabPanel>
+          <p-tabPanel *ngIf="currentCountryISOCode !== countryISOCodeType.PHL" [header]="'COIDA'">
+            <kp-payroll-submissions-annual-coida></kp-payroll-submissions-annual-coida>
+          </p-tabPanel>
+        </p-tabView>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <kp-payroll-submissions-filing-details-dialog #psfdd></kp-payroll-submissions-filing-details-dialog>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-blue normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <ng-template #loading>
+    <div class="loading-container blue">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

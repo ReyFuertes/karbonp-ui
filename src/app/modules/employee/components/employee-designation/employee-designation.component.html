@@ -1,0 +1,128 @@
+<div class="employee-designation-container" *ngIf="form" [formGroup]="form" >
+  <div class="form-input-detail-fields">
+    <h3>{{ 'Designation' | translate }}</h3>
+    <ng-container *ngIf="actionState === 'edit' && currentSection === 'designation'; else designationView">
+      <div class="form-edit-fields">
+        <div class="form-input-field column width-50">
+          <div>
+            <span>{{ 'Payment Type' | translate }}</span>
+          </div>
+          <p-dropdown [options]="paymentTypes" formControlName="paymentType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field column">
+            <div>
+              <span>{{ 'Monthly Salary' | translate }}</span>
+            </div>
+            <input type="text" formControlName="paymentAmount" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field form-edit-wage">
+            <div>{{ 'Daily Wage' | translate }}</div>
+            <div>
+              <span>{{ form.value?.fullName }}</span>
+              <span>{{ calcDailyWage | currency:'PHP' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field column">
+            <div>
+              <span>{{ 'Currency' | translate }}</span>
+            </div>
+            <p-dropdown [options]="getExchangeRates" formControlName="paymentAmountCurrency" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field column width-50">
+            <div>
+              <span>{{ 'Employment Type' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employementTypes" formControlName="employmentType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </div>
+
+        <div class="form-input-field column margin-bottom-20">
+          <div><span>{{ 'Is Manager Or Supervisor' | translate }}</span></div>
+          <p-inputSwitch formControlName="isManagerOrSupervisor" styleClass="success"></p-inputSwitch>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field column">
+            <div><span>{{ 'Exclude From Government Contributions' | translate }}</span></div>
+            <p-inputSwitch formControlName="excludeFromGovernmentContributions" styleClass="success"></p-inputSwitch>
+          </div>
+          <div class="form-input-field column">
+            <div><span>{{ 'Exempt From Tax' | translate }}</span></div>
+            <p-inputSwitch formControlName="exemptFromTax" styleClass="success"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveChanges()">{{ 'Save' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel('designation')">{{ 'Cancel' | translate }}</button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #designationView>
+      <div *ngIf="isLoaded; else loader" class="view-fields">
+        <div class="view-fields-display">
+          <div>
+            <div>{{ 'Payment Type' | translate }}</div>
+            <div>{{ getTypeByLabel }}</div>
+          </div>
+          <div>
+            <div>{{ 'Monthly Salary' | translate }}</div>
+            <div>{{ employeeClassification?.paymentAmount | currency:'PHP' }}</div>
+          </div>
+          <div>
+            <div>{{ 'Daily Wage' | translate }}</div>
+            <div>{{ calcDailyWage | currency:'PHP' }}</div>
+          </div>
+          <div>
+            <div>{{ 'Currency' | translate }}</div>
+            <div class="align-center"><!-- note: refactor url -->
+              <img [src]="'https://staging.karbonpay.com/' + getEmployeeCurrency?.imageUrl">
+              <span>{{ getEmployeeCurrency?.label }}</span>
+            </div>
+          </div>
+          <div>
+            <div>{{ 'Employment Type' | translate }}</div>
+            <div>{{ getEmployeeEmploymentType?.label }}</div>
+          </div>
+          <div>
+            <div>{{ 'Is Manager Or Supervisor' | translate }}</div>
+            <div class="binary-value">
+              <span class="material-symbols-rounded" [ngClass]="{'check': getIsManagerOrSupervisor}">
+                {{ getIsManagerOrSupervisor ? 'check' : 'close' }}
+              </span>
+            </div>
+          </div>
+          <div>
+            <div>{{ 'Exclude From Government Contributions' | translate }}</div>
+            <div class="binary-value">
+              <span class="material-symbols-rounded" [ngClass]="{'check': getExcludeFromGovernmentContributions}">
+                {{ getExcludeFromGovernmentContributions ? 'check' : 'close' }}
+              </span>
+            </div>
+          </div>
+          <div>
+            <div>{{ 'Exempt From Tax' | translate }}</div>
+            <div class="binary-value">
+              <span class="material-symbols-rounded" [ngClass]="{'check': getExemptFromTax}">
+                {{ getExemptFromTax ? 'check' : 'close' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="material-symbols-rounded" (click)="onEdit('designation')">edit_square</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

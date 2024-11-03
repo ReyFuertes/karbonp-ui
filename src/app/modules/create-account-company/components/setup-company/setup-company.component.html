@@ -1,0 +1,67 @@
+<div class="setup-company-container" [formGroup]="form">
+  <container-element [ngSwitch]="currentProcessingStage.value">
+    <ng-container *ngSwitchCase="'processing'">
+      <div class="header">
+        <h1>{{ 'Set up your company' | translate }}</h1>
+        <p>{{ 'Lets start with the basics' | translate }}</p>
+      </div>
+      <div class="content" formGroupName="company">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Company name' | translate }}</span>
+            <span>*</span>
+          </div>
+          <input formControlName="companyName" type="text" pInputText />
+          <div class="error">
+            <span *ngIf="getRequiredValidation('companyName', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Number of employees'| translate }}</span>
+            <span>*</span>
+          </div>
+          <p-dropdown [options]="numberOfEmployeeOptions" formControlName="numberOfEmployees" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="blue"></p-dropdown>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('numberOfEmployees', form)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <button [disabled]="!getCompanyForm.valid" pButton class="form-button-blue large" (click)="onSetupCompany()">
+          <!--<i class="pi pi-spin pi-spinner" [ngClass]="{'is-loading': isLoading}"></i>-->
+          <span *ngIf="isLoading === false">{{ 'Setup Company' | translate }}</span>
+        </button>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'setting_up'">
+      <div class="header">
+        <h1>{{ 'Setting up ' + getCompanyForm.value?.companyName | translate }}</h1>
+      </div>
+      <div class="content">
+        <div class="processing"><span class="material-symbols-rounded">manufacturing</span></div>
+        <div class="trial-info">
+          <div>Your 30 day trial has started --- </div>
+          <div>you have unlimited access to all of Karbonpay's features. </div>
+          <div>We'll switch to the Free plan on {{ dateToday | date: 'dd MMM yyyy' }}</div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'dashboard_ready'">
+      <div class="header">
+        <h1>{{ 'Your dashboard is ready' | translate }}</h1>
+      </div>
+      <div class="content">
+        <div class="dashboard-img">
+          <img [src]="imgPath + 'dashboard-sample-thumbail.png'" />
+        </div>
+        <div class="trial-info">
+          <div>Your 30 day trial has started --- </div>
+          <div>you have unlimited access to all of Karbonpay's features. </div>
+          <div>We'll switch to the Free plan on {{ dateToday | date: 'dd MMM yyyy' }}</div>
+        </div>
+      </div>
+      <button pButton class="form-button-blue large" (click)="gotoDashboard()">
+        <span>{{ 'Continue to dashboard' | translate }}</span>
+      </button>
+    </ng-container>
+  </container-element>
+</div>

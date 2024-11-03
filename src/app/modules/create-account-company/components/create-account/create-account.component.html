@@ -1,0 +1,65 @@
+<div class="create-account-container" [formGroup]="form">
+  <div class="header">
+    <h1>{{ 'Create an account' | translate }}</h1>
+    <p>{{ 'Simplify HR at your company in 5 minutes' | translate }}</p>
+  </div>
+  <div class="content" formGroupName="account">
+    <div class="form-input-field-group">
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'First name' | translate }}</span>
+          <span>*</span>
+        </div>
+        <input formControlName="firstName" type="text" pInputText />
+        <div class="error">
+          <span *ngIf="getRequiredValidation('firstName', form)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'Last name' | translate }}</span>
+          <span>*</span>
+        </div>
+        <input formControlName="lastName" type="text" pInputText />
+        <div class="error">
+          <span *ngIf="getRequiredValidation('lastName', form)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-input-field">
+      <div>
+        <span>{{ 'Email Address' | translate }}</span>
+        <span>*</span>
+      </div>
+      <input formControlName="email" type="text" pInputText />
+      <div class="error">
+        <span *ngIf="getRequiredValidation('email', form)">{{ 'This field is required' | translate }}</span>
+        <span *ngIf="getEmailValidation('email', form)">{{ 'That doesn’t look like an email address' | translate }}</span>
+      </div>
+    </div>
+    <div class="form-input-field column">
+      <div>
+        <span>{{ 'Password' | translate }}</span>
+        <span>*</span>
+      </div>
+      <p-password formControlName="password" [toggleMask]="true"></p-password>
+      <div class="error">
+        <span *ngIf="getRequiredValidation('password', form)">{{ 'This field is required' | translate }}</span>
+      </div>
+    </div>
+    <div>
+      <p-checkbox #checkAgreeTerms formControlName="terms" name="groupname" [trueValue]="true" [falseValue]="undefined" class="simple" [binary]="true"></p-checkbox>
+      <span>{{ 'I have read and I agree to the' | translate }}</span>
+      <span class="link">{{ 'Terms of Use' | translate }}</span>
+      <span>{{ 'and' | translate }}</span>
+      <span class="link" (click)="redirectToPolicy()">{{ 'Privacy Policy' | translate }}</span>
+    </div>
+    <button [disabled]="!getAccountForm.valid" pButton class="form-button-blue large" (click)="onGetStarted()">
+      <!--<i class="pi pi-spin pi-spinner" [ngClass]="{'is-loading': isLoading}"></i>-->
+      <span *ngIf="isLoading === false">{{ 'Get Started' | translate }}</span>
+    </button>
+    <div>
+      <span class="link">{{ 'Already have an account?' | translate }}</span>
+    </div>
+  </div>
+</div>

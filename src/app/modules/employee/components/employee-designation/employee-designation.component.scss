@@ -1,0 +1,107 @@
+@import "src/styleguide/index";
+
+.employee-designation-container {
+  .binary-value {
+    span {
+      color: var(--colour-element-red-1);
+      font-weight: 700;
+
+      &.check {
+        color: var(--colour-element-green-1);
+      }
+    }
+  }
+
+  img {
+    height: 30px;
+    margin-right: 5px;
+  }
+
+  .form-input-detail-fields {
+    @include form-input-detail-fields;
+
+    background-color: var(--colour-element-white-bg-2);
+    position: relative;
+    padding: 25px 0 20px 25px;
+    border: 1px solid var(--colour-element-gray-3);
+    border-radius: 4px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+
+    .view-fields .view-fields-display {
+      margin-bottom: 10px;
+
+      div div:first-child {
+        width: 235px;
+      }
+    }
+
+    .form-edit-fields {
+      flex-direction: column;
+      margin-right: 30px !important;
+    }
+
+    h3 {
+      color: var(--colour-element-black-1);
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 30px;
+      margin: 0 10px 10px 0;
+    }
+
+    > div {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .margin-bottom-20 {
+      margin-bottom: 20px;
+    }
+
+    .form-buttons {
+      margin-top: 20px;
+    }
+
+    .form-edit-wage {
+      div:first-child {
+        position: relative;
+        top: -5px;
+        color: var(--colour-element-gray-1);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        margin-bottom: 15px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      
+      div {
+        font-size: 16px;
+        
+        span {
+          color: var(--colour-element-green-1);
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .employee-designation-container {
+    .p-inputswitch {
+      @include input-switch;
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+  }
+}

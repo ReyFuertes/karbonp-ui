@@ -1,0 +1,32 @@
+@import "src/styleguide/index";
+
+.company-profile-dialog-address-container {
+  .form-buttons {
+    @include form-buttons;
+    justify-content: space-between;
+  }
+}
+
+:host ::ng-deep {
+  .p-dialog {
+    @include dialog;
+  }
+
+  .form-button-red {
+    @include form-button-red;
+    margin-right: 15px;
+  }
+  
+  .form-button-default {
+    @include form-button-default;
+  }
+
+  .p-dropdown {
+    @include input-dropdown;
+    width: 100%;
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+}

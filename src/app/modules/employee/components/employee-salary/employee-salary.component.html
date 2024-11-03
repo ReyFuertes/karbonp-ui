@@ -1,0 +1,54 @@
+<div class="employee-salary-container" *ngIf="form" [formGroup]="form">
+  <div formGroupName="salary">
+    <h3>{{ 'Add user salary information' | translate }}</h3>
+    <p>{{ 'Only user and other admins can see this information.' | translate }}</p>
+
+    <div class="form-group-field">
+      <div class="form-input-field">
+        <div><span>{{ 'Amount' | translate }}</span></div>
+        <input type="number" formControlName="amount" class="success" pInputText />
+        <div class="error">
+          <span *ngIf="getRequiredValidation('amount', getSalaryForm)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Currency' | translate }}</span></div>
+        <p-dropdown [options]="currencies" formControlName="currency" optionLabel="label"  placeholder="None" class="success"></p-dropdown>
+        <div class="error">
+          <span *ngIf="getRequiredValidation('currency', getSalaryForm)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Frequency' | translate }}</span></div>
+        <p-dropdown [options]="frequencies" formControlName="frequency" optionLabel="label"  placeholder="None" class="success"></p-dropdown>
+        <div class="error">
+          <span *ngIf="getRequiredValidation('frequency', getSalaryForm)">{{ 'This field is required' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-input-field">
+      <div><span>{{ 'Effective from' | translate }}</span></div>
+      <p-calendar formControlName="effectiveForm" [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+      <div class="error">
+        <span *ngIf="getRequiredValidation('effectiveForm', getSalaryForm)">{{ 'This field is required' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-input-field">
+      <div><span>{{ 'Note' | translate }}</span></div>
+      <input type="text" formControlName="note" pInputText class="success" />
+      <div class="error">
+        <span *ngIf="getRequiredValidation('note', getSalaryForm)">{{ 'This field is required' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <div>
+        <button pButton [disabled]="!getSalaryForm?.valid" class="form-button-success" (click)="onSaveContinue()">{{ 'Save & continue' | translate }}</button>
+        <button pButton class="form-button-default" (click)="onSaveContinue()">{{ 'Finish later' | translate }}</button>
+      </div>
+      <div class="delete-employee-icon">{{ 'Delete employee' | translate }}</div>
+    </div>
+  </div>
+</div>

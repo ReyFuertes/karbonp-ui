@@ -1,0 +1,17 @@
+<kp-header-content [headerTitle]="headerTitle" appLogoName="reports" [isAppLogo]="true" bgImage="reports"
+  classLogo="reports-avatar" marginRight="73px"></kp-header-content>
+<div class="reports-page-body">
+  <div class="content">
+    <div class="left-container">
+      <div class="menus">
+        <div *ngFor="let menu of menusOptions" class="menu-item cyan" [ngClass]="{'selected': getCurrentMenu(menu)}"
+          (click)="gotoMenu(menu)">
+          <span>{{ menu.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="center-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

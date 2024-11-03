@@ -1,0 +1,276 @@
+@import "src/styleguide/index";
+
+.company-profile-overview-container {
+  display: flex;
+  flex-direction: row;
+
+  .content {
+    width: 100%;
+    max-width: 635px;
+
+    .office-list,
+    .notes-list {
+
+      .office-list-item,
+      .notes-list-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        border-bottom: 1px solid var(--colour-element-gray-3);
+        z-index: 2;
+
+        >div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-weight: 700;
+          padding: 12px 10px;
+          justify-content: flex-start;
+          width: 100%;
+        }
+
+        &:hover {
+          background-color: var(--colour-element-red-5);
+        }
+
+        button {
+          margin-right: 10px;
+          z-index: 1;
+        }
+
+        span {
+          margin-right: 5px;
+          color: var(--colour-element-red-0);
+        }
+      }
+    }
+
+    .add-intro,
+    .add-office,
+    .add-note {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 40px;
+      color: var(--colour-element-red-0);
+      cursor: pointer;
+
+      .bold {
+        font-weight: 700;
+      }
+
+      span:nth-child(2):hover {
+        opacity: 0.6;
+      }
+    }
+
+    .edit-intro-panel,
+    .edit-note-panel {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: var(--colour-element-white-bg-1);
+      animation-name: fadeIn;
+      animation-duration: 550ms;
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    span {
+      font-size: 25px;
+      color: var(--colour-element-red-0);
+
+      &:hover {
+        opacity: 0.9;
+        cursor: pointer;
+        color: var(--colour-element-red-0);
+      }
+    }
+  }
+
+  .form-fields {
+    .form-input-field {
+      span {
+        color: var(--colour-element-gray-1);
+      }
+    }
+  }
+
+  .right-container {
+    width: 300px;
+    margin-left: 25px;
+
+    h4 {
+      white-space: nowrap;
+    }
+
+    .people-avatar-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .people-avatar {
+        height: 80px;
+        width: 80px;
+        background-color: var(--colour-element-red-0);
+        color: var(--colour-element-white);
+        border-radius: 50%;
+        margin-right: -25px;
+        border: 4px solid var(--colour-element-white);
+        font-size: 22px;
+        letter-spacing: 2.2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .people-total {
+      margin-bottom: 35px;
+
+      span {
+        font-weight: 700;
+        margin-right: 5px;
+
+        &:first-child,
+        &:nth-child(2) {
+          color: var(--colour-element-red-0);
+        }
+      }
+    }
+
+    .company-information {
+      border: 1px solid var(--colour-element-gray-7);
+      padding: 25px 0;
+
+      h4 {
+        padding: 0 20px;
+      }
+
+      h5 {
+        color: var(--colour-element-black-1);
+        margin: 0;
+      }
+
+      >div {
+        padding: 10px 15px;
+      }
+
+      >div:not(.edit-mode) {
+        button {
+          margin: 0;
+          display: none;
+          min-width: 70px !important;
+        }
+
+        &:hover {
+          background-color: var(--colour-element-red-5);
+
+          button {
+            display: block;
+          }
+        }
+      }
+    }
+
+    .company-information-detail {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--colour-element-gray-7);
+      padding-bottom: 25px;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        div {
+          display: flex;
+          flex-direction: row;
+
+          &:first-child {
+            font-weight: 700;
+
+            span {
+              color: var(--colour-element-red-0);
+              margin-right: 5px;
+            }
+          }
+
+          &:not(:first-child) {
+            margin-left: 30px;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: var(--colour-element-red-2);
+      }
+    }
+
+    .company-contact {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        margin: 0;
+        display: none;
+      }
+
+      >div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        >div {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+
+          >span {
+            color: var(--colour-element-red-0);
+
+            &:nth-child(2) {
+              font-weight: 700;
+              white-space: nowrap;
+            }
+          }
+        }
+
+        >span {
+          font-size: 14px;
+          margin-left: -10px;
+        }
+      }
+    }
+
+    .add-company-number,
+    .add-vat-number {
+      >div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: var(--colour-element-red-0);
+        cursor: pointer;
+      }
+    }
+  }
+}

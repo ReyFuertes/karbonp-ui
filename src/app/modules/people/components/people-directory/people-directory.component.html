@@ -1,0 +1,65 @@
+<div class="people-directory-container">
+  <div class="container-header">
+    <kp-input-search [placeholder]="'Search by name'" styleClass="success" [value]="inpuSearchValue"
+      (inputChange)="handleInputChange($event)"></kp-input-search>
+    <button (click)="op.toggle($event)" pButton class="form-button-outlined default"
+      [ngClass]="{'toggle-filter': showMenu}" icon="pi pi-filter" (click)="onShowMenu()">{{ 'Filters' | translate
+      }}</button>
+    <p-overlayPanel #op [baseZIndex]="999" [showTransitionOptions]="'100ms'" [hideTransitionOptions]="'100ms'"
+      styleClass="people-directory-filter-overlay">
+      <p-checkbox class="success" binary="true" label="Active"></p-checkbox>
+      <p-checkbox class="success" binary="true" label="InActive"></p-checkbox>
+    </p-overlayPanel>
+    <button pButton class="form-button-success" icon="pi pi-plus" (click)="onAddEmployee()">{{ 'Add Employee' |
+      translate }}</button>
+    <button pButton class="form-button-outlined default" icon="pi pi-refresh" (click)="onRefresh()">{{ 'Refresh' |
+      translate }}</button>
+  </div>
+  <ng-container>
+    <div class="employee-header">
+      <h2>{{ employeeTotalItems || 0 }} {{ 'Employee' | translate }}{{ employeeTotalItems > 1 ? 's' : ''}}</h2>
+      <p-paginator *ngIf="employeeTotalItems > 0" #paginator (onPageChange)="paginateEmployees($event)"
+        [first]="pageNumber" [rows]="pagesize" [totalRecords]="employeeTotalItems"
+        [rowsPerPageOptions]="[10, 20, 30, 50, 100]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" styleClass="success" />
+    </div>
+    <div class="employee-container">
+      <div *ngIf="(isLoadingAsync() | async) === false && peopleEmployees?.length > 0; else loading" class="people">
+        <ng-container *ngFor="let employee of peopleEmployees">
+          <div class="person" (click)="getEmployeeDetail(employee)">
+            <div>
+              <div class="initial-avatar">
+                <span>{{ getInitials(employee.fullName) }}</span>
+              </div>
+            </div>
+            <div class="name-position">
+              <div>{{ employee?.fullName }} </div>
+              <div>{{ employee?.jobTitle }}</div>
+              <ng-container *ngIf="statusDictionaries.get(employee?.peopleStatus) as status">
+                <button pButton class="form-button-default small status" [ngClass]="toCssClass(status.name)"
+                  tooltipPosition="top" [pTooltip]="status?.description | translate">
+                  {{ status.name | translate }}</button>
+                <button *ngIf="status.name === notInvited" pButton class="form-button-default small status send-invite"
+                  tooltipPosition="top" [pTooltip]="status?.description | translate">
+                  {{ 'Invite' | translate }}</button>
+                <button *ngIf="status.name === pending" pButton class="form-button-default small status resend-invite"
+                  tooltipPosition="top" [pTooltip]="status?.description | translate">
+                  {{ 'Resend Invite' | translate }}</button>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(isLoadingAsync() | async) === false && peopleEmployees?.length === 0">
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

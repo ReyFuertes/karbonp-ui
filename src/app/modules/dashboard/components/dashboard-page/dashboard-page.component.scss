@@ -1,0 +1,16 @@
+@import "src/styleguide/index";
+
+.dashboard-page-body {
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  padding-top: 30px;
+  width: 1245px;
+  margin: 0 auto;
+}
+
+:host ::ng-deep {
+  .header-content .logo-container {
+    margin-right: 27px !important;
+  }
+}

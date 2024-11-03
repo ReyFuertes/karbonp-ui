@@ -1,0 +1,254 @@
+@mixin input-dropdown {
+  width: 100%;
+  height: 40px;
+
+  .p-dropdown {
+    width: 100%;
+  }
+
+  .p-dropdown-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    text-transform: capitalize;
+    position: relative;
+    top: -2px;
+    font-size: 15px;
+
+    >div {
+      overflow: hidden;
+    }
+  }
+
+  .p-dropdown-trigger {
+    color: var(--colour-element-gray-2);
+  }
+
+  .p-inputtext {
+    @include input-field;
+    display: inline-block;
+
+    &:hover {
+      border: none;
+    }
+  }
+
+  .p-dropdown-panel .p-dropdown-items {
+    padding: 0;
+
+    .p-dropdown-item {
+      text-transform: capitalize;
+      white-space: normal !important;
+
+      &.p-highlight {
+        color: var(--colour-element-black-1);
+      }
+    }
+  }
+
+  &:hover,
+  &:active,
+  &:focus,
+  &.p-focus {
+    background-color: transparent;
+    border-color: var(--colour-element-gray-2);
+
+    .p-dropdown-trigger-icon {
+      color: var(--colour-element-gray-1);
+    }
+  }
+
+  &:focus {
+    box-shadow:
+      0 0 0 2px var(--colour-element-white),
+      0 0 0 4px var(--colour-element-gray-3),
+      0 1px 2px 0 var(--colour-element-black-1);
+  }
+}
+
+.blue {
+  &.p-dropdown {
+    height: 40px;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &.p-focus {
+      background-color: transparent;
+      border-color: var(--colour-element-blue-2) !important;
+
+      .p-dropdown-trigger-icon {
+        color: var(--colour-element-blue-2) !important;
+      }
+    }
+
+    &:focus,
+    &.p-focus,
+    &:not(.p-disabled).p-focus {
+      box-shadow:
+        0 0 0 1px var(--colour-element-white),
+        0 0 0 1px var(--colour-element-blue-4),
+        0 1px 1px 0 var(--colour-element-black-1) !important;
+    }
+
+    .p-dropdown-panel .p-dropdown-items {
+      padding: 0;
+
+      &.p-dropdown-item.p-highlight,
+      .p-dropdown-item.p-highlight.p-focus {
+        color: var(--colour-element-black-1);
+        background-color: var(--colour-element-blue-4);
+      }
+    }
+  }
+}
+
+.success {
+  &.p-dropdown {
+    height: 40px;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &.p-focus {
+      background-color: transparent;
+      border-color: var(--colour-element-green-1) !important;
+
+      .p-dropdown-trigger-icon {
+        color: var(--colour-element-green-1) !important;
+      }
+    }
+
+    &:focus,
+    &.p-focus,
+    &:not(.p-disabled).p-focus {
+      box-shadow:
+        0 0 0 2px var(--colour-element-white),
+        0 0 0 4px var(--colour-element-green-5),
+        0 1px 2px 0 var(--colour-element-black-1) !important;
+    }
+  }
+
+  &.p-dropdown-panel .p-dropdown-items {
+    padding: 0;
+
+    .p-dropdown-item.p-highlight.p-focus {
+      color: var(--colour-element-green-1);
+      background-color: var(--colour-element-green-6);
+    }
+  }
+}
+
+.red.p-dropdown {
+  height: 40px;
+
+  &:hover,
+  &:active,
+  &:focus,
+  &.p-focus {
+    background-color: transparent;
+    box-shadow: none !important;
+    border-color: var(--colour-element-red-0) !important;
+
+    .p-dropdown-trigger-icon {
+      color: var(--colour-element-red-0) !important;
+    }
+  }
+
+  .p-dropdown-panel {
+    .p-dropdown-items .p-dropdown-item.p-highlight {
+      color: var(--colour-element-red-1) !important;
+      background-color: var(--colour-element-red-5) !important;
+    }
+  }
+}
+
+.orange {
+  .p-dropdown {
+    height: 40px;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &.p-focus {
+      background-color: transparent;
+      box-shadow: none !important;
+      border-color: var(--colour-element-orange-1) !important;
+
+      .p-dropdown-trigger-icon {
+        color: var(--colour-element-orange-1) !important;
+      }
+    }
+  }
+
+  &.p-dropdown-panel,
+  .p-dropdown-panel {
+    .p-dropdown-items .p-dropdown-item.p-highlight.p-focus {
+      color: var(--colour-element-orange-1) !important;
+      background-color: var(--colour-element-orange-6) !important;
+    }
+  }
+
+  .p-dropdown-filter-container {
+    .p-inputtext:enabled:hover {
+      border-color: var(--colour-element-orange-1);
+    }
+
+    .p-inputtext:enabled:focus {
+      border-color: var(--colour-element-orange-1);
+      box-shadow: 0 0 0 0.2rem var(--colour-element-orange-6);
+    }
+  }
+}
+
+.cyan {
+  .p-dropdown {
+    height: 40px;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &.p-focus {
+      background-color: transparent;
+      box-shadow: none !important;
+      border-color: var(--colour-element-cyan-1) !important;
+
+      .p-dropdown-trigger-icon {
+        color: var(--colour-element-cyan-1) !important;
+      }
+    }
+  }
+
+  &.p-dropdown-panel,
+  .p-dropdown-panel {
+
+    .p-dropdown-items .p-dropdown-item.p-highlight,
+    .p-dropdown-items .p-dropdown-item.p-highlight.p-focus {
+      color: var(--colour-element-cyan-1) !important;
+      background-color: var(--colour-element-cyan-6) !important;
+    }
+  }
+
+  .p-dropdown-filter-container {
+    .p-inputtext:enabled:hover {
+      border-color: var(--colour-element-cyan-1);
+    }
+
+    .p-inputtext:enabled:focus {
+      border-color: var(--colour-element-cyan-1);
+      box-shadow: 0 0 0 0.2rem var(--colour-element-cyan-6);
+    }
+  }
+}
+
+//modify datepicker globally when using appendTo body in a dialog or table
+.p-datepicker {
+  table td {
+    padding: 0;
+
+    >span.p-highlight {
+      color: var(--colour-element-white);
+      background: var(--colour-element-blue-3);
+    }
+  }
+}

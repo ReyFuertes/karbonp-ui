@@ -1,0 +1,36 @@
+<div class="get-started-container" [ngClass]="mock?.cssClass">
+  <div class="header-container">
+    <div class="header">
+      <div class="header-text">
+        <div>
+          <div *ngIf="mock?.header?.icon"><span class="material-symbols-rounded">{{ mock?.header?.icon }}</span></div>
+          <h2 *ngIf="mock?.header?.text">{{ mock?.name }}</h2>
+        </div>
+        <h1 *ngIf="mock?.header?.text">{{ mock?.header?.text }}</h1>
+        <div>
+          <button pButton class="form-button-blue" (click)="onGetStarted()">Get Started</button>
+          <p>{{ mock?.header?.priceText }}</p>
+        </div>
+      </div>
+      <div *ngIf="mock?.header?.imageUrl" class="header-image">
+        <img [src]="imgPath + mock?.header?.imageUrl" />
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="mock?.content?.bannerText" class="banner-text">
+      <h4>{{ mock?.content?.bannerText }}</h4>
+    </div>
+    <div class="call-to-action">
+      <div *ngFor="let cta of mock?.content?.callToActions">
+        <div> <img [src]="imgPath + cta?.imageUrl" /></div>
+        <h4>{{ cta?.title }}</h4>
+        <div>{{ cta?.description }}</div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="mock?.slogan?.text" class="slogan">
+    <h3>{{ mock?.slogan?.text }}</h3>
+    <button pButton class="form-button-blue outlined white" (click)="onGetStarted()">Get Started</button>
+  </div>
+</div>

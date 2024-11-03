@@ -1,0 +1,29 @@
+<p-dialog [(visible)]="showNotesPublicModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+  [modal]="true" styleClass="blue public-notes-modal" closeIcon="false" [style]="{ width: '545px' }"
+  (onHide)="showNotesPublicModal = false">
+  <div class="header">
+    <div>
+      <h4>{{ notesPublicModalTitle | translate }}</h4>
+    </div>
+    <span class="material-symbols-rounded" (click)="showNotesPublicModal = !showNotesPublicModal">close</span>
+  </div>
+  <div class="content" [formGroup]="notesPublicForm" >
+    <div class="form-input-field">
+      <div><span>{{ '(character limit: 500)' | translate }}</span></div>
+      <textarea class="red" formControlName="notes" [rows]="5" [cols]="40" pInputTextarea maxlength="500"
+        [autoResize]="false" tabindex="-1"></textarea>
+      <div class="error"></div> <!-- note: implement validation error -->
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'CopyNoteOver' | translate }}</span></div>
+      <p-inputSwitch formControlName="copyNoteOver" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-buttons">
+      <button [disabled]="!notesPublicForm.valid" pButton class="form-button-blue normal" (click)="onSave()">
+        {{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="showNotesPublicModal = false">
+        {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>

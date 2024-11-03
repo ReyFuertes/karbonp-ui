@@ -1,0 +1,13 @@
+
+span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+:host ::ng-deep {
+  .mat-card {
+    min-width: 500px;
+    max-width: 500px;
+    text-align: center;
+    height: 500px;
+  }
+}

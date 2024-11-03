@@ -1,0 +1,24 @@
+<kp-header-content [headerTitle]="'QuickAddAndInvite' | translate" bgImage="employee" classLogo="people-avatar"
+  appLogoName="people" [isAppLogo]="true" marginRight="70px" width="1090px"></kp-header-content>
+<div class="employee-menu-container">
+  <div class="content">
+    <div class="thumnail-menus">
+      <div class="emp-menu-item" (click)="gotoAddEmployee()">
+        <span class="material-symbols-rounded">person_add</span>
+        <div>
+          <h3>Add employee with details</h3>
+          <div class="desc">Add job details and other information.</div>
+        </div>
+        <span class="material-symbols-rounded">chevron_right</span>
+      </div>
+      <div class="emp-menu-item" (click)="gotoBulkImport()">
+        <span class="material-symbols-rounded">system_update_alt</span>
+        <div>
+          <h3>Bulk import from spreadsheet</h3>
+          <div class="desc">Add your entire team and their details.</div>
+        </div>
+        <span class="material-symbols-rounded">chevron_right</span>
+      </div>
+    </div>
+  </div>
+</div>

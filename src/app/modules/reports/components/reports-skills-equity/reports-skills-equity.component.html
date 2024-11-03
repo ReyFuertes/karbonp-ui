@@ -1,0 +1,49 @@
+<div class="skills-equity-report-container">
+  <div class="header" >
+    <h3>{{ 'SkillsEquityReport' | translate }}</h3>
+    <div *ngIf="(isLoadingAsync() | async) === false;" class="table-header-actions-container">
+      <span>{{ 'Export' | translate }}</span>
+      <span class="material-symbols-rounded export" [ngClass]="{'disabled': !isAvailableForExport}"
+        tooltipPosition="top" [pTooltip]="isAvailableForExport ? 'Export skills and equity report' : '' | translate"
+        (click)="isAvailableForExport ? onExport() : null">export_notes</span>
+    </div>
+  </div>
+  <div class="content" >
+    <ng-container *ngIf="(isLoadingAsync() | async) === false; else loader" >
+      <p-table [value]="skillsEquityReport" [scrollable]="true" [paginator]="true" [rows]="5"
+        [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let column of columns">{{ column | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row?.employee?.firstName}} {{row?.employee?.lastName}}</td>
+            <td>{{ getType(row?.gender, genderType) | translate}}</td>
+            <td>{{ getType(row?.race, raceType) | translate }}</td>
+            <td>{{ row?.employee.organizationalUnitId }}</td>
+            <td>{{ getType(row?.occupationLevel, occupationLevelType) | translate}}</td>
+            <td>{{ getType(row?.occupationCategory, occupationCategoryType) | translate }}</td>
+            <td>{{ getType(row?.jobValue, jobValueType) | translate }}</td>
+            <td>{{ getType(row?.province, provinceType) | translate }}</td>
+            <td>{{ row?.disabled ? 'Yes' : 'No' | translate}}</td>
+            <td>{{ row?.foreignNational ? 'Yes' : 'No' | translate }}</td>
+            <td>{{ row?.notRSACitizen ? 'Yes' : 'No' | translate}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+
+  </div>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container cyan">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

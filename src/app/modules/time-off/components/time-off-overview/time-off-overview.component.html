@@ -1,0 +1,133 @@
+<div class="time-off-overview-container">
+  <div class="left-container">
+    <h3>{{ 'Time off requests' | translate }}</h3>
+    <div class="time-off-requests-block">
+      <ng-container *ngIf="(isLoadingAsync() | async) === false; else loading">
+        <ng-container *ngIf="timeOffRequests?.length > 0; else noRequest">
+          <div *ngFor="let request of timeOffRequests" class="list-item">
+            <div>
+              <div>{{ getInitials(request?.employee?.fullName) }}</div>
+            </div>
+            <div>
+              <div class="name">{{ request?.employee?.fullName }}</div>
+              <div class="request-dates">
+                <span>{{ request?.totalDays }}</span>
+                <span>{{ 'days' | translate }}</span>
+                <span>{{ request?.timeOffBooking?.leaveSetup?.name }}</span>
+                <span>{{ request?.timeOffBooking?.fromDate | date: 'dd MMM yyyy' }} -</span>
+                <span>{{ request?.timeOffBooking?.toDate | date: 'dd MMM yyyy' }}</span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <ng-template #noRequest>
+        <span>{{ 'NoTimeOffRequest' | translate }}</span>
+      </ng-template>
+    </div>
+    <h3>{{ 'People out of office' | translate }}</h3>
+    <div class="people-out-office-block">
+      <ng-container *ngIf="(isLoadingAsync() | async) === false; else loading">
+        <ng-container *ngIf="peopleOutOffice?.length > 0; else noOutOfOffice">
+          <div *ngFor="let people of peopleOutOffice" class="list-item">
+            <div>
+              <div>{{ getInitials(people?.employee?.fullName) }}</div>
+            </div>
+            <div>
+              <div class="name">{{ people?.employee?.fullName }}</div>
+              <div class="request-dates">
+                <span>{{ people?.totalDays }}</span>
+                <span>{{ 'days' | translate }}</span>
+                <span>{{ people?.timeOffBooking?.leaveSetup?.name }}</span>
+                <span>{{ people?.timeOffBooking?.fromDate | date: 'dd MMM yyyy' }} -</span>
+                <span>{{ people?.timeOffBooking?.toDate | date: 'dd MMM yyyy' }}</span>
+              </div>
+              <div *ngIf="isBackTomorrow(people?.timeOffBooking?.toDate)">{{ 'BackTomorrow' | translate }}</div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+      <ng-template #noOutOfOffice>
+        <span>{{ 'NoOneIsAwayRightNow' | translate }}</span>
+      </ng-template>
+    </div>
+    <h3>{{ 'UpcomingTimeoff' | translate }}</h3>
+    <div class="upcoming-time-office">
+      <ng-container *ngIf="(isLoadingAsync() | async) === false; else loading">
+        <p-table *ngIf="peopleUpcomingOffice?.length > 0; else noOutOfOffice" [value]="peopleUpcomingOffice"
+          styleClass="p-datatable-striped" [ngStyle]="{'width': '100%'}">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ 'Employee' | translate }}</th>
+              <th>{{ 'Type' | translate }}</th>
+              <th>{{ 'FromDate' | translate }}</th>
+              <th>{{ 'ToDate' | translate }}</th>
+              <th>{{ 'TotalDays' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-upcomingOfOffice>
+            <tr>
+              <td>{{ (upcomingOfOffice?.employee?.fullName) ?? '--' }}</td>
+              <td>{{ (upcomingOfOffice?.timeOffBooking?.leaveSetup?.name) ?? '--' }}</td>
+              <td>{{ (upcomingOfOffice?.timeOffBooking?.fromDate | date: 'dd MMM yyyy') ?? '--' }}</td>
+              <td>{{ (upcomingOfOffice?.timeOffBooking?.toDate | date: 'dd MMM yyyy') ?? '--' }}</td>
+              <td>{{ (upcomingOfOffice?.totalDays) ?? '--' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+      <ng-template #noOutOfOffice>
+        <span>{{ 'Noupcomingtimeoff' | translate }}</span>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="right-container">
+    <ng-container *ngIf="timeOffImportantDates?.length > 0">
+      <h4>{{ 'ImportantDates' | translate }}</h4>
+      <div class="important-dates">
+        <div *ngFor="let row of timeOffImportantDates" class="row">
+          <div class="left">
+            <div class="dot"><span></span> </div>
+            <div>
+              <!-- <span>Darren Brockett</span> -->
+              <span class="event">{{ row?.name }}</span>
+            </div>
+          </div>
+          <div class="right">
+            <h5>{{ row?.date | date: 'dd MMM yyyy'}}</h5>
+          </div>
+        </div>
+        <!-- note: api doesnt support this functionality
+        <div class="row">
+          <div class="left">
+            <div class="dot"><span></span> </div>
+            <div>
+              <span>Rey Fuertes</span>
+              <span class="event">Birthday</span>
+            </div>
+          </div>
+          <div class="right">
+            <h5>In 35 days</h5>
+          </div>
+        </div> -->
+      </div>
+    </ng-container>
+
+    <div class="help-faqs">
+      <h3>{{ 'HelpandFAQs' | translate }}</h3>
+      <div class="links">
+        <div>How to manage time off requests →</div>
+        <div>Syncing time off to Apple, Google, or Outlook calendar →</div>
+        <div>How to set up a time off policy →</div>
+        <div>How to edit a time off policy →</div>
+        <div>Who is notified of time off requests? →</div>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    <div class="loading-container orange">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

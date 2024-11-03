@@ -1,0 +1,319 @@
+@import "src/styleguide/index";
+
+.payroll-payruns-schedule-payment-container {
+  .header {
+    margin-bottom: 20px;
+  }
+
+  .content {
+    padding-top: 20px;
+
+    h4 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 15px 0;
+      color: var(--colour-element-gray-1);
+    }
+
+    .payment-details {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      border-bottom: 1px solid var(--colour-element-gray-5);
+
+      >div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 400px;
+        padding-bottom: 20px;
+      }
+
+      .info {
+        color: var(--colour-element-black-2);
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .error-info {
+        color: var(--colour-element-red-0);
+        margin-bottom: 15px;
+      }
+    }
+
+    .bank-details {
+      border-bottom: 1px solid var(--colour-element-gray-5);
+
+      >div:first-child {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        h5:nth-child(2) {
+          color: var(--colour-element-black-2);
+        }
+      }
+
+      .header-container {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        span {
+          color: var(--colour-element-black-1);
+          margin-left: 8px;
+        }
+      }
+
+      p-avatar {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .confirmation {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: row;
+      border-bottom: 1px solid var(--colour-element-gray-5);
+      justify-content: space-around;
+
+      >div {
+        width: 49%;
+        margin-bottom: 20px;
+        border: 1px solid var(--colour-element-gray-5);
+        padding: 20px;
+        border-radius: 4px;
+        min-height: 240px;
+      }
+
+      .confirmation-details {
+        >div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          min-height: 35px;
+          justify-content: space-between;
+          padding: 5px 0;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid var(--colour-element-gray-5);
+          }
+
+          &:last-child {
+            align-items: flex-start;
+          }
+
+          span {
+            color: var(--colour-element-black-1);
+            margin-right: 8px;
+            font-size: 14px;
+            width: 50%;
+
+            &:nth-child(1) {
+              color: var(--colour-element-gray-1);
+            }
+
+            &:nth-child(2) {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+
+      .selected-bank {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        >div {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          width: 100%;
+
+          >div {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            >div {
+              display: flex;
+              justify-content: space-between;
+              height: 35px;
+              align-items: center;
+
+              &:not(:last-child) {
+                border-bottom: 1px solid var(--colour-element-gray-5);
+              }
+            }
+
+            span {
+              font-size: 14px;
+              width: 50%;
+
+              &:nth-child(1) {
+                color: var(--colour-element-gray-1);
+              }
+
+              &:nth-child(2) {
+                color: var(--colour-element-black-1);
+                font-weight: 700;
+              }
+            }
+          }
+        }
+
+        img {
+          height: 50px;
+          width: auto;
+          margin-right: 15px;
+        }
+      }
+    }
+  }
+
+  .form-buttons {
+    @include form-buttons;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    .form-button-default {
+      @include form-button-default;
+      margin-right: 15px
+    }
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+    min-width: 120px;
+  }
+}
+
+::ng-deep {
+  .payroll-payruns-schedule-payment-container {
+    .p-accordion {
+      @include accordion;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      p-accordiontab {
+        width: 49%;
+        margin-bottom: 20px;
+      }
+
+      .p-accordion-content {
+        h5 {
+          margin-bottom: 8px;
+          color: var(--colour-element-black-2);
+        }
+
+        .list {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          >div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 14px;
+            padding: 2px 0;
+
+            span:first-child {
+              font-weight: 700;
+              margin-right: 8px;
+            }
+          }
+        }
+
+        .list-toggle {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          margin-top: 20px;
+          border-top: 1px solid var(--colour-element-gray-5);
+          padding-top: 20px;
+
+          .form-input-field>div:first-child>span {
+            font-size: 14px;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+    }
+
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+
+      .p-datatable-thead>tr>th {
+        vertical-align: middle;
+      }
+
+      tbody {
+        tr {
+          td:nth-child(1) {
+            width: 85px;
+          }
+
+          td:nth-child(2) {
+            font-weight: 700;
+          }
+        }
+      }
+
+      .p-datatable-tfoot>tr>td {
+        &:not(:last-child) {
+          text-align: right;
+        }
+
+        &:last-child {
+          text-align: center;
+        }
+      }
+
+      p-paginator {
+        @include paginator;
+      }
+    }
+
+    .p-steps {
+      .p-steps-item {
+        .p-menuitem-link .p-steps-number {
+          border: 2px solid var(--colour-element-gray-3);
+          color: var(--colour-element-gray-1);
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        &:before {
+          border: 1px solid var(--colour-element-gray-5);
+        }
+
+        &.p-highlight .p-steps-number {
+          color: var(--colour-element-white);
+          box-shadow: 0 0 0 2px var(--colour-element-white), 0 0 0 4px var(--colour-element-blue-4), 0 1px 2px 0 black;
+        }
+      }
+
+      .p-menuitem-link {
+        padding: 4px;
+      }
+    }
+  }
+}

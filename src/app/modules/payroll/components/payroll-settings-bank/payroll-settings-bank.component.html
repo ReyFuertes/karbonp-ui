@@ -1,0 +1,57 @@
+<div class="payroll-settings-bank-container">
+  <div class="content" [formGroup]="form">
+    <div class="form-input-field">
+      <div><span>{{ 'EFTFormat' | translate }}</span>
+        <span>*</span>
+      </div>
+      <p-dropdown [options]="bankTransferOptions" formControlName="type" optionLabel="label" optionValue="value"
+        [placeholder]="'Select' | translate" class="blue" [showClear]="true" [filter]="true"></p-dropdown>
+      <div class="error"><span *ngIf="getRequiredValidation('type', form)">
+          {{ 'vEFTFormatIsRequired' | translate }}</span></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'Banks' | translate }}</span>
+        <span>*</span>
+      </div>
+      <p-dropdown [options]="banksSetupOptions" formControlName="bankId" optionLabel="name" optionValue="id"
+        [placeholder]="'Select' | translate" class="blue" [showClear]="true" [filter]="true"></p-dropdown>
+      <div class="error"><span *ngIf="getRequiredValidation('bankId', form)">
+          {{ 'vBankIsRequired' | translate }}</span></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'AccountNumber' | translate }}</span>
+        <span>*</span>
+      </div>
+      <input type="text" pInputText formControlName="accountNumber" class="blue" />
+      <div class="error"><span *ngIf="getRequiredValidation('accountNumber', form)">
+          {{ 'vAccountNumberInvalid' | translate }}</span></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'BranchCode' | translate }}</span>
+        <span>*</span>
+      </div>
+      <input type="text" formControlName="branchCode" pInputText class="blue" />
+      <div class="error"><span *ngIf="getRequiredValidation('branchCode', form)">
+          {{ 'vBranchCodeInvalid' | translate }}</span></div>
+    </div>
+    <div class="form-input-field">
+      <div>
+        <span>{{ 'AccountType' | translate }}</span>
+        <span>*</span>
+      </div>
+      <p-dropdown [options]="bankTypeOptions" formControlName="accountTypeId" optionLabel="name" optionValue="id"
+        [placeholder]="'Select' | translate" class="blue" [showClear]="true" [filter]="true"></p-dropdown>
+      <div class="error"><span *ngIf="getRequiredValidation('accountTypeId', form)">
+          {{ 'vAccountTypeIsRequired' | translate }}</span></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'Active' | translate }}</span></div>
+      <p-inputSwitch formControlName="active" styleClass="blue"></p-inputSwitch>
+    </div>
+  </div>
+  <div class="form-buttons">
+    <button [disabled]="!form.valid" pButton class="form-button-blue normal" (click)="onSave()">{{ 'Save' | translate
+      }}</button>
+    <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="dropdown-group-select-option">
+  <p-dropdown *ngIf="companyOptions?.length > 0" [options]="companyOptions" [(ngModel)]="selectedItem"
+    optionValue="label" optionLabel="label" (onChange)="onChange($event.value)" [styleClass]="styleClass" [group]="true"
+    [filter]="true">
+    <ng-template let-group pTemplate="group">
+      <img [src]="'https://staging.karbonpay.com/' + group?.value" />
+      <div>
+        <span>{{ group.label }}</span>
+      </div>
+    </ng-template>
+  </p-dropdown>
+</div>

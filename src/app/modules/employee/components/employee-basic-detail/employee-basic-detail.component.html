@@ -1,0 +1,14 @@
+<div class="employee-basic-detail-container" *ngIf="form" [formGroup]="form">
+  <div>
+    <div class="name-change-account-settings">
+      <div>
+        <div>{{ 'Name' | translate }}:</div>
+        <div>{{ getBasicsForm.value?.fullName }}</div>
+      </div>
+      <div>
+        <span>{{ 'Change in account settings' | translate }}</span>
+      </div>
+    </div>
+    <kp-dynamic-fields [fields]="fields" [form]="getBasicsForm"></kp-dynamic-fields>
+  </div>
+</div>

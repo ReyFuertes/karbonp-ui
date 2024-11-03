@@ -1,0 +1,353 @@
+<div class="payroll-settings-payperiods-container">
+  <div class="filter-container" [formGroup]="formFilter">
+    <p-accordion [activeIndex]="1">
+      <p-accordionTab [header]="'Filter' | translate">
+        <div>
+          <div class="form-input-field">
+            <div><span>{{ 'Status' | translate }}</span></div>
+            <p-dropdown [options]="statusOptions" formControlName="active" optionLabel="label" optionValue="value"
+              [placeholder]="'Select' | translate" class="blue" [showClear]="true" [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Type' | translate }}</span></div>
+            <p-dropdown [options]="payFrequencyTypeOptions" formControlName="payFrequencyType" optionLabel="label"
+              optionValue="value" [placeholder]="'Select' | translate" class="blue" [showClear]="true"
+              [filter]="true"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div class="form-buttons">
+            <div></div>
+            <button pButton class="form-button-blue normal loader" (click)="onFilter()">
+              <span>{{ 'Filter' | translate }}</span>
+            </button>
+            <button pButton class="form-button-default normal" (click)="onReset()">{{ 'Reset' | translate }}</button>
+          </div>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+  <div class="content">
+    <p-table [value]="payPeriods" [scrollable]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'PayPeriodCycle' | translate }}</th>
+          <th>{{ 'Description' | translate }}</th>
+          <th>{{ 'Active' | translate }}</th>
+          <th><button pButton class="form-button-blue small" (click)="onAdd()">{{ 'Add' | translate }}</button></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td *ngIf="row?.payFrequencyType === payFrequencyType.Monthly"> {{ 'Monthly' | translate }}</td>
+          <td *ngIf="row?.payFrequencyType === payFrequencyType.Weekly"> {{ 'Weekly' | translate }}</td>
+          <td *ngIf="row?.payFrequencyType === payFrequencyType.EveryTwoWeeks"> {{ 'EveryTwoWeeks' | translate }}</td>
+          <td *ngIf="row?.payFrequencyType === payFrequencyType.TwiceMonthly"> {{ 'TwiceMonthly' | translate }}</td>
+          <td *ngIf="row?.payFrequencyType === payFrequencyType.Daily 
+            && currentCountryISOCode === countryISOCodeType.MEX">
+            {{ 'Daily' | translate }}</td>
+          <td *ngIf="row?.payFrequencyType === payFrequencyType.TenDaily 
+            && (currentCountryISOCode === countryISOCodeType.MEX)">
+            {{ 'TenDaily' | translate }}</td>
+          <td>{{ ((row) | payPeriodDescription : row?.name) ?? 'Custom' }}</td>
+          <td>
+            <span class="material-symbols-rounded" [class]="row?.active === true ? 'check' : 'close'">
+              {{ row?.active === true ? 'check' : 'close' }}
+            </span>
+          </td>
+          <td (click)="onEdit(row?.id, row?.payFrequencyType)"><span class="material-symbols-rounded"
+              tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span></td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator (onPageChange)="onPaginatePayPeriods($event)" [first]="PAGINATION_VARS.pageNumber" [rows]="PAGINATION_VARS.pagesize"
+      [totalRecords]="payrollPayPeriodsTotalItems" [rowsPerPageOptions]="[10, 20, 30]" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" styleClass="blue" />
+  </div>
+  <p-dialog [(visible)]="showModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false" [modal]="true"
+    styleClass="blue" closeIcon="false" [style]="{width: '590px'}" (onHide)="onHide()">
+    <div class="header">
+      <div>
+        <h4>{{ dialogTitle | translate }} {{ 'PayPeriod' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showModal = !showModal">close</span>
+    </div>
+    <div class="content" [formGroup]="form">
+      <p-tabView>
+        <p-tabPanel [header]="'Details' | translate">
+          <div class="detail-content">
+            <div class="form-input-field">
+              <div><span>{{ 'PayPeriodCycle' | translate }}</span></div>
+              <p-dropdown appendTo="body" [options]="payFrequencyTypeOptions" optionLabel="label"
+                formControlName="payFrequencyType" optionValue="value" [placeholder]="'Select' | translate" class="blue"
+                [showClear]="true" [filter]="true" (onChange)="onChangeFrequencyType($event)"></p-dropdown>
+              <div class="error"></div>
+            </div>
+            <div class="form-input-field">
+              <div><span>{{ 'Name (Optional)' | translate }}</span></div>
+              <input type="text" formControlName="name" pInputText class="blue" />
+              <div class="error"></div>
+            </div>
+            <div *ngIf="(form.get('payFrequencyType').value === payFrequencyType.Monthly
+              || form.get('payFrequencyType').value === payFrequencyType.TwiceMonthly)
+              || form.get('payFrequencyType').value === payFrequencyType.Weekly 
+              || form.get('payFrequencyType').value === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+              <div><span>{{ 'FirstPayPeriodEndDate' | translate }}</span></div>
+              <p-calendar formControlName="firstPayPeriodEndDate" appendTo="body" [showIcon]="true"
+                [placeholder]="'Select' | translate" view="month" dateFormat="mm/yy" [readonlyInput]="true" class="blue"
+                panelStyleClass="append-to-calendar"></p-calendar>
+              <div class="error"><span *ngIf="getRequiredValidation('firstPayPeriodEndDate', form)">{{
+                  'vFirstPayPeriodEndDateIsRequired' | translate }}</span></div>
+            </div>
+            <div *ngIf="form.get('payFrequencyType').value === payFrequencyType.Monthly" class="form-input-field">
+              <div><span>{{ 'PayOnLastDayOfMonth' | translate }}</span></div>
+              <p-inputSwitch formControlName="payOnLastDayOfMonth" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="currentCountryISOCode === countryISOCodeType.MEX" class="form-input-field">
+              <div><span>{{ 'PayrollCalculationDaysSetting' | translate }}</span></div>
+              <p-dropdown appendTo="body" [options]="payrollCalculationDaysSettingOptions"
+                formControlName="payrollCalculationDaysSetting" optionLabel="label" class="blue"></p-dropdown>
+              <div class="error"><span *ngIf="getRequiredValidation('payrollCalculationDaysSetting', form)">{{
+                  'vPayrollCalculationDaysIsRequired' | translate }}</span></div>
+            </div>
+            <div *ngIf="form.get('payFrequencyType').value === payFrequencyType.TwiceMonthly" class="form-input-field">
+              <div><span>{{ 'Name (Optional)' | translate }}</span></div>
+              <input type="text" formControlName="interimDayOfMonth" pInputText class="blue" />
+              <div class="error">
+                <span *ngIf="getRequiredValidation('interimDayOfMonth', form)">
+                  {{ 'vInterimDayOfMonthIsRequired' | translate }}</span>
+              </div>
+            </div>
+            <div *ngIf="form.get('payFrequencyType').value === payFrequencyType.TwiceMonthly" class="form-input-field">
+              <div><span>{{ 'SecondPayOnLastDayOfMonth' | translate }}</span></div>
+              <p-inputSwitch formControlName="secondPayOnLastDayOfMonth" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="(form.get('payFrequencyType').value === payFrequencyType.Monthly
+              && form.get('payOnLastDayOfMonth').value === false) 
+              || ( form.get('payFrequencyType').value === payFrequencyType.TwiceMonthly
+              && form.get('secondPayOnLastDayOfMonth').value === false)" class="form-input-field">
+              <div><span>{{ 'LastDayOfMonth' | translate }}</span></div>
+              <input type="text" formControlName="lastDayOfMonth" pInputText class="blue" />
+              <span *ngIf="getRequiredValidation('lastDayOfMonth', form)">
+                {{ 'vLastDayOfMonthIsRequired' | translate }}</span>
+            </div>
+            <div *ngIf="form.get('payFrequencyType').value === payFrequencyType.TwiceMonthly" class=" form-input-field">
+              <div><span>{{ 'StartingOnSecondPayDate' | translate }}</span></div>
+              <p-inputSwitch formControlName="twiceMonthlyStartingOnSecondPayDate" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div class="form-input-field">
+              <div><span>{{ 'Active' | translate }}</span></div>
+              <p-inputSwitch formControlName="active" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+          </div>
+          <div *ngIf="payPeriodDateRanges?.length > 0" class="date-range-content">
+            <h5>{{ 'PayPeriodExamples' | translate}}</h5>
+            <div *ngFor="let range of payPeriodDateRanges">
+              <span *ngIf="formFilter.get('payFrequencyType').value === payFrequencyType.Monthly">
+                {{range.fromDate| date: 'dd MMM' }} - {{range.toDate | date: 'dd MMM'}}</span>
+              <span *ngIf="formFilter.get('payFrequencyType').value !== payFrequencyType.Monthly">
+                {{range.fromDate| date: 'EEE dd MMM' }} - {{range.toDate | date: 'EEE dd MMM'}}</span>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel [header]="'AdditionalSettings' | translate">
+          <div class="form-input-field">
+            <div><span>{{ 'AutoMergeCompletedPayRuns' | translate }}</span></div>
+            <p-inputSwitch formControlName="autoMergeCompletedPayRuns" styleClass="blue"></p-inputSwitch>
+            <div class="error"></div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel [header]="'SSS' | translate" *ngIf="currentCountryISOCode === countryISOCodeType.PHL 
+          && form.get('payFrequencyType').value">
+          <div class="sss-content">
+            <div class="form-input-field">
+              <div><span>{{ 'SSSContributionBase' | translate }}</span></div>
+              <p-dropdown appendTo="body" [options]="contributionBaseOptions" optionLabel="label"
+                formControlName="sssContributionBase" optionValue="value" [placeholder]="'Select' | translate"
+                class="blue"></p-dropdown>
+              <div class="error"></div>
+            </div>
+            <ng-container *ngIf="selectedPayFrequencyType !== payFrequencyType.Monthly">
+              <ng-container *ngIf="selectedPayFrequencyType === payFrequencyType.Weekly">
+                <div class="form-input-field">
+                  <div><span>{{ 'FirstWeek' | translate }}</span></div>
+                  <p-inputSwitch formControlName="sssFirstWeek" styleClass="blue"></p-inputSwitch>
+                </div>
+
+                <div class="form-input-field">
+                  <div><span>{{ 'SecondWeek' | translate }}</span></div>
+                  <p-inputSwitch formControlName="sssSecondWeek" styleClass="blue"></p-inputSwitch>
+                </div>
+              </ng-container>
+              <div *ngIf="selectedPayFrequencyType === payFrequencyType.TwiceMonthly 
+              || selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+                <div><span>{{ 'FirstPeriod' | translate }}</span></div>
+                <p-inputSwitch formControlName="sssFirstPeriod" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+              <div *ngIf="selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+                <div><span>{{ 'SecondPeriod' | translate }}</span></div>
+                <p-inputSwitch formControlName="sssSecondPeriod" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+              <div *ngIf="selectedPayFrequencyType !== payFrequencyType.Monthly" class="form-input-field">
+                <div *ngIf="selectedPayFrequencyType !== payFrequencyType.Weekly">
+                  <span>{{ 'LastPeriod' | translate }}</span>
+                </div>
+                <div *ngIf="selectedPayFrequencyType === payFrequencyType.Weekly">
+                  <span>{{ 'LastWeek' | translate }}</span>
+                </div>
+                <p-inputSwitch formControlName="sssLastPeriod" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+              <div *ngIf="selectedPayFrequencyType === payFrequencyType.TwiceMonthly 
+                && form.get('sssFirstPeriod').value 
+                && form.get('sssLastPeriod').value" class="form-input-field">
+                <div><span>{{ 'EvenSplitOnDeduction' | translate }}</span></div>
+                <p-inputSwitch formControlName="sssEvenSplitOnDeduction" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+            </ng-container>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel [header]="'PHIC' | translate" *ngIf="currentCountryISOCode === countryISOCodeType.PHL 
+          && form.get('payFrequencyType').value">
+          <div class="phic-content">
+            <div class="form-input-field">
+              <div><span>{{ 'PHICContributionBase' | translate }}</span></div>
+              <p-dropdown appendTo="body" [options]="contributionBaseOptions" optionLabel="label"
+                formControlName="phicContributionBase" optionValue="value" [placeholder]="'Select' | translate"
+                class="blue"></p-dropdown>
+              <div class="error"><span *ngIf="getRequiredValidation('phicContributionBase', form)">{{
+                  'vContributionBaseRequired' | translate }}</span></div>
+            </div>
+            <ng-container *ngIf="selectedPayFrequencyType === payFrequencyType.Weekly">
+              <div class="form-input-field">
+                <div><span>{{ 'EvenSplitOnDeduction' | translate }}</span></div>
+                <p-inputSwitch formControlName="sssEvenSplitOnDeduction" styleClass="blue"></p-inputSwitch>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'SecondWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="phicSecondWeek" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="selectedPayFrequencyType === payFrequencyType.Weekly">
+              <div class="form-input-field">
+                <div><span>{{ 'ThirdWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="phicThirdWeek" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'FourthWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="phicFourthWeek" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+            </ng-container>
+            <div *ngIf="selectedPayFrequencyType === payFrequencyType.TwiceMonthly 
+              || selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+              <div><span>{{ 'FirstPeriod' | translate }}</span></div>
+              <p-inputSwitch formControlName="phicFirstPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+              <div><span>{{ 'SecondPeriod' | translate }}</span></div>
+              <p-inputSwitch formControlName="phicSecondPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="selectedPayFrequencyType !== payFrequencyType.Monthly" class="form-input-field">
+              <div *ngIf="selectedPayFrequencyType !== payFrequencyType.Weekly"><span>{{ 'LastPeriod' | translate
+                  }}</span></div>
+              <div *ngIf="selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks"><span>{{ 'LastPeriod' | translate
+                  }}</span></div>
+              <p-inputSwitch formControlName="phicLastPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="selectedPayFrequencyType === payFrequencyType.TwiceMonthly 
+              && form.get('phicFirstPeriod').value 
+              && form.get('phicLastPeriod').value" class="form-input-field">
+              <div><span>{{ 'SecondPeriod' | translate }}</span></div>
+              <p-inputSwitch formControlName="phicSecondPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel [header]="'HDMF' | translate" *ngIf="currentCountryISOCode === countryISOCodeType.PHL 
+          && form.get('payFrequencyType').value">
+          <div class="hdmf-content">
+            <div class="form-input-field">
+              <div><span>{{ 'HDMFContributionBase' | translate }}</span></div>
+              <p-dropdown appendTo="body" [options]="contributionBaseOptions" optionLabel="label"
+                formControlName="hdmfContributionBase" optionValue="value" [placeholder]="'Select' | translate"
+                class="blue"></p-dropdown>
+              <div class="error"><span *ngIf="getRequiredValidation('hdmfContributionBase', form)">{{
+                  'vContributionBaseRequired' | translate }}</span></div>
+            </div>
+            <ng-container *ngIf="selectedPayFrequencyType !== payFrequencyType.Weekly">
+              <div class="form-input-field">
+                <div><span>{{ 'FirstWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="hdmfFirstWeek" styleClass="blue"></p-inputSwitch>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'SecondWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="hdmfSecondWeek" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="selectedPayFrequencyType === payFrequencyType.Weekly">
+              <div class="form-input-field">
+                <div><span>{{ 'ThirdWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="hdmfThirdWeek" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'FourthWeek' | translate }}</span></div>
+                <p-inputSwitch formControlName="hdmfFourthWeek" styleClass="blue"></p-inputSwitch>
+                <div class="error"></div>
+              </div>
+            </ng-container>
+            <div *ngIf="selectedPayFrequencyType === payFrequencyType.TwiceMonthly 
+              || selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+              <div><span>{{ 'FirstPeriod' | translate }}</span></div>
+              <p-inputSwitch formControlName="hdmfFirstPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="selectedPayFrequencyType === payFrequencyType.EveryTwoWeeks" class="form-input-field">
+              <div><span>{{ 'SecondPeriod' | translate }}</span></div>
+              <p-inputSwitch formControlName="hdmfSecondPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="selectedPayFrequencyType !== payFrequencyType.Monthly" class="form-input-field">
+              <div *ngIf="selectedPayFrequencyType !== payFrequencyType.Weekly"><span>
+                  {{ 'LastPeriod' | translate }}</span></div>
+              <div *ngIf="selectedPayFrequencyType === payFrequencyType.Weekly"><span>
+                  {{ 'LastWeek' | translate }}</span></div>
+              <p-inputSwitch formControlName="hdmfLastPeriod" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+            <div *ngIf="selectedPayFrequencyType === payFrequencyType.TwiceMonthly 
+              && form.get('hdmfFirstPeriod').value 
+              && form.get('hdmfLastPeriod').value" class="form-input-field">
+              <div><span>{{ 'EvenSplitOnDeduction' | translate }}</span></div>
+              <p-inputSwitch formControlName="hdmfEvenSplitOnDeduction" styleClass="blue"></p-inputSwitch>
+              <div class="error"></div>
+            </div>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="form-buttons"> <!-- [disabled]="!form.valid"-->
+        <button pButton class="form-button-blue" (click)="onSave()">{{ 'Save' | translate }}</button>
+        <button pButton class="form-button-default" (click)="showModal = false">{{ 'Cancel' | translate
+          }}</button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

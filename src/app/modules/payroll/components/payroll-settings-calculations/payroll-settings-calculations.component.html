@@ -1,0 +1,49 @@
+<div class="payroll-settings-calculations-container">
+  <div class="content" [formGroup]="form">
+    <div>
+      <h4>{{ 'ProRataMethod' | translate }}</h4>
+      <div class="form-input-field">
+        <div><span>{{ 'ProRataMethod' | translate }}</span></div>
+        <p-dropdown tabindex="-1" [options]="proRataMethodOptions" formControlName="proRataMethod" optionLabel="label"
+          optionValue="value" [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true"
+          [filter]="true"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'EffectiveDate' | translate }}</span></div>
+        <p-calendar tabindex="-1" [showIcon]="true" formControlName="proRataMethodEffectiveFromDate"
+          [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="blue"></p-calendar>
+        <div class="error"></div>
+      </div>
+    </div>
+    <div>
+      <h4>{{ 'GoalGetter' | translate }}</h4>
+      <div class="form-input-field">
+        <div><span>{{ 'EnableGoalGetter' | translate }}</span></div>
+        <p-inputSwitch formControlName="enableGoalGetter" styleClass="success"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+    </div>
+    <div>
+      <h4>{{ 'BCEALeavePay' | translate }}</h4>
+      <div class="form-input-field">
+        <div><span>{{ 'AllowFluctuatingRate' | translate }}</span></div>
+        <p-inputSwitch formControlName="bceaLeavePayEnableFluctuatingRate" styleClass="success"></p-inputSwitch>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'EffectiveDate' | translate }}</span>
+        </div>
+        <p-calendar [showIcon]="true" formControlName="bceaLeavePayEffectiveFromDate"
+          [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="success"></p-calendar>
+        <div class="error"></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-buttons">
+    <button pButton class="form-button-blue normal" (click)="onSaveCalculations()">{{
+      'Save' | translate }}</button>
+    <button pButton class="form-button-default normal" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+  </div>
+</div>

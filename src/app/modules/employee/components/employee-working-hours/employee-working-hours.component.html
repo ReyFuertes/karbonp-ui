@@ -1,0 +1,212 @@
+<div class="employee-working-hours-container" *ngIf="form" [formGroup]="form" >
+  <div class="form-input-detail-fields">
+    <h3>{{ 'Working Hours' | translate }}</h3>
+    <ng-container *ngIf="actionState === 'edit' && currentSection === 'working_hours'; else workingHoursView">
+      <div class="form-edit-fields">
+        <div class="form-input-field-group">
+          <div class="form-input-field column">
+            <div>
+              <span>{{ 'Hours per day' | translate }}</span>
+            </div>
+            <input type="text" formControlName="hoursPerDay" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field column">
+            <div>
+              <span>{{ 'Default Shift' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeShifts" formControlName="shiftId" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field column"></div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Monday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="mondayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Tuesday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="tuesdayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Wednesday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="wednesdayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Thursday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="thursdayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Friday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="fridayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Saturday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="saturdayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Sunday' | translate }}</span>
+            </div>
+            <p-dropdown [options]="employeeWorkingOptionType" formControlName="sundayType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="success"></p-dropdown>
+            <div class="error"></div>
+          </div>
+          <div class="form-input-field column"></div>
+          <div class="form-input-field column"></div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Days Per Week' | translate }}</span>
+            </div>
+            <div>
+              <span>{{ workingHours?.fullDaysPerWeek }}</span>
+            </div>
+          </div>
+          <div class="form-input-field column">
+            <div><span>{{ 'Override Days Per Week' | translate }}</span></div>
+            <p-inputSwitch formControlName="hasFullDaysPerWeekOveride" styleClass="success"></p-inputSwitch>
+          </div>
+          <div class="form-input-field column">
+            <div></div>
+            <input type="text" *ngIf="workingHours?.hasFullDaysPerWeekOveride" formControlName="fullDaysPerWeekOveride" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Annual Working Days' | translate }}</span>
+            </div>
+            <div>
+              <span>{{ workingHours?.annualWorkingDays }}</span>
+              <div>
+                <span class="small">({{ 'This amount excludes any special holidays' | translate }})</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-input-field column">
+            <div><span>{{ 'Override Annual Working Days' | translate }}</span></div>
+            <p-inputSwitch formControlName="hasAnnualWorkingDaysOverride" styleClass="success"></p-inputSwitch>
+          </div>
+          <div class="form-input-field column">
+            <div></div>
+            <input *ngIf="workingHours?.hasAnnualWorkingDaysOverride" type="text" formControlName="annualWorkingDaysOverride" pInputText class="success" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button pButton class="form-button-success normal" (click)="onSaveChanges()">{{ 'Save' | translate }}</button>
+          <button pButton class="form-button-default normal" (click)="onCancel('designation')">{{ 'Cancel' | translate }}</button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #workingHoursView>
+      <div *ngIf="isLoaded; else loader" class="view-fields">
+        <div class="view-fields-display">
+          <div>
+            <div>{{ 'Hours per day' | translate }}</div>
+            <div>{{ workingHours?.hoursPerDay }}</div>
+          </div>
+          <div>
+            <h5>{{ 'Regular Working Days' | translate }}</h5>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.mondayType)}">
+                {{ !isWorkTypeOff(workingHours?.mondayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Monday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.mondayType]?.label }}</div>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.tuesdayType)}">
+                {{ !isWorkTypeOff(workingHours?.tuesdayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Tuesday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.tuesdayType]?.label }}</div>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.wednesdayType)}">
+                {{ !isWorkTypeOff(workingHours?.wednesdayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Wednesday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.wednesdayType]?.label }}</div>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.thursdayType)}">
+                {{ !isWorkTypeOff(workingHours?.thursdayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Thursday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.thursdayType]?.label }}</div>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.fridayType)}">
+                {{ !isWorkTypeOff(workingHours?.fridayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Friday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.fridayType]?.label }}</div>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.saturdayType)}">
+                {{ !isWorkTypeOff(workingHours?.saturdayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Saturday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.saturdayType]?.label }}</div>
+          </div>
+          <div>
+            <div>
+              <span class="material-symbols-rounded" [ngClass]="{'check': !isWorkTypeOff(workingHours?.sundayType)}">
+                {{ !isWorkTypeOff(workingHours?.sundayType) ? 'check' : 'close' }}
+              </span>
+              <span>{{ 'Sunday' | translate }}</span>
+            </div>
+            <div>{{ employeeWorkingOptionType[workingHours?.sundayType]?.label }}</div>
+          </div>
+        </div>
+        <div>
+          <span class="material-symbols-rounded" (click)="onEdit('working_hours')">edit_square</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,24 @@
+<div class="dashboard-apps-container">
+  <div class="mp-left-space"></div>
+  <div *ngIf="applications?.length > 0" class="content">
+    <div class="title">apps</div>
+
+    <div class="dashboard-apps-items" >
+      <ng-container *ngFor="let application of applications">
+        <div class="dashboard-square-container" [ngClass]="{'disabled': application.options?.disabled}">
+          <div class="square-apps" [ngClass]="application.options?.class" (click)="redirectTo(application)">
+            <span class="material-symbols-rounded">{{ application.options?.icon }}</span>
+            <span *ngIf="application.options?.available === false" class="coming soon">{{ 'Coming soon' | translate
+              }}</span>
+          </div>
+          <span>{{ application?.name }}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <ng-template #loading>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

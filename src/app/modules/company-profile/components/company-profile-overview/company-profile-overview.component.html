@@ -1,0 +1,135 @@
+<div class="company-profile-overview-container">
+  <div class="content">
+    <h3>{{ 'About KarbonPay' | translate }}</h3>
+    <div>{{ 'About KarbonPay Description' | translate }}</div>
+    <div *ngIf="isEditIntro === false; else editIntroPanel" class="add-intro" (click)="onEditIntro()">
+      <span class="material-symbols-rounded">add</span>
+      <span>{{ 'Add intro' }}</span>
+    </div>
+    <ng-template #editIntroPanel>
+      <div class="edit-intro-panel">
+        <textarea class="red" [rows]="5" [cols]="30" pInputTextarea [autoResize]="true"></textarea>
+        <div class="form-buttons">
+          <div>
+            <button pButton class="form-button-red normal red">Save</button>
+            <button pButton class="form-button-default normal" (click)="onEditIntro()">Cancel</button>
+          </div>
+          <span class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+        </div>
+      </div>
+    </ng-template>
+    <h3>{{ 'Offices' | translate }}</h3>
+    <div class="office-list" (mouseleave)="selectedOfficeIndex = -1">
+      <div class="office-list-item" *ngFor="let office of offices; let i = index">
+        <div (mouseover)="selectedOfficeIndex = i">
+          <span class="material-symbols-rounded">location_on</span>
+          <div>{{ office.label }}</div>
+        </div>
+        <button *ngIf="selectedOfficeIndex === i" pButton class="form-button-default small">Edit</button>
+      </div>
+    </div>
+    <div class="add-office">
+      <span class="material-symbols-rounded">add</span>
+      <span class="bold" (click)="showAddOfficeModal = !showAddOfficeModal">{{ 'Add office' | translate }}</span>
+    </div>
+    <h3>{{ 'Notes' | translate }}</h3>
+    <div class="notes-list" (mouseleave)="selectedNoteIndex = -1">
+      <div class="office-list-item" *ngFor="let note of notes; let i = index">
+        <div (mouseover)="selectedNoteIndex = i">
+          <span class="material-symbols-rounded">description</span>
+          <div>{{ note.label }}</div>
+        </div>
+        <button *ngIf="selectedNoteIndex === i" pButton class="form-button-default small">Edit</button>
+      </div>
+    </div>
+    <div class="add-note" *ngIf="isEditNote === false; else editNotePanel" (click)="onEditNote()">
+      <span class="material-symbols-rounded">add</span>
+      <span class="bold">{{ 'Add note' }}</span>
+    </div>
+    <ng-template #editNotePanel>
+      <div class="edit-note-panel">
+        <textarea class="red" [rows]="5" [cols]="30" pInputTextarea [autoResize]="true"></textarea>
+        <div class="form-buttons">
+          <div>
+            <button pButton class="form-button-red normal red">{{ 'Save' | translate }}</button>
+            <button pButton class="form-button-default normal" (click)="onEditNote()">{{ 'Cancel' | translate
+              }}</button>
+          </div>
+          <span class="material-symbols-rounded" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="right-container">
+    <div class="people-avatar-container">
+      <div class="people-avatar" *ngFor="let person of people">{{ person.label }}</div>
+    </div>
+    <div class="people-total">
+      <span class="count">22</span>
+      <span>{{ 'people' | translate }}</span>
+      <span>{{ 'in KarbonPay' | translate }}</span>
+    </div>
+    <div class="company-information">
+      <h4>{{ 'Company information' | translate }}</h4>
+      <div class="company-information-detail">
+        <div>
+          <div>
+            <span class="material-symbols-rounded">location_on</span>
+            <h5>Registered address</h5>
+          </div>
+          <div>3400 N Central Expy</div>
+          <div>Ste 110-289</div>
+          <div>Richardson, 75080</div>
+        </div>
+        <button pButton class="form-button-default small" (click)="showRegEditAddressModal = !showRegEditAddressModal">Edit</button>
+      </div>
+      <div class="add-company-number" [ngClass]="{'edit-mode': isEditCompanyNumber}">
+        <ng-container *ngIf="isEditCompanyNumber === true; else companyNumberView">
+          <div class="form-input-field">
+            <input kp-autoFocusField type="text" pInputText class="red" />
+          </div>
+          <div class="form-buttons">
+            <button pButton class="form-button-red small">Save</button>
+            <button pButton class="form-button-default small" (click)="isEditCompanyNumber = !isEditCompanyNumber" placeholder="Company Number">Cancel</button>
+          </div>
+        </ng-container>
+        <ng-template #companyNumberView>
+          <div (click)="isEditCompanyNumber = !isEditCompanyNumber">
+            <span class="material-symbols-rounded">add</span>
+            <h5>{{ 'Add company number' | translate }}</h5>
+          </div>
+        </ng-template>
+      </div>
+      <div class="add-vat-number" [ngClass]="{'edit-mode': isEditCompanyVatNumber}">
+        <ng-container *ngIf="isEditCompanyVatNumber === true; else companyVatNumberView">
+          <div class="form-input-field">
+            <input kp-autoFocusField type="text" pInputText class="red" />
+          </div>
+          <div class="form-buttons">
+            <button pButton class="form-button-red small">Save</button>
+            <button pButton class="form-button-default small" (click)="isEditCompanyVatNumber = !isEditCompanyVatNumber" placeholder="Company Number">Cancel</button>
+          </div>
+        </ng-container>
+        <ng-template #companyVatNumberView>
+          <div (click)="isEditCompanyVatNumber = !isEditCompanyVatNumber">
+            <span class="material-symbols-rounded">add</span>
+            <h5>{{ 'Add VAT number' | translate }}</h5>
+          </div>
+        </ng-template>
+
+      </div>
+      <div class="company-contact">
+        <div>
+          <div>
+            <span class="material-symbols-rounded">person</span>
+            <h5>{{ 'Company contact' | translate }}</h5>
+          </div>
+          <span>09955112254</span>
+        </div>
+        <button pButton class="form-button-default small">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<kp-company-profile-dialog-address [showModal]="showRegEditAddressModal" (modalChange)="showRegEditAddressModal = $event"></kp-company-profile-dialog-address>
+<kp-company-profile-dialog-office [showModal]="showAddOfficeModal" (modalChange)="showAddOfficeModal = $event"></kp-company-profile-dialog-office>

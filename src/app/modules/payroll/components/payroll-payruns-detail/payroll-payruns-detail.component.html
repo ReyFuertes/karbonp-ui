@@ -1,0 +1,66 @@
+<div class="payroll-payruns-detail-container">
+  <div class="header">
+    <div class="top">
+      <div>
+        <div>Monthly: 1 - 3 July</div>
+        <div>UNSUBMITTED</div>
+      </div>
+      <div>
+        <button pButton class="form-button-success normal">{{ 'Approve Payroll' | translate }}</button>
+      </div>
+    </div>
+    <div class="center">
+      <div>
+        <div>People</div>
+        <div>38</div>
+      </div>
+      <div>
+        <div>Gross pay</div>
+        <div>R 165,512.91</div>
+      </div>
+      <div>
+        <div>Tax</div>
+        <div>R 46,773.85</div>
+      </div>
+      <div>
+        <div>Net Amount</div>
+        <div>R 112,964.50</div>
+      </div>
+    </div>
+    <div class="bottom" [formGroup]="form">
+      <div>
+        <div class="form-input-field">
+          <div>{{ 'Filter by' | translate }}</div>
+          <p-dropdown [options]="[]" formControlName="filterBy" optionLabel="label" optionValue="value"
+            [placeholder]="'Select' | translate" class="blue"></p-dropdown>
+          <div class="error"></div>
+        </div>
+      </div>
+      <div>
+        <div class="form-buttons">
+          <button pButton class="form-button-blue normal">{{ 'Bulk Update' | translate }}</button>
+          <button pButton class="form-button-blue normal">{{ 'Payslips' | translate }}</button>
+          <button pButton class="form-button-blue normal">{{ 'More Actions' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <p-table [value]="payruns" [scrollable]="true" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let column of columns">{{ column | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>{{ row?.person }}</td>
+          <td>{{ row?.grossPay }}</td>
+          <td>{{ row?.tax }}</td>
+          <td>{{ row?.otherDeductions }}</td>
+          <td>{{ row?.netpay }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

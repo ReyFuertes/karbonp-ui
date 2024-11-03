@@ -1,0 +1,56 @@
+@import "src/styleguide/index";
+
+.payroll-settings-eti-container {
+  .form-button-blue {
+    @include form-button-blue;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .p-inputswitch {
+    @include input-switch;
+  }
+
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-input-field-group {
+    @include form-input-field-group;
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: flex-start;
+    margin-right: 40px;
+
+    .form-button-blue {
+      @include form-button-blue;
+      width: 120px;
+      margin-right: 10px;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-settings-eti-container {
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+    }
+    
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

@@ -1,0 +1,176 @@
+<div class="payroll-submissions-filing-details-dialog-container" [formGroup]="form">
+  <p-dialog [header]="'Filing Details' | translate" [(visible)]="showDialog" [dismissableMask]="true" [modal]="true"
+    [style]="{width: '750px', height: '655px'}">
+    <div>
+      <div class="content">
+        <p-tabView>
+          <p-tabPanel header="Details">
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'PayeNumber' | translate }}</span></div>
+                <input type="text" formControlName="payeNumber" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('payeNumber', form)">
+                    {{ 'FieldIsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'UIFNumber' | translate }}</span></div>
+                <input type="text" formControlName="uifNumber" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('uifNumber', form)">
+                    {{ 'FieldIsRequired' | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'StandardIndustrialClasificationGroup' | translate }}</span></div>
+                <p-dropdown appendTo="body" [options]="standardIndustrialClassLevels?.get(1)"
+                  formControlName="sicMainGroupId" optionLabel="name" optionValue="id" styleClass="blue"
+                  panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sicMainGroupId', form)">
+                    {{ 'vStandardIndustrialClasificationGroupIsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'TradeClassificationGroup' | translate }}</span></div>
+                <p-dropdown appendTo="body" [options]="tradeClassificationGroups"
+                  formControlName="tradeClassificationGroupId" optionLabel="name" optionValue="id" styleClass="blue"
+                  panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('tradeClassificationGroupId', form)">
+                    {{ 'vTradeClassificationGroupIsRequired' | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'StandardIndustrialClasificationLevel2' | translate }}</span></div>
+                <p-dropdown appendTo="body" [options]="standardIndustrialClassLevels?.get(2)"
+                  formControlName="sicLevel2Id" optionLabel="name" styleClass="blue" optionValue="id"
+                  panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sicLevel2Id', form)">
+                    {{ 'vStandardIndustrialClasificationLevel2IsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'TradeClassification' | translate }}</span></div>
+                <p-dropdown appendTo="body" [options]="standardIndustrialClassLevels?.get(5)"
+                  formControlName="tradeClassificationId" optionLabel="name" optionValue="id" styleClass="blue"
+                  panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('tradeClassificationId', form)">
+                    {{ 'vTradeClassificationSelectIsRequired' | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'StandardIndustrialClasificationLevel3' | translate }}</span></div>
+                <p-dropdown appendTo="body" [options]="standardIndustrialClassLevels?.get(3)"
+                  formControlName="sicLevel3Id" optionLabel="name" styleClass="blue" optionValue="id"
+                  panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sicLevel3Id', form)">
+                    {{ 'vStandardIndustrialClasificationLevel3IsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div></div>
+                <p-checkbox class="blue" formControlName="diplomaticIndemnity"
+                  [label]="'DiplomaticIndemnity' | translate" [binary]="true"></p-checkbox>
+              </div>
+            </div>
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'StandardIndustrialClasificationLevel4' | translate }}</span></div>
+                <p-dropdown appendTo="body" [options]="standardIndustrialClassLevels?.get(4)"
+                  formControlName="sicLevel4Id" optionLabel="name" styleClass="blue" optionValue="id"
+                  panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sicLevel4Id', form)">
+                    {{ 'vStandardIndustrialClasificationLevel4IsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <ng-container *ngIf="form.get('sicLevel4Id').value !== null">
+                  <div><span>{{ 'StandardIndustrialClasificationCode' | translate }}</span></div>
+                  <p-dropdown appendTo="body" [options]="standardIndustrialClassLevels?.get(5)"
+                    formControlName="sicCodeId" optionLabel="name" styleClass="blue" optionValue="id"
+                    panelStyleClass="filing-details-dropdown" [showClear]="true" [filter]="true"></p-dropdown>
+                  <div class="error">
+                    <span *ngIf="getRequiredValidation('sicCodeId', form)">
+                      {{ 'vStandardIndustrialClasificationCodeSelectIsRequired' | translate }}</span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel [header]="'SARSContact' | translate">
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'Name' | translate }}</span></div>
+                <input type="text" formControlName="sarsContactName" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sarsContactName', form)">
+                    {{ 'vNameIsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'Position' | translate }}</span></div>
+                <input type="text" formControlName="sarsContactPosition" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sarsContactPosition', form)">
+                    {{ 'vPositionIsRequired' | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'WorkPhoneNumber' | translate }}</span></div>
+                <input type="text" formControlName="sarsContactBusinessTelephoneNumber" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sarsContactBusinessTelephoneNumber', form)">
+                    {{ 'vWorkOrMobileNumberIsRequired' | translate }}</span>
+                </div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'CellNumber' | translate }}</span></div>
+                <input type="text" formControlName="sarsContactCellNumber" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sarsContactCellNumber', form)">
+                    {{ 'vCellNumberIsRequired' | translate }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-input-field-group">
+              <div class="form-input-field">
+                <div><span>{{ 'Fax Number' | translate }}</span></div>
+                <input type="text" formControlName="sarsContactFaxNumber" pInputText class="blue" />
+                <div class="error"></div>
+              </div>
+              <div class="form-input-field">
+                <div><span>{{ 'Email' | translate }}</span></div>
+                <input type="text" formControlName="sarsContactEmail" pInputText class="blue" />
+                <div class="error">
+                  <span *ngIf="getRequiredValidation('sarsContactEmail', form)">
+                    {{ 'vEmailIsRequired' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="form-buttons">
+        <button [disabled]="!form.valid" pButton class="form-button-blue" (click)="onSaveFilingDetail()">
+          {{ 'Save Changes' | translate }}</button>
+        <button pButton class="form-button-default" (click)="showDialog = false">{{ 'Cancel' | translate }}</button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

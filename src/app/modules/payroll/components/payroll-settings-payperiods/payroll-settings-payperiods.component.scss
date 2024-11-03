@@ -1,0 +1,142 @@
+@import "src/styleguide/index";
+
+.payroll-settings-payperiods-container {
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  span {
+    &.check {
+      color: var(--colour-element-green-1);
+    }
+
+    &.close {
+      color: var(--colour-element-red-0);
+    }
+  }
+
+  .date-range-content {
+    animation-name: fadeIn;
+    animation-duration: 550ms;
+
+    h5 {
+      margin-bottom: 5px;
+    }
+
+    >div {
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-settings-payperiods-container {
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+      animation-name: fadeIn;
+      animation-duration: 500ms;
+    }
+
+    .p-accordion-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      >div {
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+
+        >div {
+          margin-right: 20px;
+          min-width: 150px;
+        }
+      }
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+
+    p-paginator {
+      @include paginator;
+
+      .p-paginator {
+        justify-content: flex-end;
+        padding: 0.5rem;
+      }
+
+      .p-dropdown {
+        min-width: 40px;
+      }
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 5px;
+      justify-content: flex-start;
+      margin-right: 40px;
+
+      .form-button-blue {
+        @include form-button-blue;
+        width: 120px;
+        margin-right: 10px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+    }
+
+    .p-tabview {
+      @include tab-view;
+
+      .detail-content,
+      .sss-content,
+      .phic-content,
+      .hdmf-content {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .form-input-field {
+          width: 48% !important;
+        }
+      }
+    }
+
+    .p-dialog {
+      @include dialog;
+
+      .p-dialog-content {
+        .header {
+          padding: 25px 0 10px;
+        }
+      }
+    }
+
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@import "src/styleguide/index";
+
+.token-login-container {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+
+  .loading-container {
+    @include loader;
+    min-height: 500px;
+  }
+}

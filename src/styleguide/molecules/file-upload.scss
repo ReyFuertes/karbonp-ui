@@ -1,0 +1,84 @@
+@mixin file-upload {
+  .p-fileupload {
+    .p-fileupload-content {
+      padding: 0;
+    }
+
+    .p-fileupload-buttonbar {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      padding: 1rem;
+
+      p-button {
+        margin-left: 15px;
+      }
+    }
+
+    .p-button {
+      @include form-button-default;
+    }
+
+    .p-fileupload-row>div:last-child {
+      display: flex;
+      justify-content: right;
+    }
+
+    .p-fileupload-row>div {
+      &:nth-child(1) {
+        width: fit-content;
+      }
+
+      &:nth-child(2) {
+        width: fit-content;
+      }
+
+      &:nth-child(3) {
+        width: 10%;
+      }
+
+      &:last-child {
+        width: 100px;
+
+        button {
+          @include form-button-red;
+          width: 35px;
+          height: 35px;
+        }
+      }
+    }
+
+    &.success .p-fileupload-buttonbar {
+      .p-button {
+        @include form-button-success;
+      }
+
+      p-button {
+        &:last-child .p-button {
+          border-color: var(--colour-element-gray-3);
+          background-color: var(--colour-element-gray-3);
+
+          &:focus {
+            box-shadow: none !important;
+          }
+        }
+      }
+    }
+
+    &.orange .p-fileupload-buttonbar {
+      .p-button {
+        @include form-button-orange;
+      }
+
+      .p-fileupload-choose.p-button {
+        @include form-button-orange;
+      }
+    }
+
+    &.orange.outlined .p-fileupload-buttonbar {
+      .p-button {
+        @include form-button-orange;
+      }
+    }
+  }
+}

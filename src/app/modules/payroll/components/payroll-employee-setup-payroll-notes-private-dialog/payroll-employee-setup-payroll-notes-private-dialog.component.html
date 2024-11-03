@@ -1,0 +1,29 @@
+<p-dialog [(visible)]="showNotesPrivateModal" [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false"
+  [modal]="true" styleClass="blue private-notes-modal" closeIcon="false" [style]="{ width: '545px' }"
+  (onHide)="showNotesPrivateModal = false">
+  <div class="header">
+    <div>
+      <h4>{{ notesPrivateModalTitle | translate }}</h4>
+    </div>
+    <span class="material-symbols-rounded" (click)="showNotesPrivateModal = !showNotesPrivateModal">close</span>
+  </div>
+  <div class="content" [formGroup]="notesPrivateForm">
+    <div class="form-input-field">
+      <div><span>{{ '(character limit: 500)' | translate }}</span></div>
+      <textarea class="red" formControlName="notes" [rows]="5" [cols]="40" pInputTextarea maxlength="500"
+        [autoResize]="false" tabindex="-1"></textarea>
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field">
+      <div><span>{{ 'CopyNoteOver' | translate }}</span></div>
+      <p-inputSwitch formControlName="copyNoteOver" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-buttons">
+      <button [disabled]="!notesPrivateForm.valid" pButton class="form-button-blue normal" (click)="onSave()">
+        {{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="showNotesPrivateModal = false">
+        {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>

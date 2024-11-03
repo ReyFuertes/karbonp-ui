@@ -1,0 +1,48 @@
+<div class="payroll-submissions-emp201-container">
+  <ng-container *ngIf="emp201Submissions?.length > 0; else noResults">
+    <p-table [value]="emp201Submissions" [scrollable]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'Month' | translate }}</th>
+          <th>{{ 'Status' | translate }}</th>
+          <th>{{ 'CompletedDate' | translate }}</th>
+          <th>{{ 'Download' | translate }}</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td class="w-250">
+            <div>
+              <span>{{ row?.month | date: 'MMM yyyy'}}</span>
+              {{row?.hasInProgressPayRuns}}
+              <span *ngIf="monthlyEmp201Submissions?.get(row?.id)?.hasInProgressPayRuns"
+                class="material-symbols-rounded warning" tooltipPosition="top"
+                [pTooltip]="'SubmissionInProgressPayRunsMessage' | translate">warning</span>
+            </div>
+          </td>
+          <td>
+            <span class="pending" *ngIf="row?.status === emp201StatusType.Pending">
+              {{ 'Pending' | translate}}</span>
+            <span class="completed" *ngIf="row?.status === emp201StatusType.Completed">{{ 'Completed' |
+              translate}}</span>
+          </td>
+          <td>{{ row?.completedDate | date: 'dd MMM yyyy HH:mm'}}</td>
+          <td>
+            <span (click)="generateEMP201SubmissionPDF(row?.id)" class="material-symbols-rounded download"
+              tooltipPosition="top" [pTooltip]="'Download' | translate">download</span>
+          </td>
+          <td><span *ngIf=" row?.status === 0 &&  row?.totalPayable > 0"
+              (click)="completeEMP201Submission(row?.id)" class="material-symbols-rounded complete"
+              tooltipPosition="top" [pTooltip]="'CompleteSubmission' | translate">task_alt</span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+</div>

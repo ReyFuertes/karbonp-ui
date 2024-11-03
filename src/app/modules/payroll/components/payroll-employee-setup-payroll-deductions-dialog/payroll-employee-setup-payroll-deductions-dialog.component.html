@@ -1,0 +1,321 @@
+<p-dialog *ngIf="deductionInputSetupForm.get('deductionInputType').value" [(visible)]="showDeductionsModal"
+  [closeOnEscape]="true" [dismissableMask]="true" [showHeader]="false" [modal]="true" styleClass="blue deductions-modal"
+  closeIcon="false" [style]="{ width: '545px' }" (onHide)="onHide()">
+  <div class="header">
+    <div>
+      <h4>{{ deductionsModalTitle | translate }}</h4>
+    </div>
+    <span class="material-symbols-rounded" (click)="showDeductionsModal = !showDeductionsModal">close</span>
+  </div>
+  <div class="content" [formGroup]="deductionInputSetupForm">
+    <!-- note: this is not clear how to edit this -->
+    <!-- <div class="form-input-field">
+      <div><span>{{ 'SelectBeneficiary' | translate }}</span></div>
+      <p-dropdown appendTo="body" [options]="getBenefitTypes" formControlName="beneficiaryId" optionLabel="resource"
+        optionValue="inputType" [placeholder]="'Select' | translate" styleClass="blue" [showClear]="true"
+        [filter]="true"></p-dropdown>
+      <div class="error"></div>
+    </div> -->
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.RetirementAnnuityFund 
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.MedicalAid"
+      class="form-input-field">
+      <div><span>{{ 'EmployeeHandlesPayment' | translate }}</span></div>
+      <p-inputSwitch formControlName="employeeHandlesPayment" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.InfonavitLoan">
+      <div class="form-input-field">
+        <div><span>{{ 'LoanCalculationOption' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="loanCalculationOptions" formControlName="loanCalculationOption"
+          optionspan="span" optionValue="value" [placeholder]="'Select' | translate" styleClass="blue"
+          [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div *ngIf="deductionInputSetupForm.get('loanCalculationOption').value === deductionType.Garnishee">
+        <div class="form-input-field">
+          <div><span>{{ 'FixedAmount' | translate }}</span></div>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div *ngIf="deductionInputSetupForm.get('loanCalculationOption').value === deductionType.IncomeProtection">
+        <div class="form-input-field">
+          <div><span>{{ 'PercentageOfSalary' | translate }}</span></div>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div *ngIf="deductionInputSetupForm.get('loanCalculationOption').value === deductionType.MaintenanceOrder">
+        <div class="form-input-field">
+          <div><span>{{ 'TimesUMAAmount' | translate }}</span></div>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showAmountFields === true">
+      <div class="form-input-field">
+        <div>
+          <span *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.MedicalAid">
+            {{ 'MedicalAidTotal' | translate }}</span>
+          <span *ngIf="deductionInputSetupForm.get('deductionInputType').value !== deductionType.MedicalAid
+          && deductionInputSetupForm.get('deductionInputType').value !== deductionType.Meals">{{
+            'Amount' | translate }}</span>
+          <span *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Meals">{{
+            'AmountOfDays' | translate
+            }}:</span>
+        </div>
+        <input type="number" pInputText formControlName="amount">
+        <div class="error"></div>
+        <!-- <div *ngIf="showWarningRFINotConfigured === true 
+        && deductionInputSetupForm.get('deductionInputType').value === deductionType.RetirementAnnuityFund">
+        {{ 'EmployeeRFIConfigurationWarning' | translate}} - <span (click)="goToRFISetup()">
+          [{{ 'settings' | translate}}]</span>
+      </div> -->
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Garnishee
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.InfonavitLoan 
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.FONACOTLoan">
+      <div class="form-input-field">
+        <div><span>{{ 'IncreaseBalance' | translate }}</span></div>
+        <input type="number" formControlName="balance" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployeeAmount' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployeeAmountNotDeducted' | translate }}</span></div>
+        <input type="number" formControlName="employeeAmountNotDeducted" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <!-- <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.RetirementAnnuityFund
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.MedicalAid">
+    <div class="form-input-field">
+      <div><span>{{ 'EmployerContribution' | translate }}</span></div>  
+      <input type="number" formControlName="employerAmount" pInputText class="blue" />
+      <div class="error"></div>
+    </div>
+  </div> -->
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployerOwnsPolicy' | translate }}</span></div>
+        <input type="number" formControlName="employerOwnsPolicy" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Meals">
+      <div class="form-input-field">
+        <div><span>{{ 'CostPerMeal' | translate }}</span></div>
+        <input type="number" formControlName="customRate" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Meals">
+      <div class="form-input-field">
+        <div><span>{{ 'MealsPerDay' | translate }}</span></div>
+        <input type="number" formControlName="quantity" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <!-- <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Garnishee
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.InfonavitLoan
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.FONACOTLoan">
+    <div class="form-input-field">
+      <div><span>{{ 'IncreaseBalance' | translate }}</span></div>
+      <input type="number" formControlName="balance" pInputText class="blue" />
+      <div class="error"></div>
+    </div>
+  </div> -->
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployeeAmount' | translate }}</span></div>
+        <input type="number" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployeeAmountNotDeducted' | translate }}</span></div>
+        <input type="number" formControlName="employeeAmountNotDeducted" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.RetirementAnnuityFund
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.MedicalAid">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployerContribution' | translate }}</span></div>
+        <input type="number" formControlName="employerAmount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.IncomeProtection">
+      <div class="form-input-field">
+        <div><span>{{ 'EmployerOwnsPolicy' | translate }}</span></div>
+        <input type="number" formControlName="employerOwnsPolicy" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Meals">
+      <div class="form-input-field">
+        <div><span>{{ 'CostPerMeal' | translate }}</span></div>
+        <input type="number" formControlName="customRate" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Meals">
+      <div class="form-input-field">
+        <div><span>{{ 'MealsPerDay' | translate }}</span></div>
+        <input type="number" formControlName="quantity" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <ng-container *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.PensionFund
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.ProvidentFund">
+      <div class="form-input-field">
+        <div><span>{{ 'ContributionType' | translate }}</span></div>
+        <p-dropdown appendTo="body" [options]="contributionTypeOptions" formControlName="contributionType"
+          optionspan="span" optionValue="value" [placeholder]="'Select' | translate" styleClass="blue"
+          [showClear]="true" [filter]="true"></p-dropdown>
+        <div class="error"></div>
+        <!-- <div *ngIf="showWarningRFINotConfigured == true 
+        && deductionInputSetupForm.get('contributionType').value === deductionType.IncomeProtection">
+        {{ 'EmployeeRFIConfigurationWarning' | translate}} - <a class="kpBlue" (click)="goToRFISetup()">[{{ 'settings' | translate}}]</a>
+      </div> -->
+      </div>
+      <div *ngIf="deductionInputSetupForm.get('contributionType').value === deductionType.Garnishee">
+        <div class="form-input-field">
+          <div><span>{{ 'Amount' | translate }}</span></div>
+          <input type="number" formControlName="amount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'EmployerAmount' | translate }}</span></div>
+          <input type="number" formControlName="employerAmount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div *ngIf="deductionInputSetupForm.get('contributionType').value === deductionType.IncomeProtection">
+        <div class="form-input-field">
+          <div><span>{{ 'EmployeeRFIPercentage' | translate }}</span></div>
+          <input type="number" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'EmployerRFIPercentage' | translate }}</span></div>
+          <input type="number" formControlName="employerAmount" pInputText class="blue" />
+          <div class="error"></div>
+        </div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'CategoryFactor' | translate }}</span></div>
+        <input type="number" formControlName="categoryFactor" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </ng-container>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.MedicalAid"
+      class="form-input-field">
+      <div><span>{{ 'Members' | translate }}</span></div>
+      <input type="number" formControlName="members" pInputText class="blue" />
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field" *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Custom
+    && (customPaytype?.inputType === inputType.FixedAmount 
+    || customPaytype?.inputType === inputType.PercentageOfIncome)">
+      <div><span>{{ 'Amount1' | translate }} : {{ customPaytype?.amount?.toString() | currencySymbol}}</span></div>
+    </div>
+    <div class="form-input-field" *ngIf="showQuantityFields">
+      <div><span>{{ 'Quantity' | translate }}</span></div>
+      <input type="number" pInputText class="blue" />
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field" *ngIf="customPaytype?.inputType === inputType.CustomRateQuantity 
+    && customPaytype?.differentRateForEachEmployee">
+      <div><span>{{ 'CustomRate' | translate }}</span></div>
+      <input type="number" formControlName="customRate" pInputText class="blue" />
+      <div class="error"></div>
+    </div>
+    <div class="form-input-field" *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.Custom 
+    && customPaytype?.inputType === inputType.PercentageOfIncome">
+      <div><span>{{ 'PercentageOfIncome' | translate }}: {{ customPaytype?.percentage }}%</span></div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.SSSLoan 
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.HDMFLoan 
+    || deductionInputSetupForm.get('deductionInputType').value === deductionType.CustomLoan"
+      class="deduction-type-detail">
+      <ng-container *ngIf="deductionInputSetupForm.get('deductionInputType').value as deductionInputTypeForm">
+        <div>
+          <div>
+            <span>{{ 'Amount' | translate }}</span>
+            <span>{{ deductionInputTypeForm?.loanAmount ?? '0' | currencySymbol }}</span>
+          </div>
+          <div>
+            <span>{{ 'Balance' | translate }}</span>
+            <span>{{ deductionInputTypeForm?.loanBalanceAmount ?? '0' | currencySymbol
+              }}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'RepaymentAmount' | translate }}</span>
+            <span>{{ deductionInputTypeForm?.loanRepaymentAmount ?? '0' |
+              currencySymbol
+              }}</span>
+          </div>
+          <div>
+            <span>{{ 'Term' | translate }}</span>
+            <span>{{ deductionInputTypeForm?.loanTerm }}</span>
+          </div>
+        </div>
+        <div>
+          <div>
+            <span>{{ 'LoanType' | translate }}</span>
+            <span>{{ deductionInputTypeForm?.loanType | translate }}</span>
+          </div>
+        </div>
+        <div>
+          <div class="form-input-field" *ngIf="customPaytype?.inputType === deductionType.UnionMembershipFee 
+          && customPaytype?.differentRateForEachEmployee">
+            <div><span>{{ 'RepaymentAmountOverride' | translate }}</span></div>
+            <input type="number" formControlName="amountOverride" pInputText class="blue" />
+            <div class="error"></div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.SSSOverride 
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.HDMFOverride 
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.PHICOverride">
+      <div class="form-input-field">
+        <div><span>{{ 'Amount' | translate }}</span></div>
+        <input type="number" formControlName="amount" pInputText class="blue" />
+        <div class="error"></div>
+      </div>
+    </div>
+    <div *ngIf="deductionInputSetupForm.get('deductionInputType').value === deductionType.PHICOverride 
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.SSSOverride 
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.HDMFOverride 
+      || deductionInputSetupForm.get('deductionInputType').value === deductionType.VoluntaryTaxOverDeduction"
+      class="form-input-field">
+      <div><span>{{ 'IsRecurring' | translate }}</span></div>
+      <p-inputSwitch formControlName="recurringDeduction" styleClass="blue"></p-inputSwitch>
+      <div class="error"></div>
+    </div>
+    <div class="form-buttons">
+      <button pButton class="form-button-blue normal" (click)="onSave()">
+        {{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="showDeductionsModal = false">
+        {{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>

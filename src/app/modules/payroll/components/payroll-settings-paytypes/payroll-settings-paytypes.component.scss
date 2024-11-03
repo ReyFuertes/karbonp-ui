@@ -1,0 +1,134 @@
+@import "src/styleguide/index";
+
+.payroll-settings-paytypes-container {
+  .form-input-field {
+    @include form-input-field;
+  }
+
+  .filter-container {
+    .form-input-field-group {
+      @include form-input-field-group;
+      width: 60%;
+  
+      >div {
+        padding-right: 0 !important;
+      }
+  
+      &:nth-child(2) div:nth-child(2) {
+        position: relative;
+        top: 28px;
+      }
+    }
+  
+    .form-button-default {
+      @include form-button-default;
+      margin-right: 15px
+    }
+  }
+
+  .form-button-blue {
+    @include form-button-blue;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-settings-paytypes-container {
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+
+    .form-buttons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 5px;
+      justify-content: flex-start;
+      margin-right: 40px;
+
+      .form-button-blue {
+        @include form-button-blue;
+        width: 120px;
+        margin-right: 10px;
+      }
+
+      .form-button-default {
+        @include form-button-default;
+      }
+    }
+
+    .p-dialog {
+      @include dialog;
+
+      .p-dialog-content {
+        .header {
+          padding: 25px 0 15px;
+        }
+
+        .content {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-between;
+    
+          .form-input-field {
+            width: 48% !important;
+          }
+        }
+      }
+    }
+
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+      animation-name: fadeIn;
+      animation-duration: 500ms;
+    }
+
+    p-paginator {
+      @include paginator;
+
+      .p-paginator {
+        justify-content: flex-end;
+        padding: 0.5rem;
+      }
+
+      .p-dropdown {
+        min-width: 40px;
+      }
+    }
+
+    .p-accordion-content {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+
+      >div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 35%;
+
+        >div.form-input-field {
+          &:nth-child(1) {
+            margin-right: 20px;
+          }
+        }
+      }
+    }
+
+    .p-datatable {
+      @include datatable;
+      margin-right: 0;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+      height: 40px;
+    }
+  }
+}

@@ -1,0 +1,78 @@
+<div class="people-settings-container">
+  <div class="header">
+    <h2>{{ 'Settings' | translate }}</h2>
+    <button pButton class="form-button-success" (click)="onAdd()">{{ 'Add' | translate }}</button>
+  </div>
+  <p-tabView styleClass="success" (onChange)="handleTabChange($event)" [activeIndex]="selectedTabIndex">
+    <p-tabPanel [header]="'Status' | translate">
+      <div *ngIf="(isLoadingAsync() | async) === false; else loader" >
+        <div *ngIf="statuses?.length > 0; else noResults">
+          <p-table [value]="statuses" class="p-datatable-people-settings" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" paginatorStyleClass="success">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>{{ 'Name' | translate }}</th>
+                <th>{{ 'Description' | translate }}</th>
+                <th>{{ 'Actions' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-status>
+              <tr>
+                <td>{{ status?.name }}</td>
+                <td>{{ status?.description }}</td>
+                <td>
+                  <span class="material-symbols-rounded" (click)="onEditStatus(status)" tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span>
+                  <span class="material-symbols-rounded" (click)="onDeleteStatus(status?.id)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+  <p-dialog [(visible)]="showPeopleStatusModal" [closeOnEscape]="false" [dismissableMask]="true" [showHeader]="false" [modal]="true" closeIcon="false" [style]="{width: '470px', 'min-height': '335px'}" styleClass="success">
+    <div class="header">
+      <div>
+        <h4>{{ actionState }} {{ 'People Status' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showPeopleStatusModal = false">close</span>
+    </div>
+    <div [formGroup]="statusForm" class="content">
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'Name' | translate }}</span>
+          <span>*</span>
+        </div>
+        <input type="text" formControlName="name" pInputText class="success" />
+        <div class="error"><span *ngIf="getRequiredValidation('name', statusForm)">{{ 'This field is required' | translate }}</span></div>
+      </div>
+      <div class="form-input-field">
+        <div>
+          <span>{{ 'Description' | translate }}</span>
+        </div>
+        <textarea class="success" formControlName="description" [rows]="5" [cols]="30" pInputTextarea [autoResize]="false"></textarea>
+        <div class="error"></div>
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button [disabled]="!statusForm.valid" pButton class="form-button-success" (click)="onSaveChanges()">{{ 'Save' | translate }}</button>
+      <button pButton class="form-button-default" (click)="showPeopleStatusModal = false">{{ 'Cancel' | translate }}</button>
+    </div>
+  </p-dialog>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

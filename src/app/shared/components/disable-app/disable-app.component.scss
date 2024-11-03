@@ -1,0 +1,21 @@
+@import "src/styleguide/index";
+
+.disable-app-container {
+  margin-top: 30px;
+
+  h4 {
+    margin-bottom: 8px;
+  }
+  
+  p {
+    margin-top: 5px;
+  }
+
+  .form-button-red {
+    @include form-button-red;
+
+    &.disabled {
+      opacity: 0.8;
+    }
+  }
+}

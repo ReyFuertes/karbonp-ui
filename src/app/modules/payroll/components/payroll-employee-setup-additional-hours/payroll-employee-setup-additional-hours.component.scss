@@ -1,0 +1,188 @@
+@import "src/styleguide/index";
+
+.payroll-employee-setup-additional-hours-container {
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    margin-top: 10px;
+
+    h3 {
+      margin-bottom: 0;
+    }
+
+    .form-button-default {
+      @include form-button-default;
+    }
+
+    >div {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding-left: 114px;
+
+      p {
+        margin: 0 0 8px 0;
+        color: var(--colour-element-gray-1);
+      }
+    }
+
+    .period-dates {
+      color: var(--colour-element-black-1);
+    }
+  }
+}
+
+::ng-deep {
+  .payroll-employee-setup-additional-hours-container {
+    .p-dialog {
+      @include dialog;
+
+      .p-dialog-content {
+        padding: 0 1.5rem 0 1.5rem;
+
+        .header {
+          padding: 25px 0 5px;
+        }
+
+        .content {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+
+      .form-input-field {
+        @include form-input-field;
+      }
+
+      .form-buttons {
+        @include form-buttons;
+        justify-content: flex-start;
+
+        .form-button-blue {
+          @include form-button-blue;
+          margin-right: 10px;
+        }
+
+        .form-button-default {
+          @include form-button-default;
+        }
+      }
+    }
+
+    .fc .fc-toolbar.fc-header-toolbar {
+      display: none !important;
+    }
+
+    .fc .fc-toolbar-title {
+      font-size: 1.4em;
+      font-weight: 400;
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button.fc-button-active,
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridWeek-button.fc-button-active,
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button.fc-button-active {
+      background-color: var(--colour-element-blue-1);
+      border-color: var(--colour-element-blue-1);
+      color: var(--colour-element-white);
+    }
+
+    .fc .fc-daygrid-day-bg .fc-highlight {
+      z-index: 999;
+    }
+
+    .fc .fc-daygrid-day-frame {
+      min-height: 100% !important;
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button:enabled:active:focus {
+      box-shadow: none;
+    }
+
+    .fc .fc-bg-event .fc-event-title {
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .fc .fc-cell-shaded,
+    .fc .fc-day-disabled {
+      background-color: var(--colour-element-blue-4);
+      cursor: not-allowed;
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button:enabled:active {
+      background-color: var(--colour-element-blue-1);
+      border-color: var(--colour-element-blue-1);
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button:focus {
+      box-shadow: none;
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button {
+      background-color: var(--colour-element-blue-1);
+      border-color: var(--colour-element-blue-1);
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button,
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridWeek-button,
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button {
+      background: var(--colour-element-white);
+      border: 1px solid var(--colour-element-gray-3);
+      color: var(--colour-element-black-1);
+
+      &:hover {
+        background-color: var(--colour-element-blue-5);
+      }
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button:enabled:hover {
+      background-color: var(--colour-element-blue-1);
+      border-color: var(--colour-element-blue-1);
+      color: var(--colour-element-white);
+      opacity: 0.8;
+    }
+
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-dayGridMonth-button:not(:disabled):focus,
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridWeek-button:not(:disabled):focus,
+    .fc.fc-theme-standard .fc-toolbar .fc-button.fc-timeGridDay-button:not(:disabled):focus {
+      box-shadow: none;
+    }
+
+    .fc-h-event,
+    .fc-event-today {
+      background-image: var(--colour-element-blue-1);
+      border: none;
+      padding-left: 3px;
+      color: var(--colour-element-white);
+
+      .fc-event-title {
+        font-weight: 400;
+      }
+
+      .fc-daygrid-event-dot {
+        border-color: var(--colour-element-white) !important;
+      }
+    }
+
+    .fc-event-today {
+      background-image: none;
+      background-color: var(--colour-element-blue-1) !important;
+    }
+
+    .fc .fc-daygrid-day-frame {
+      min-height: 115px;
+      min-width: 115px;
+    }
+
+    .fc-v-event {
+      background-image: var(--colour-element-blue-1);
+      border: none;
+      padding: 3px;
+    }
+  }
+}

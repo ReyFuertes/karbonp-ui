@@ -1,0 +1,25 @@
+<div class="reports-settings-container">
+  <div class="header">
+    <h3>{{ 'Monthly Reports' | translate }}</h3>
+    <p>{{ 'Select the reports that you would like to be sent to you on the first of each month.' }}</p>
+  </div>
+  <div class="content">
+    <div class="options" [formGroup]="form">
+      <p-checkbox formControlName="includeEmployeeReport" [label]="'Employee Information Report'" name="groupname"
+        class="cyan option" [binary]="true"></p-checkbox>
+      <p-checkbox formControlName="includeBalancesReport" [label]="'Balances Report'" name="groupname"
+        class="cyan option" [binary]="true"></p-checkbox>
+      <p-checkbox formControlName="includeDetailedPayrollReport" [label]="'Monthly Detailed Report'" name="groupname"
+        class="cyan option" [binary]="true"></p-checkbox>
+      <p-checkbox formControlName="includeEtiReport" [label]="'ETI Report'" name="groupname" class="cyan option"
+        [binary]="true"></p-checkbox>
+    </div>
+    <div class="form-buttons">
+      <button pButton class="form-button-cyan normal loader" (click)="onSave()">
+        <i *ngIf="(isLoadingAsync() | async) === true" class="pi pi-spin pi-spinner"></i>
+        <span *ngIf="(isLoadingAsync() | async) === false">{{ 'Save' | translate }}</span>
+      </button>
+      <button pButton class="form-button-default normal">{{ 'Cancel' | translate }}</button>
+    </div>
+  </div>
+</div>

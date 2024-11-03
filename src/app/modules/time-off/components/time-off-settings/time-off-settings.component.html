@@ -1,0 +1,478 @@
+<div class="time-off-settings-container">
+  <div class="header">
+    <h2>{{ 'Time Off Settings' | translate }}</h2>
+    <button *ngIf="selectedSettingsTabIndex !== 2" pButton icon="pi pi-plus" class="form-button-orange normal" (click)="onAddSettings()" tooltipPosition="top" [pTooltip]="getAddButtonTooltip | translate">
+      <span>{{ 'Add' | translate }}</span>
+    </button>
+  </div>
+  <div class="content">
+    <p-tabView (onChange)="handleSettingsTabChange($event)" [activeIndex]="selectedSettingsTabIndex" styleClass="orange">
+      <p-tabPanel [header]="'Policies' | translate">
+        <p-table *ngIf="policies?.length > 0; else noResults" [value]="policies" class="p-datatable-time-off-settings" >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ 'Description' | translate }}</th>
+              <th>{{ 'Status' | translate }}</th>
+              <th>{{ 'Actions' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-policy>
+            <tr>
+              <td>{{policy?.name}}</td>
+              <td>
+                <span class="material-symbols-rounded check" *ngIf="policy?.active === true">check</span>
+                <span class="material-symbols-rounded close" *ngIf="policy?.active === false">close</span>
+              </td>
+              <td>
+                <span class="material-symbols-rounded" (click)="onEditPolicy(policy)" tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
+      <p-tabPanel [header]="'Leave Approvers' | translate">
+        <p-table *ngIf="leaveApprovers?.length > 0; else noResults" [value]="leaveApprovers" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" class="p-datatable-time-off-leave-approvers" paginatorStyleClass="orange">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ 'User' | translate }}</th>
+              <th>{{ 'Pay Point' | translate }}</th>
+              <th>{{ 'Actions' | translate }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-approver>
+            <tr>
+              <td>{{ approver?.userFullName }}</td>
+              <td>{{ approver?.payPointName ?? allEmployeesText }}</td>
+              <td>
+                <span class="material-symbols-rounded" (click)="onEditLeaveApprover(approver)" tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span>
+                <span class="material-symbols-rounded" (click)="onDeleteApprover(approver)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
+      <p-tabPanel [header]="'Bulk Import' | translate">
+        <div class="bulk-import-content-container" [formGroup]="bulkImportForm">
+          <div>
+            <button pButton icon="pi pi-download" class="form-button-orange outlined normal" (click)="downloadTemplateFile()" tooltipPosition="top" [pTooltip]="'Download Template File' | translate">{{ 'Download' | translate }}</button>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'ReCalculatePayslips' | translate }}</span></div>
+            <p-inputSwitch formControlName="reCalculatePayslips" styleClass="orange"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Attachment' | translate }}</span></div>
+          <p-fileUpload #fileUploadControl (uploadHandler)="onUploadBulkImport()" styleClass="default" name="file[]" accept=".xls,.xlsx,.csv" [customUpload]="true" (onSelect)="onDocumentChange($event)"></p-fileUpload>
+        </div>
+        <ng-container *ngIf="bulkImportView; else loader">
+          <div class="bulk-import-view-calculating" *ngIf="bulkImportView?.status <= employeeBulkImportStatusType.CalculatingPayslipData" >
+            <h5 *ngIf="bulkImportView?.status < employeeBulkImportStatusType.CalculatingPayslipData">
+              {{'Time Off Bulk Import In Progress' | translate}}
+            </h5>
+            <h5 *ngIf="bulkImportView?.status === employeeBulkImportStatusType.CalculatingPayslipData">
+              {{'Time Off Bulk Import Completed' | translate}}
+            </h5>
+            <p>{{ 'Last Import' | translate }}: {{ bulkImportView?.updatedDateTime | date: 'dd MMM yyyy HH:mm'}}</p>
+            <div>
+              <span>{{'Total Records Found' | translate}}</span>
+              <span>{{bulkImportView?.totalEmployees}}</span>
+            </div>
+            <div>
+              <span>{{'Validating Data' | translate}}</span>
+              <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.ValidatingData" class="progress-bar-container">
+                <p-progressBar [showValue]="true" [value]="progressValue" styleClass="orange">
+                  <ng-template pTemplate="content" let-value>
+                    <span>{{progressValue}}/100</span>
+                  </ng-template>
+                </p-progressBar>
+              </div>
+              <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.ValidatingData" class="material-symbols-rounded check">check</span>
+            </div>
+            <div>
+              <span>{{'Importing Time Off Data' | translate}}</span>
+              <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.ImportingEmployeeData" class="progress-bar-container">
+                <p-progressBar [showValue]="true" [value]="progressValue" styleClass="orange">
+                  <ng-template pTemplate="content" let-value>
+                    <span>{{progressValue}}/100</span>
+                  </ng-template>
+                </p-progressBar>
+              </div>
+              <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.ImportingEmployeeData" class="material-symbols-rounded check">check</span>
+            </div>
+            <div>
+              <span>{{'Calculating Payslips' | translate}}</span>
+              <div *ngIf="bulkImportView?.status === employeeBulkImportStatusType.GeneratingPayslipData" class="progress-bar-container">
+                <p-progressBar [showValue]="true" [value]="progressValue" styleClass="orange">
+                  <ng-template pTemplate="content" let-value>
+                    <span>{{progressValue}}/100</span>
+                  </ng-template>
+                </p-progressBar>
+              </div>
+              <span *ngIf="bulkImportView?.status > employeeBulkImportStatusType.GeneratingPayslipData" class="material-symbols-rounded check">check</span>
+            </div>
+          </div>
+          <div class="bulk-import-view-completed" *ngIf="bulkImportView?.status === employeeBulkImportStatusType.Completed" >
+            <h5>{{ 'Time Off Bulk Import Failed' | translate}}:</h5>
+            <p>{{ 'Last Import' | translate }} {{ bulkImportView?.updatedDateTime | date: 'dd MMM yyyy HH:mm'}}</p>
+            <p-table *ngIf="bulkImportView?.errors?.length > 0" [value]="bulkImportView?.errors" class="p-datatable-time-off-errors">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th> {{'Error Description' | translate}}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-error>
+                <tr>
+                  <td>{{ error | translate}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <p-table *ngIf="bulkImportView?.errors?.length === 0" [value]="bulkImportView.items">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th> {{'Row Number' | translate}}</th>
+                  <th> {{'Error Description' | translate}}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-importItem>
+                <tr>
+                  <td>{{importItem.rowNumber}}</td>
+                  <td>
+                    <div *ngFor="let error of importItem.validationErrors">{{ error | translate}} </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </ng-container>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+  <p-dialog [(visible)]="showLeaveApproverModal" [closeOnEscape]="false" [dismissableMask]="true" [showHeader]="false" [modal]="true" closeIcon="false" [style]="{width: '470px', 'min-height': '335px'}" styleClass="orange">
+    <div class="header">
+      <div>
+        <h4>{{ 'Assign Leave Approvers' | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showLeaveApproverModal = false">close</span>
+    </div>
+    <div class="content">
+      <div class="form-input-field">
+        <div><span>{{ 'Select User' | translate }}</span></div>
+        <p-dropdown appendTo="body" panelStyleClass="orange" [(ngModel)]="selectedApprover" [options]="leaveApproverUserOptions" [filter]="true" filterBy="label" optionLabel="label" [placeholder]="'Select' | translate" class="orange"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-input-field">
+        <div><span>{{ 'Select Pay Point' | translate }}</span></div>
+        <p-dropdown appendTo="body" panelStyleClass="orange" [(ngModel)]="selectedPayPoint" [options]="payPointOptions" optionLabel="label" [placeholder]="'Select' | translate" class="orange"></p-dropdown>
+        <div class="error"></div>
+      </div>
+      <div class="form-buttons">
+        <button pButton class="form-button-orange" (click)="onSaveUpdateApprover()">{{ 'Save' | translate }}</button>
+        <button pButton class="form-button-default" (click)="showLeaveApproverModal = false">{{ 'Cancel' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-dialog [(visible)]="showPolicyModal" [closeOnEscape]="false" [dismissableMask]="true" [showHeader]="false" [modal]="true" closeIcon="false" [style]="{width: '690px', 'height': '560px', 'min-height': '340px'}" styleClass="orange">
+    <div class="header">
+      <div>
+        <h4>{{ (getDialogPolicyState + ' Policy') | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showPolicyModal = false">close</span>
+    </div>
+    <div class="content" [formGroup]="timeOffPolicyForm">
+      <p-tabView styleClass="orange" (onChange)="handleAddEditPolicyTabChange($event)" [activeIndex]="selectedAddEditPolicyTabIndex">
+        <p-tabPanel header="Details">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Name' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="text" formControlName="name" pInputText class="orange" />
+            <div class="error"><span *ngIf="getRequiredValidation('name', timeOffPolicyForm)">{{ 'This field is required' | translate }}</span></div>
+          </div>
+          <div class="form-input-field-group">
+            <div class="form-input-field">
+              <div>
+                <span>{{ 'Period Length (Months)' | translate }}</span>
+                <span>*</span>
+              </div>
+              <input type="number" formControlName="cycleLength" pInputText class="orange" />
+              <div class="error"><span *ngIf="getRequiredValidation('cycleLength', timeOffPolicyForm)">{{ 'This field is required' | translate }}</span></div>
+            </div>
+            <div class="form-input-field">
+              <div>
+                <span>{{ 'Period Start Date' | translate }}</span>
+              </div>
+              <p-dropdown [options]="periodStartDateTypes" formControlName="leaveCycleType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="orange"></p-dropdown>
+              <span *ngIf="getRequiredValidation('leaveCycleType', timeOffPolicyForm)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="form-input-field-group">
+            <div class="form-input-field">
+              <div><span>{{ 'Unpaid Time Off' | translate }}</span></div>
+              <p-inputSwitch formControlName="unpaidLeave" styleClass="orange"></p-inputSwitch>
+            </div>
+            <div class="form-input-field">
+              <div><span>{{ 'Do Not Show In Self Service' | translate }}</span></div>
+              <p-inputSwitch formControlName="hideBalancesInSelfService" styleClass="orange"></p-inputSwitch>
+            </div>
+          </div>
+          <div class="form-input-field" [ngStyle]="{'margin-top': '10px'}">
+            <div><span>{{ 'Block Negative Leave Balance' | translate }}</span></div>
+            <p-inputSwitch formControlName="blockNegativeLeaveBalance" styleClass="orange"></p-inputSwitch>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel *ngIf="dialogPolicyState === dialogState.Edit" header="Entitlement Policies">
+          <div class="entitlement-policies-container">
+            <p-table [value]="timeOffPolicyForm.value?.entitlementPolicies" class="p-datatable-entitlement-policies">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>{{ 'Description' | translate }}</th>
+                  <th>{{ 'Actions' | translate }}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-entitlementPolicy>
+                <tr>
+                  <td>{{ entitlementPolicy?.defaultEntitlementInDays }} {{ 'days' | translate }}</td>
+                  <td>
+                    <span class="material-symbols-rounded" (click)="onEditEntitlementPolicy(entitlementPolicy)" tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div class="entitlement-policies-actions"><button pButton class="form-button-orange outlined normal" (click)="onAddEntitlementPolicy()">{{ 'Add' | translate }}</button></div>
+        </p-tabPanel>
+        <p-tabPanel *ngIf="dialogPolicyState === dialogState.Edit" header="Entitlement Policy Ranges">
+          <div class="entitlement-policy-ranges-table-container">
+            <p-table [value]="timeOffEntitlementPolicyRangeItems" class="p-datatable-entitlement-policy-ranges">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>{{ 'Effective From' | translate }}</th>
+                  <th>{{ 'Effective Until' | translate }}</th>
+                  <th>{{ 'Entitlement Policy' | translate }}</th>
+                  <th>{{ 'Actions' | translate }}</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-entitlementPolicyRange>
+                <tr [ngClass]="{'active': !entitlementPolicyRange?.id }">
+                  <td>{{ entitlementPolicyRange?.fromDate | date: 'dd MMM yyyy' }}</td>
+                  <td>{{ entitlementPolicyRange?.toDate | date: 'dd MMM yyyy' }}</td>
+                  <td>{{ entitlementPolicyRange?.leaveEntitlementPolicy?.defaultEntitlementInDays }} Days</td>
+                  <td>
+                    <span class="material-symbols-rounded" (click)="showEditEntitlementPolicyRange(entitlementPolicyRange)" tooltipPosition="top" [pTooltip]="'Edit' | translate">edit_square</span>
+                    <span class="material-symbols-rounded" (click)="onDeleteEntitlementPolicyRanges(entitlementPolicyRange)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          <div>
+            <button pButton class="form-button-orange outlined normal" (click)="showAddEntitlementPolicyRange()">{{ 'Add' | translate }}</button>
+          </div>
+        </p-tabPanel>
+      </p-tabView>
+      <div *ngIf="selectedAddEditPolicyTabIndex !== 1" class="form-buttons">
+        <button pButton class="form-button-orange" (click)="onSaveChanges()">{{ 'Save changes' | translate }}</button>
+        <button pButton class="form-button-default" (click)="showPolicyModal = false">{{ 'Cancel' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-dialog [(visible)]="showModalEntitlementPolicyRange" [closeOnEscape]="false" [dismissableMask]="true" [showHeader]="false" [modal]="true" closeIcon="false" [style]="{width: '470px'}" styleClass="orange">
+    <div class="entitlement-policy-ranges-container" [formGroup]="entitlementPolicyRangesForm">
+      <div class="header">
+        <div>
+          <h4>{{ (getDialogEntitlementPolicyRangesState + ' Entitlement Policy Ranges') | translate }}</h4>
+        </div>
+        <span class="material-symbols-rounded" (click)="showModalEntitlementPolicyRange = false">close</span>
+      </div>
+      <div class="content">
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'From' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-calendar tabindex="0" appendTo="body" [autofocus]="false" formControlName="fromDate" [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="orange"></p-calendar>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('fromDate', entitlementPolicyRangesForm)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div>
+            <span>{{ 'Until' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-calendar appendTo="body" autofocus="false" formControlName="toDate" [showIcon]="true" [placeholder]="'Select Date' | translate" [dateFormat]="'dd/mm/yy'" class="orange"></p-calendar>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('toDate', entitlementPolicyRangesForm)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div formGroupName="leaveEntitlementPolicy" class="form-input-field">
+          <div>
+            <span>{{ 'Policy' | translate }}</span>
+            <span>*</span>
+          </div>
+          <p-dropdown appendTo="body" [options]="getSelectedEntitlementPolicyOptions" formControlName="id" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="orange"></p-dropdown>
+          <div class="error">
+            <span *ngIf="getRequiredValidation('leaveEntitlementPolicy?.id', entitlementPolicyRangesForm)">{{ 'This field is required' | translate }}</span>
+          </div>
+        </div>
+        <div class="form-buttons">
+          <button [disabled]="!entitlementPolicyRangesForm.valid" pButton class="form-button-orange" (click)="onAddUpdateEntitlementPolicyRange()">
+            {{ (dialogEntitlementPolicyRangesState === dialogState.Add ? 'Add' : 'Update') | translate }}</button>
+          <button pButton class="form-button-default" (click)="showModalEntitlementPolicyRange = false">{{ 'Cancel' | translate }}</button>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+  <p-dialog [(visible)]="showModalEntitlementPolicy" [closeOnEscape]="false" [dismissableMask]="true" [showHeader]="false" [modal]="true" closeIcon="false" [style]="{width: '670px', 'min-height': '340px'}" styleClass="orange">
+    <div class="header">
+      <div>
+        <h4>{{ (getDialogEntitlementPolicyState + ' Entitlement Policy') | translate }}</h4>
+      </div>
+      <span class="material-symbols-rounded" (click)="showModalEntitlementPolicy = false">close</span>
+    </div>
+    <div class="content">
+      <div [formGroup]="timeOffEntitlementPolicyForm">
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'Custom Name' | translate }}</span></div>
+            <p-inputSwitch formControlName="customName" styleClass="orange"></p-inputSwitch>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Use Hours Worked For Accrual' | translate }}</span></div>
+            <p-inputSwitch formControlName="useHoursWorkedForAccrual" styleClass="orange"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Default Entitlement Days' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="defaultEntitlementInDays" pInputText class="orange" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('defaultEntitlementInDays', timeOffEntitlementPolicyForm)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Available After X Months' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="entitlementAvailableAfterMonths" pInputText class="orange" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('entitlementAvailableAfterMonths', timeOffEntitlementPolicyForm)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'Use Upfront Accrual' | translate }}</span></div>
+            <p-inputSwitch formControlName="useUpfrontAccrual" styleClass="orange"></p-inputSwitch>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Maximum Balance Limit' | translate }}</span></div>
+            <input type="number" formControlName="maximumBalanceLimit" pInputText class="orange" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field-group">
+          <div class="form-input-field">
+            <div><span>{{ 'Carry Leave Over To Next Period' | translate }}</span></div>
+            <p-inputSwitch formControlName="allowLeaveToBeCarriedForward" styleClass="orange"></p-inputSwitch>
+          </div>
+          <div class="form-input-field">
+            <div><span>{{ 'Leave Carried Forward Expires After X Months' | translate }}</span></div>
+            <input formControlName="leaveCarriedForwardExpiredInMonths" type="number" pInputText class="orange" />
+            <div class="error"></div>
+          </div>
+        </div>
+        <div class="form-input-field">
+          <div><span>{{ 'Limit Type' | translate }}</span></div>
+          <p-dropdown [options]="entitlementLimitPolicyType" formControlName="limitType" optionLabel="label" optionValue="value" [placeholder]="'Select' | translate" class="orange"></p-dropdown>
+          <div class="error"><span *ngIf="getRequiredValidation('limitType', timeOffEntitlementPolicyForm)">{{ 'This field is required' | translate }}</span></div>
+        </div>
+      </div>
+      <div class="cycle-entitlement-regulations-container">
+        <h5>{{ 'Cycle Entitlement Regulations' | translate }}</h5>
+        <div class="form-input-field-group" [formGroup]="cycleEntitlementRegulationForm">
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'First Cycle' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="firstCycle" pInputText class="orange" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('firstCycle', cycleEntitlementRegulationForm)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Last Cycle' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="lastCycle" pInputText class="orange" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('lastCycle', cycleEntitlementRegulationForm)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <div class="form-input-field">
+            <div>
+              <span>{{ 'Entitlement' | translate }}</span>
+              <span>*</span>
+            </div>
+            <input type="number" formControlName="entitlement" pInputText class="orange" />
+            <div class="error">
+              <span *ngIf="getRequiredValidation('entitlement', cycleEntitlementRegulationForm)">{{ 'This field is required' | translate }}</span>
+            </div>
+          </div>
+          <button [disabled]="!cycleEntitlementRegulationForm.valid" pButton class="form-button-orange outlined normal" (click)="onAddCycleEntitlementRegulation()">{{ 'Add' | translate }}</button>
+        </div>
+        <div class="cycle-entitlement-regulations-table-container">
+          <p-table *ngIf="cycleEntitlementRegulationsItems?.length > 0; else noResults" [value]="cycleEntitlementRegulationsItems" class="p-datatable-entitlement-regulations">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>{{ 'First Cycle' | translate }}</th>
+                <th>{{ 'Last Cycle' | translate }}</th>
+                <th>{{ 'Entitlement' | translate }}</th>
+                <th>{{ 'Actions' | translate }}</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cycleEntitlementPolicy>
+              <tr>
+                <td>{{ cycleEntitlementPolicy?.firstCycle }}</td>
+                <td>{{ cycleEntitlementPolicy?.lastCycle }}</td>
+                <td>{{ cycleEntitlementPolicy?.entitlement }}</td>
+                <td>
+                  <span></span>
+                  <span class="material-symbols-rounded" (click)="onDeleteCycleEntitlementPolicy(cycleEntitlementPolicy)" tooltipPosition="top" [pTooltip]="'Delete' | translate">delete</span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+      <div class="form-buttons">
+        <button [disabled]="!timeOffEntitlementPolicyForm.valid" pButton class="form-button-orange" (click)="onSaveEntitlementPolicy()">{{ 'Save' | translate }}</button>
+        <button pButton class="form-button-default" (click)="showModalEntitlementPolicy = false">{{ 'Cancel' | translate }}</button>
+      </div>
+    </div>
+  </p-dialog>
+  <p-confirmDialog #cd>
+    <ng-template pTemplate="footer">
+      <button pButton class="form-button-red normal" (click)="cd.accept()">{{ 'Yes' | translate }}</button>
+      <button pButton class="form-button-default normal" (click)="cd.reject()">{{ 'No' | translate }}</button>
+    </ng-template>
+  </p-confirmDialog>
+  <ng-template #noResults>
+    <div class="no-results-found">
+      <h5>{{ 'Noresultsfound' | translate }}</h5>
+    </div>
+  </ng-template>
+  <ng-template #loader>
+    <div class="loading-container success">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  </ng-template>
+</div>

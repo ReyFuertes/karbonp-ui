@@ -1,0 +1,62 @@
+@import "src/styleguide/index";
+
+.create-report-container {
+  .filter-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .title {
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    color: var(--colour-element-cyan-1);
+    margin-bottom: 5px;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  .form-buttons {
+    @include form-buttons;
+    justify-content: flex-start;
+
+    .form-button-cyan {
+      @include form-button-cyan;
+    }
+  
+    .form-button-default {
+      @include form-button-default;
+    }
+  }
+}
+
+::ng-deep {
+  .create-report-container {
+    span.p-calendar {
+      @include input-calendar;
+    }
+
+    .p-dropdown {
+      @include input-dropdown;
+    }
+
+    .form-input-field {
+      @include form-input-field;
+      width: 69%;
+
+      &:nth-child(3n + 1):not(.search-field),
+      &:nth-child(3n + 2):not(.search-field) {
+        margin-right: 30px;
+        width: 33%;
+      }
+    }
+  }
+}
